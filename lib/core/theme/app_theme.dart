@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tessera/constants/constants.dart';
+import 'package:tessera/constants/app_colors.dart';
 
 ThemeData lightTheme = ThemeData.light().copyWith(
   colorScheme: const ColorScheme.light().copyWith(
