@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/features/authentication/view/pages/google_login_placeholder_screen.dart';
+import 'package:tessera/features/authentication/view/pages/login_options_screen.dart';
 import 'package:tessera/features/example/view/pages/example_screen.dart';
 
 class AppRouter {
@@ -7,7 +8,7 @@ class AppRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-          builder: (_) => const GoogleLoginPlaceholderScreen(),
+          builder: (_) => const LoginOptionsScreen(),
         );
       case '/second':
         return MaterialPageRoute(
