@@ -28,9 +28,7 @@ class ContinueButton extends StatelessWidget {
           },
         ),
       ),
-      onPressed: () {
-        debugPrint('Received click');
-      },
+      onPressed: onTap,
       child: SizedBox(
         height: 50.0,
         width: double.infinity,
