@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
 class GoogleLoginPlaceholderScreen extends StatelessWidget {
@@ -20,7 +21,7 @@ class GoogleLoginPlaceholderScreen extends StatelessWidget {
         body: Center(
           child: ElevatedButton(
             onPressed: () async {
-              await context.read<AuthCubit>().signInGoogle();
+              await context.read<AuthCubit>().signIn(GoogleAuthService());
             },
             child: const Text('Sign in with Google'),
           ),

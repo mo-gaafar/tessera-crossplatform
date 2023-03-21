@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/core/services/authentication/google_authentication.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
@@ -8,7 +9,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial()) {
-    checkIfSignedIn();
+    // checkIfSignedIn();
   }
 
   Future<void> checkIfSignedIn() async {
@@ -21,15 +22,15 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> signInGoogle() async {
+  Future<void> signIn(AuthService authService) async {
     emit(Loading());
-    UserModel? user = await GoogleAuthenticationService.signInGoogle();
+    UserModel? user = await authService.signIn();
 
     user != null ? emit(SignedIn(user)) : emit(Error());
   }
 
-  Future<void> signOutGoogle() async {
-    await GoogleAuthenticationService.signOutGoogle();
+  Future<void> signOut(AuthService authService) async {
+    await authService.signOut();
 
     emit(SignedOut());
   }

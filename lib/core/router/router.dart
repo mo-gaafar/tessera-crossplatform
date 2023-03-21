@@ -17,7 +17,7 @@ class AppRouter {
         );
       case '/third':
         return MaterialPageRoute(
-          builder: (_) => Container(),
+          builder: (_) => const ExampleScreen(),
         );
       default:
         return MaterialPageRoute(

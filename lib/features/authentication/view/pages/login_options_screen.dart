@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/features/authentication/view/widgets/reusable_button.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
@@ -65,7 +66,13 @@ class LoginOptionsScreen extends StatelessWidget {
                     image: 'assets/images/Google.png',
                     buttonText: 'Continue with Google',
                     onTap: () async {
-                      await context.read<AuthCubit>().signInGoogle();
+                      await context
+                          .read<AuthCubit>()
+                          .signIn(GoogleAuthService());
+
+                      if (context.read<AuthCubit>().state is SignedIn) {
+                        Navigator.of(context).pushReplacementNamed('/third');
+                      }
                     },
                   ),
                 ],
