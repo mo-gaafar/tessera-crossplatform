@@ -41,6 +41,8 @@ dependencies:
   equatable: ^2.0.5
   google_sign_in: ^6.0.2
   shared_preferences: ^2.0.18
+  page_transition: ^2.0.9
+  animated_splash_screen: ^1.3.0
 
 dev_dependencies:
   flutter_test:
