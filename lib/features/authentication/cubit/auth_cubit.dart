@@ -8,10 +8,11 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   late AuthService _authService;
-  AuthCubit() : super(AuthInitial());
+  final SharedPreferences prefs;
+  AuthCubit({required this.prefs}) : super(AuthInitial());
 
   Future<void> checkIfSignedIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs = await SharedPreferences.getInstance();
     var userData = prefs.getString('userData');
 
     if (userData != null) {
@@ -32,7 +33,7 @@ class AuthCubit extends Cubit<AuthState> {
       _authService = authService;
 
       // Persist data to local storage
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('userData', user.toJson());
       prefs.setString('authService', _authService.toString());
     } else {
@@ -46,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(SignedOut());
 
     // Remove data from local storage
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
     prefs.remove('authService');
   }
