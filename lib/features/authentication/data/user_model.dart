@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserModel {
-  final String username;
+  final String? username;
   final String email;
   String? accessToken;
   String? photoUrl;
