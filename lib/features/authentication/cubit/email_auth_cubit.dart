@@ -43,7 +43,11 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
   void login(String password) {
     _userModel = UserModel(email: _userModel.email, password: password);
     emit(EmailAuthState(userData: _userModel));
-
     // el mafrood testana response men el back end
+  }
+
+  UserState updatePassword(String newPassword)
+  {
+    return UserState.verifiedLogin;
   }
 }

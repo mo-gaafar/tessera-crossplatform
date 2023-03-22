@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/constants.dart';
+import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 
@@ -8,7 +9,7 @@ import 'package:tessera/constants/app_colors.dart';
 class resendVerification extends StatelessWidget {
   resendVerification({super.key});
   final formkey = GlobalKey<FormState>();
-  String _newPassword='';
+  String _newPassword = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class resendVerification extends StatelessWidget {
                       hintText: 'Passowrd',
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
-                    _newPassword=value!;
+                    _newPassword = value!;
                     if (_newPassword.trim().isEmpty) {
                       return 'password is required';
                     }
@@ -61,12 +62,17 @@ class resendVerification extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (formkey.currentState!.validate()) {
-                        //context.read<EmailAuthCubit>().signUp('$_firstName $_lastName', _password);
-                        Navigator.pushNamed(context, '/third');
+                        if (context
+                                .read<EmailAuthCubit>()
+                                .updatePassword(_newPassword) ==
+                            UserState.verifiedLogin) {
+                          Navigator.pushNamed(context, '/third');
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.buttonColor, // Background Color),
+                      backgroundColor:
+                          AppColors.buttonColor, // Background Color),
                     ),
                     child: const Text(
                       "Update password",
