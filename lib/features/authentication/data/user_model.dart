@@ -5,14 +5,16 @@ import 'package:google_sign_in/google_sign_in.dart';
 class UserModel {
   final String username;
   final String email;
-  final String accessToken;
+  String? accessToken;
   String? photoUrl;
+  String? password;
 
   UserModel({
     required this.username,
     required this.email,
-    required this.accessToken,
+    this.accessToken,
     this.photoUrl,
+    this.password,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class UserModel {
       'email': email,
       'accessToken': accessToken,
       'photoUrl': photoUrl,
+      'password': password,
     };
   }
 
@@ -28,8 +31,10 @@ class UserModel {
     return UserModel(
       username: map['username'] as String,
       email: map['email'] as String,
-      accessToken: map['accessToken'] as String,
+      accessToken:
+          map['accessToken'] != null ? map['accessToken'] as String : null,
       photoUrl: map['photoUrl'] != null ? map['photoUrl'] as String : null,
+      password: map['password'] != null ? map['password'] as String : null,
     );
   }
 
@@ -48,7 +53,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(username: $username, email: $email, accessToken: $accessToken, photoUrl: $photoUrl)';
+    return 'UserModel(username: $username, email: $email, accessToken: $accessToken, photoUrl: $photoUrl, password: $password)';
   }
 
   String toJson() => json.encode(toMap());
