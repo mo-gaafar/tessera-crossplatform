@@ -8,6 +8,7 @@ import 'package:tessera/features/authentication/data/user_model.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+  late AuthService _authService;
   AuthCubit() : super(AuthInitial()) {
     // checkIfSignedIn();
   }
@@ -26,11 +27,16 @@ class AuthCubit extends Cubit<AuthState> {
     emit(Loading());
     UserModel? user = await authService.signIn();
 
-    user != null ? emit(SignedIn(user)) : emit(Error());
+    if (user != null) {
+      emit(SignedIn(user));
+      _authService = authService;
+    } else {
+      emit(Error());
+    }
   }
 
-  Future<void> signOut(AuthService authService) async {
-    await authService.signOut();
+  Future<void> signOut() async {
+    await _authService.signOut();
 
     emit(SignedOut());
   }

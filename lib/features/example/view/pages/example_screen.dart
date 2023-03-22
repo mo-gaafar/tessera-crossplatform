@@ -24,7 +24,7 @@ class ExampleScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            await context.read<AuthCubit>().signOut(GoogleAuthService());
+            await context.read<AuthCubit>().signOut();
 
             if (context.read<AuthCubit>().state is SignedOut) {
               Navigator.of(context).pushReplacementNamed('/loginOptions');
