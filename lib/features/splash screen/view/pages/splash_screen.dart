@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-
+ import 'package:flutter_svg/flutter_svg.dart';
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -11,19 +11,11 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
         duration: 1500,
-        splash: const Text(
-          'TESSERA',
-          style: TextStyle(
-              fontSize: 50.0,
-              color: Colors.white,
-              fontWeight: FontWeight.normal,
-              fontFamily: 'NeuePlak',
-              letterSpacing: 2),
-        ),
+        splash: Image(image: AssetImage('assets/images/LogoFullTextTicketMed.png'),),
         // nextRoute: '/loginOptions',
         nextScreen: const SplashScreen2(),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: AppColors.primary);
+        backgroundColor: Colors.white);
   }
 }
 
@@ -44,16 +36,16 @@ class SplashScreen2 extends StatelessWidget {
         splash: Column(
           children: [
             Image.asset(
-              'assets/images/ticket_i.png',
-              width: 70.0,
-              height: 100.0,
-              color: Colors.white,
+              'assets/images/AppIconMed.png',
+              width: 110.0,
+              height: 120.0,
             ),
+            SizedBox(height: 20,),
             const Text(
               'A TICKET TO YOUR ADVENTURE',
               style: TextStyle(
-                  fontSize: 40.0,
-                  color: Colors.white,
+                  fontSize: 30.0,
+                  color: Color.fromARGB(255,244,84,52),
                   fontWeight: FontWeight.normal,
                   fontFamily: 'NeuePlak',
                   letterSpacing: 2,
@@ -63,6 +55,6 @@ class SplashScreen2 extends StatelessWidget {
           ],
         ),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: AppColors.primary);
+        backgroundColor: Colors.white);
   }
 }
