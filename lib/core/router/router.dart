@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 //screens 
-import 'package:tessera/features/authentication/view/pages/Login_signup.dart';
-import 'package:tessera/features/authentication/view/pages/login.dart';
+import 'package:tessera/features/authentication/view/pages/login_signup_screen.dart';
+import 'package:tessera/features/authentication/view/pages/login_screen.dart';
 import 'package:tessera/features/authentication/view/pages/login_options_screen.dart';
-import 'package:tessera/features/authentication/view/pages/signup.dart';
-import 'package:tessera/features/authentication/view/pages/update_password.dart';
+import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
+import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
 //example screens

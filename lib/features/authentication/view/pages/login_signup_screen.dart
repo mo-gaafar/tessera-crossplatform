@@ -4,13 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tessera/constants/enums.dart';
+import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
-import 'package:tessera/core/services/authentication/email_authentication.dart';
 
 class Login_signup extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   String inputEmail='';
-  EmailAuthService user=EmailAuthService();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +62,6 @@ class Login_signup extends StatelessWidget {
                         if (!EmailValidator.validate(inputEmail)) {
                           return 'this is not a valid email';
                         }
-                        
                       },
                     ),
                   ],
@@ -102,7 +101,7 @@ class Login_signup extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           if (formkey.currentState!.validate()) {
-                            if (user.setEmail(inputEmail))
+                            if (context.read<EmailAuthCubit>().emailAuthentication(inputEmail) == UserState.login)
                             {
                              Navigator.pushNamed(context, '/login');
                             }

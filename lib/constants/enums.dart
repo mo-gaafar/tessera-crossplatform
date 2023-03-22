@@ -1,1 +1,5 @@
-
+enum UserState
+{
+  login,
+  signup,
+}

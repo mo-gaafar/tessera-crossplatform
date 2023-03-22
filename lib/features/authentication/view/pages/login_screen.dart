@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/constants/constants.dart';
+import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 class LogIn extends StatelessWidget {
   LogIn({super.key});
@@ -41,7 +43,7 @@ class LogIn extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: kPagePadding),
                       child: Text(
-                          'Provider.of<userData>(context, listen: true).email'),
+                          context.read<EmailAuthCubit>().state.userData.email),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 5),

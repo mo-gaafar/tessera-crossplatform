@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/constants.dart';
+import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 // ignore: camel_case_types
 class updatePassword extends StatelessWidget {
@@ -60,7 +61,7 @@ class updatePassword extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(6.0),
               // ignore: prefer_interpolation_to_compose_strings
-              child: Text('We sent a link to ' + 'USER EMAIL'+ ' to update your password.'),
+              child: Text('We sent a link to ' + context.read<EmailAuthCubit>().state.userData.email + ' to update your password.'),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

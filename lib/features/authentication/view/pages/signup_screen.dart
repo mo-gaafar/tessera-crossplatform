@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
-import 'package:tessera/core/services/authentication/email_authentication.dart';
+import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 class SignUp extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
+  String _firstName='';
+  String _lastName='';
+  String _password='';
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;
@@ -34,7 +38,7 @@ class SignUp extends StatelessWidget {
                     ),
                     const SizedBox(height: 2,),
                     Text(
-                      'Provider.of<userData>(context, listen: true).email',
+                      context.read<EmailAuthCubit>().state.userData.email,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 4,),
@@ -57,8 +61,7 @@ class SignUp extends StatelessWidget {
                     if (value!.trim().isEmpty) {
                       return 'please re enter your email to confirm it';
                     }
-                    if (value !=
-                        'Provider.of<userData>(context, listen: false).email') {
+                    if (value != context.read<EmailAuthCubit>().state.userData.email) {
                       return 'email must be the same';
                     }
                   },
@@ -76,7 +79,8 @@ class SignUp extends StatelessWidget {
                           hintText: 'Enter First Name',
                         ),
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
+                          _firstName=value!;
+                          if (_firstName.trim().isEmpty) {
                             return 'First name is required';
                           }
                         },
@@ -93,7 +97,8 @@ class SignUp extends StatelessWidget {
                           hintText: 'Enter Surname',
                         ),
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
+                          _lastName=value!;
+                          if (_lastName.trim().isEmpty) {
                             return 'surname is required';
                           }
                         },
@@ -110,10 +115,11 @@ class SignUp extends StatelessWidget {
                       hintText: 'Passowrd',
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
-                    if (value!.trim().isEmpty) {
+                    _password=value!;
+                    if (_password.trim().isEmpty) {
                       return 'password is required';
                     }
-                    if (value.length < 8) {
+                    if (_password.length < 8) {
                       return 'password must be 8 char at least';
                     }
                   },
@@ -125,7 +131,8 @@ class SignUp extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (formkey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/logIn');
+                        context.read<EmailAuthCubit>().signUp('$_firstName $_lastName', _password);
+                        Navigator.pushNamed(context, '/third');
                       }
                     },
                     style: ElevatedButton.styleFrom(

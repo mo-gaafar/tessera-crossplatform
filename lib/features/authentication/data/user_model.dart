@@ -10,8 +10,8 @@ class UserModel {
   String? password;
 
   UserModel({
-    required this.username,
     required this.email,
+    this.username,
     this.accessToken,
     this.photoUrl,
     this.password,
