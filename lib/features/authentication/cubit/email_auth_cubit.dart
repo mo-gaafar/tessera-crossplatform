@@ -8,35 +8,42 @@ import 'package:tessera/features/authentication/data/user_model.dart';
 
 part 'email_auth_state.dart';
 
+/// Holds usermodel object and authentication tokens for email.
 class EmailAuthCubit extends Cubit<EmailAuthState> {
   late UserModel _userModel;
   EmailAuthCubit() : super(EmailAuthState(userData: UserModel(email: '')));
 
-  UserState emailAuthentication(String inputEmail)
-  {
-    _userModel=UserModel(email: inputEmail);
-    emit(EmailAuthState(userData: _userModel),);
+  /// Takes [inputEmail] entered by user in login_signup screen as arguments.
+  /// Make an object of usermodel, pass the arguments and emit it as a state.
+  /// Returns user type according to response recieved from the back-end.
+  UserState emailAuthentication(String inputEmail) {
+    _userModel = UserModel(email: inputEmail);
+    emit(
+      EmailAuthState(userData: _userModel),
+    );
 
     return UserState.login; // keda hywadeeny 3ala path el log in
     // will return bool according to resopnse of backend
   }
 
-  //sign up path
-  void signUp(String username, String password)
-  {
-    _userModel=UserModel(email: _userModel.email,username: username,password: password);
+  /// Takes [username], and [password] entered by the user in sign up page as arguments.
+  /// Make an object of usermodel, pass the arguments and emit it as a state.
+  /// Return valid sign up or not according to response recieved from the back-end.
+  void signUp(String username, String password) {
+    _userModel = UserModel(
+        email: _userModel.email, username: username, password: password);
     emit(EmailAuthState(userData: _userModel));
     // if approved emit, sa3ethaa momken a3mel state taltaa esamah error
     // hena momken yekoon fe response comming from the back end
   }
 
-  //log in path
-  void login(String password)
-  {
-    _userModel=UserModel(email: _userModel.email,password: password);
+  /// Takes [password] entered by the user in login page as argument.
+  /// Make an object of usermodel, pass the arguments and emit it as a state.
+  /// Return valid login or not according to response recieved from the back-end.
+  void login(String password) {
+    _userModel = UserModel(email: _userModel.email, password: password);
     emit(EmailAuthState(userData: _userModel));
 
     // el mafrood testana response men el back end
   }
-
 }
