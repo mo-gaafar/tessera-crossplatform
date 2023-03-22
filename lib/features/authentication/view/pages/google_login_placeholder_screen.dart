@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
+import '../../../../core/services/authentication/google_authentication.dart';
+
 class GoogleLoginPlaceholderScreen extends StatelessWidget {
   const GoogleLoginPlaceholderScreen({super.key});
 

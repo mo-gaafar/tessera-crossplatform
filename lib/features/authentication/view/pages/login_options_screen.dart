@@ -5,6 +5,7 @@ import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/features/authentication/view/widgets/reusable_button.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
+import '../../../../core/services/authentication/google_authentication.dart';
 import '../../cubit/auth_cubit.dart';
 
 class LoginOptionsScreen extends StatelessWidget {

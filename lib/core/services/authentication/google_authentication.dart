@@ -2,8 +2,11 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
-class GoogleAuthenticationService {
-  static Future<UserModel?> signInGoogle() async {
+import 'authentication.dart';
+
+class GoogleAuthService extends AuthService {
+  @override
+  Future<UserModel?> signIn() async {
     final UserModel user;
 
     try {
@@ -26,9 +29,11 @@ class GoogleAuthenticationService {
     } catch (e) {
       throw 'Error retrieving data. Please try again.';
     }
+    return null;
   }
 
-  static Future<void> signOutGoogle() async {
+  @override
+  Future<void> signOut() async {
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
