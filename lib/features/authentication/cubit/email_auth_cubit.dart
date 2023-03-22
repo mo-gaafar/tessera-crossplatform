@@ -17,7 +17,7 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     _userModel=UserModel(email: inputEmail);
     emit(EmailAuthState(userData: _userModel),);
 
-    return UserState.signup; // keda hywadeeny 3ala path el log in
+    return UserState.login; // keda hywadeeny 3ala path el log in
     // will return bool according to resopnse of backend
   }
 

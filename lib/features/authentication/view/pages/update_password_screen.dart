@@ -83,7 +83,7 @@ class updatePassword extends StatelessWidget {
                   style: TextStyle(color: Colors.blue),
                 ),
                 // ignore: avoid_print
-                onTap: () => print('resend'),
+                onTap: () => Navigator.pushNamed(context, '/resendverification'),
               ),
             ),
           ],
