@@ -1,5 +1,4 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 import 'authentication.dart';
@@ -21,9 +20,6 @@ class GoogleAuthService extends AuthService {
         // Convert to UserModel
         user = UserModel.fromGoogleAuth(googleUser, googleAuth);
 
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('userData', user.toJson());
-
         return user;
       }
     } catch (e) {
@@ -38,9 +34,6 @@ class GoogleAuthService extends AuthService {
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       await googleSignIn.signOut();
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove('userData');
     } catch (e) {
       throw 'Error signing out. Please try again.';
     }
