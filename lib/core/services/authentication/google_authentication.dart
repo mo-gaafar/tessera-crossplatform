@@ -3,7 +3,11 @@ import 'package:tessera/features/authentication/data/user_model.dart';
 
 import 'authentication.dart';
 
+/// Implementation of [AuthService] for Google-facilitated [signIn()] and [signOut()].
 class GoogleAuthService extends AuthService {
+  /// Returns a [UserModel] if the user successfully signs in using Google's services.
+  ///
+  /// Returns `null` if the user cancels the sign in process, or an error is caught.
   @override
   Future<UserModel?> signIn() async {
     final UserModel user;
@@ -28,6 +32,7 @@ class GoogleAuthService extends AuthService {
     return null;
   }
 
+  /// Signs the user out using Google's services.
   @override
   Future<void> signOut() async {
     try {
