@@ -51,6 +51,21 @@ class UserModel {
     return UserModel.fromMap(userData);
   }
 
+  factory UserModel.fromFacebookAuth(userdata, token) {
+    print(userdata["name"]);
+    //print(userdata['email']);
+    //print(userdata['picture']['data']['url']);
+    //print(result);
+    final Map<String, dynamic> userData = <String, dynamic>{
+      'username': userdata["name"],
+      'email': userdata['email'],
+      'photoUrl': userdata['picture']['data']['url'],
+      'accessToken': token,
+    };
+
+    return UserModel.fromMap(userData);
+  }
+
   @override
   String toString() {
     return 'UserModel(username: $username, email: $email, accessToken: $accessToken, photoUrl: $photoUrl, password: $password)';

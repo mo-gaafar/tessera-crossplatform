@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tessera</string>
+    <string name="facebook_app_id">664174802386073</string>
+    <string name="fb_login_protocol_scheme">fb03402c0dd626ea5d699108d74b653dbd</string>
+    <string name="facebook_client_token">7dd2f84803e8ac47b56aafd4a0b9718f</string>
+</resources>
