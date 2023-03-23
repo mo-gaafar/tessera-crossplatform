@@ -1,10 +1,10 @@
 /// Used to throw exceptions when the API returns an error code.
 class AppException implements Exception {
   /// The message to be displayed to the user.
-  final _message;
+  final String? _message;
 
   /// The prefix describing the error to be displayed to the user.
-  final _prefix;
+  final String? _prefix;
 
   /// Creates an [AppException] with the given [message] and [prefix].
   AppException([this._message, this._prefix]);

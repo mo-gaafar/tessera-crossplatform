@@ -64,7 +64,7 @@ class UserModel {
   }
 
   factory UserModel.fromFacebookAuth(userdata, token) {
-    print(userdata["name"]);
+    // print(userdata["name"]);
     //print(userdata['email']);
     //print(userdata['picture']['data']['url']);
     //print(result);

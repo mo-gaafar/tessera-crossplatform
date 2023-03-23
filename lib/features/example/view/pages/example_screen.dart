@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
-
-import '../../../../core/services/authentication/authentication.dart';
-import '../../../../core/services/authentication/google_authentication.dart';
 import '../../../authentication/cubit/auth_cubit.dart';
 
 class ExampleScreen extends StatelessWidget {
