@@ -2,7 +2,8 @@ enum UserState
 {
   login,
   signup,
-  verifiedLogin,
-  verifiedSignup,
-  error,
+  validLogin,
+  validSignup,
+  inValidSignup,
+  error, verifiedLogin,
 }

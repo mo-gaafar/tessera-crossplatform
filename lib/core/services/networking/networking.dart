@@ -24,6 +24,7 @@ class NetworkService {
           .post(Uri.parse(url), body: data)
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
+      print(responseJson);
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/constants.dart';
+import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 // ignore: camel_case_types
@@ -55,13 +56,27 @@ class updatePassword extends StatelessWidget {
               padding: EdgeInsets.all(12.0),
               child: Text(
                 'Check your email to update your password.',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: AppColors.secondaryTextOnLight,
+                    fontSize: 20.0,
+                    fontFamily: 'NeuePlak',
+                    fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(6.0),
               // ignore: prefer_interpolation_to_compose_strings
-              child: Text('We sent a link to ' + context.read<EmailAuthCubit>().state.userData.email + ' to update your password.'),
+              child: Text(
+                'We sent a link to ' +
+                    context.read<EmailAuthCubit>().state.userData.email +
+                    ' to update your password.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: AppColors.secondaryTextOnLight,
+                    fontSize: 20.0,
+                    fontFamily: 'NeuePlak'),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -83,7 +98,8 @@ class updatePassword extends StatelessWidget {
                   style: TextStyle(color: Colors.blue),
                 ),
                 // ignore: avoid_print
-                onTap: () => Navigator.pushNamed(context, '/resendverification'),
+                onTap: () =>
+                    Navigator.pushNamed(context, '/resendverification'),
               ),
             ),
           ],
