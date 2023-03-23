@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserModel {
-  final String username;
   final String email;
+  String? username;
   String? accessToken;
   String? photoUrl;
   String? password;
 
   UserModel({
-    required this.username,
     required this.email,
+    this.username,
     this.accessToken,
     this.photoUrl,
     this.password,
@@ -29,8 +29,8 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      username: map['username'] as String,
       email: map['email'] as String,
+      username: map['username'] != null ? map['username'] as String : null,
       accessToken:
           map['accessToken'] != null ? map['accessToken'] as String : null,
       photoUrl: map['photoUrl'] != null ? map['photoUrl'] as String : null,

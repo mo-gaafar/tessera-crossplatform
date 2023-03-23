@@ -9,29 +9,13 @@ import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
 void main() {
   DartPluginRegistrant.ensureInitialized();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   final AppRouter _appRouter = AppRouter();
-  late SharedPreferences prefs;
-
-  @override
-  void initState() {
-    super.initState();
-    initSharedPreferences();
-  }
-
-  Future<void> initSharedPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +25,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ThemeCubit(),
         ),
         BlocProvider(
-          create: (context) => AuthCubit(prefs: prefs),
+          create: (context) => AuthCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

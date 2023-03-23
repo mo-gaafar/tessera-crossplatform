@@ -1,29 +1,29 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
-import 'package:tessera/core/services/authentication/google_authentication.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
-class MockSharedPreferences extends Mock implements SharedPreferences {}
-
 class MockAuthService extends Mock implements AuthService {}
-
-class MockGoogleAuthService extends MockAuthService
-    implements GoogleAuthService {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues({});
   late AuthCubit authCubit;
-  late MockSharedPreferences mockPrefs;
-  // late AuthService authService;
+  late UserModel testUser;
+  late MockAuthService authService;
 
-  setUp(() {
-    mockPrefs = MockSharedPreferences();
-    authCubit = AuthCubit(prefs: mockPrefs);
-    // authService = AuthService();
+  void arrangeAuthAndPrefsMocks() {
+    when(() => authService.signIn()).thenAnswer((_) async => testUser);
+    when(() => authService.signOut()).thenAnswer((_) async => {});
+  }
+
+  setUp(() async {
+    testUser = UserModel(username: 'test user', email: 'testuser@gmail.com');
+    authCubit = AuthCubit();
+    authService = MockAuthService();
+    arrangeAuthAndPrefsMocks();
   });
 
   test(
@@ -31,46 +31,86 @@ void main() {
     () => expect(authCubit.state, AuthInitial()),
   );
 
-  test(
-    "check if already signed in",
-    () async {
-      // mockSharedPreferences = MockSharedPreferences();
-      await authCubit.checkIfSignedIn();
-      expect(authCubit.state, AuthInitial());
-    },
-  );
-
-  // blocTest(
-  //   'should return AuthInitial when checkIfSignedIn()',
-  //   build: () => authCubit,
-  //   act: (bloc) => bloc.checkIfSignedIn(),
-  //   expect: () => <AuthState>[AuthInitial()],
-  // );
-
-  void arrangeAuthAndPrefsMocks(
-      UserModel testUser, MockAuthService authService) {
-    when(() => authService.signIn()).thenAnswer((_) async => testUser);
-
-    when(() => mockPrefs.setString('userData', testUser.toJson()))
-        .thenAnswer((_) async => true);
-
-    when(() => mockPrefs.setString('authService', authService.toString()))
-        .thenAnswer((_) async => true);
-  }
-
-  group('sign in user with google', () {
+  group('Check if there is an already signed-in user', () {
     test(
-      "should call AuthService.signIn() when AuthCubit().signIn() is called",
+      "should still return AuthInitial if no user is signed in",
       () async {
-        final UserModel testUser =
-            UserModel(username: 'test user', email: 'testuser@gmail.com');
-        MockGoogleAuthService authService = MockGoogleAuthService();
+        // Act
+        await authCubit.checkIfSignedIn();
+        // Assert
+        expect(authCubit.state, AuthInitial());
+      },
+    );
 
-        arrangeAuthAndPrefsMocks(testUser, authService);
-
+    test(
+      "should emit SignedIn state when checkIfSignedIn() is called with a user already signed in",
+      () async {
+        // Arrange
         await authCubit.signIn(authService);
-        verify(() => authService.signIn()).called(1);
+        // Act
+        await authCubit.checkIfSignedIn();
+        // Assert
+        expect(authCubit.state, SignedIn(testUser));
       },
     );
   });
+
+  group(
+    'User sign in with Google/Facebook',
+    () {
+      test(
+        "should verify that AuthService.signIn() is called when AuthCubit().signIn() is called",
+        () async {
+          // Act
+          await authCubit.signIn(authService);
+          // Assert
+          verify(() => authService.signIn()).called(1);
+        },
+      );
+
+      test(
+        "should emit Loading followed by SignedIn state when user successfully signs in",
+        () async {
+          // Act
+          final future = authCubit.signIn(authService);
+          // Assert
+          expect(authCubit.state, Loading());
+
+          // Act
+          await future;
+          // Assert
+          expect(authCubit.state, SignedIn(testUser));
+        },
+      );
+    },
+  );
+
+  group(
+    'User sign out with Google/Facebook',
+    () {
+      test(
+        "should verify that AuthService.signOut() is called when AuthCubit().signOut() is called",
+        () async {
+          // Arrange
+          await authCubit.signIn(authService);
+          // Act
+          await authCubit.signOut();
+          // Assert
+          verify(() => authService.signOut()).called(1);
+        },
+      );
+
+      test(
+        "should emit SignedOut state when user successfully signs in then out",
+        () async {
+          // Arrange
+          await authCubit.signIn(authService);
+          // Act
+          await authCubit.signOut();
+          // Assert
+          expect(authCubit.state, SignedOut());
+        },
+      );
+    },
+  );
 }
