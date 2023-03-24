@@ -6,8 +6,8 @@ import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 
 // ignore: camel_case_types
-class resendVerification extends StatelessWidget {
-  resendVerification({super.key});
+class typeNewPassword extends StatelessWidget {
+  typeNewPassword({super.key});
   final formkey = GlobalKey<FormState>();
   String _newPassword = '';
 
@@ -60,13 +60,22 @@ class resendVerification extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(kPagePadding),
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (formkey.currentState!.validate()) {
-                        if (context
-                                .read<EmailAuthCubit>()
-                                .updatePassword(_newPassword) ==
-                            UserState.verifiedLogin) {
+                        if (await context.read<EmailAuthCubit>().resetPassword(
+                                context
+                                    .read<EmailAuthCubit>()
+                                    .state
+                                    .userData
+                                    .email,
+                                _newPassword) ==
+                            true) {
                           Navigator.pushNamed(context, '/third');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'Something went wrong! try another password'),
+                              duration: Duration(milliseconds: 300)));
                         }
                       }
                     },

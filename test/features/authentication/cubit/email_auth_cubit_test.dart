@@ -39,6 +39,13 @@ void main() {
         UserState.login);
   });
 
+  test('should return true when login succeed', () async {
+    expect(
+        await emailAuthCubit.login(
+            userModel.email, userModel.password.toString()),
+        true);
+  });
+
   test('should return true when inputting a previously logged in data',
       () async {
     expect(
@@ -46,5 +53,16 @@ void main() {
             userModel.username.toString(), userModel.password.toString()),
         true);
   });
+
+  test('should return true when foget password succeed', () async {
+    expect(await emailAuthCubit.forgetPassword(userModel.password.toString()),
+        true);
+  });
+
+  test('should return true when password is reseted', () async {
+    expect(await emailAuthCubit.resetPassword(userModel.email.toString(),userModel.password.toString()),
+        true);
+  });
+
   //Assert
 }

@@ -86,13 +86,13 @@ class LogIn extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: ()async{
                           if (formkey.currentState!.validate()) {
-                            if(await context.read<EmailAuthCubit>().login(password))
+                            if(await context.read<EmailAuthCubit>().login(context.read<EmailAuthCubit>().state.userData.email,password))
                             {
                               Navigator.pushNamed(context, '/third');
                             }
                             else
                             {
-                              print('7omaaar');
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Wrong password'), duration: Duration(milliseconds: 300)));
                             }
                           }
                         },

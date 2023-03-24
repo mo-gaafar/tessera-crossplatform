@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tessera/features/authentication/view/pages/login_signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/login_screen.dart';
 import 'package:tessera/features/authentication/view/pages/login_options_screen.dart';
-import 'package:tessera/features/authentication/view/pages/resend_verification_screen.dart';
+import 'package:tessera/features/authentication/view/pages/type_newPassword_screen.dart';
 import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
@@ -42,9 +42,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => updatePassword(),
         );
-      case '/resendverification':
+      case '/typenewpassword':
         return MaterialPageRoute(
-          builder: (_) => resendVerification(),
+          builder: (_) => typeNewPassword(),
         );
       case '/verification':
         return MaterialPageRoute(
