@@ -99,9 +99,10 @@ class Login_signup extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10),
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async{
                           if (formkey.currentState!.validate()) {
-                            if (context.read<EmailAuthCubit>().emailAuthentication(inputEmail) == UserState.login)
+                            print(context.read<EmailAuthCubit>().emailAuthentication(inputEmail) );
+                            if (await context.read<EmailAuthCubit>().emailAuthentication(inputEmail) == UserState.login)
                             {
                              Navigator.pushNamed(context, '/login');
                             }

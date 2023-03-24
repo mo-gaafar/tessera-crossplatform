@@ -21,10 +21,10 @@ class NetworkService {
   static Future getPostApiResponse(String url, dynamic data) async {
     try {
       http.Response response = await http
-          .post(Uri.parse(url), body: data)
+          .post(Uri.parse(url),
+              headers: {"Content-Type": "application/json"}, body: data)
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
-      print(responseJson);
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -35,6 +35,8 @@ class NetworkService {
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
+      return jsonDecode(response.body);
+    case 201:
       return jsonDecode(response.body);
     case 400:
       throw BadRequestException(response.body.toString());

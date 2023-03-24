@@ -6,7 +6,7 @@ class EmailAuthState extends Equatable {
   final UserModel userData;
 
   const EmailAuthState({required this.userData});
-
+  
   @override
   List<Object?> get props => [userData];
 }
@@ -18,10 +18,16 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-class SignedIn extends AuthState {
+class SignedIn extends EmailAuthState {
   final UserModel user;
 
-  const SignedIn(this.user);
+  const SignedIn(this.user): super(userData: user);
 }
 
-class SignedOut extends AuthState {}
+class SignedOut extends EmailAuthState {
+  final UserModel user;
+
+  const SignedOut(this.user): super(userData: user);
+}
+
+class Error extends AuthState {}

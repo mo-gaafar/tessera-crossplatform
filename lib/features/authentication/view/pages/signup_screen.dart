@@ -5,9 +5,9 @@ import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 class SignUp extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
-  String _firstName='';
-  String _lastName='';
-  String _password='';
+  String _firstName = '';
+  String _lastName = '';
+  String _password = '';
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;
@@ -36,12 +36,16 @@ class SignUp extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    const SizedBox(height: 2,),
+                    const SizedBox(
+                      height: 2,
+                    ),
                     Text(
                       context.read<EmailAuthCubit>().state.userData.email,
                       style: const TextStyle(color: Colors.grey),
                     ),
-                    const SizedBox(height: 4,),
+                    const SizedBox(
+                      height: 4,
+                    ),
                     const Divider(
                       color: Colors.grey,
                       height: 2,
@@ -61,7 +65,8 @@ class SignUp extends StatelessWidget {
                     if (value!.trim().isEmpty) {
                       return 'please re enter your email to confirm it';
                     }
-                    if (value != context.read<EmailAuthCubit>().state.userData.email) {
+                    if (value !=
+                        context.read<EmailAuthCubit>().state.userData.email) {
                       return 'email must be the same';
                     }
                   },
@@ -79,7 +84,7 @@ class SignUp extends StatelessWidget {
                           hintText: 'Enter First Name',
                         ),
                         validator: (value) {
-                          _firstName=value!;
+                          _firstName = value!;
                           if (_firstName.trim().isEmpty) {
                             return 'First name is required';
                           }
@@ -97,7 +102,7 @@ class SignUp extends StatelessWidget {
                           hintText: 'Enter Surname',
                         ),
                         validator: (value) {
-                          _lastName=value!;
+                          _lastName = value!;
                           if (_lastName.trim().isEmpty) {
                             return 'surname is required';
                           }
@@ -115,7 +120,7 @@ class SignUp extends StatelessWidget {
                       hintText: 'Passowrd',
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
-                    _password=value!;
+                    _password = value!;
                     if (_password.trim().isEmpty) {
                       return 'password is required';
                     }
@@ -129,14 +134,19 @@ class SignUp extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       if (formkey.currentState!.validate()) {
-                        context.read<EmailAuthCubit>().signUp('$_firstName $_lastName', _password);
-                        Navigator.pushNamed(context, '/third');
+                        if (await context.read<EmailAuthCubit>().signUp(
+                            context.read<EmailAuthCubit>().state.userData.email,
+                            '$_firstName $_lastName',
+                            _password)) {
+                          Navigator.pushNamed(context, '/verification');
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.buttonColor, // Background Color),
+                      backgroundColor:
+                          AppColors.buttonColor, // Background Color),
                     ),
                     child: const Text(
                       "Sign Up",

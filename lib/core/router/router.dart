@@ -7,6 +7,7 @@ import 'package:tessera/features/authentication/view/pages/login_options_screen.
 import 'package:tessera/features/authentication/view/pages/resend_verification_screen.dart';
 import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
+import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
 //example screens
@@ -44,6 +45,10 @@ class AppRouter {
       case '/resendverification':
         return MaterialPageRoute(
           builder: (_) => resendVerification(),
+        );
+      case '/verification':
+        return MaterialPageRoute(
+          builder: (_) => const verificationScreen(),
         );
       case '/third':
         return MaterialPageRoute(

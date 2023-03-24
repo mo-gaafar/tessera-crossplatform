@@ -7,7 +7,9 @@ class AuthRepository{
  static Future<UserState> checkIfUserExists(var data)async
  {
     final responseBody= await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/emailexist', data);
-    if (responseBody['exists']==true)
+    print('RESPONSE BODY LOGIN');
+    print(responseBody);
+    if (responseBody['exist']==true)
     {
       return UserState.login;
     }
@@ -17,7 +19,18 @@ class AuthRepository{
  }
   static Future<bool> checkIfSignUpValid(var data)async
  {
-    final responseBody= await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/emailexist', data);
+    final responseBody= await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/signup', data);
     return responseBody['sucess'];
+ }
+  static Future checkIfLogInValid(var data)async
+ {
+    final responseBody= await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/login', data);
+    return responseBody;
+ }
+
+   static Future<bool> checkForgetPassword(var data)async
+ {
+    final responseBody= await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/forgetPassword', data);
+    return responseBody['success'];
  }
 }

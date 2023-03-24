@@ -8,6 +8,7 @@ class LogIn extends StatelessWidget {
   LogIn({super.key});
 
   final formkey = GlobalKey<FormState>();
+  String password='';
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +69,11 @@ class LogIn extends StatelessWidget {
                           hintText: 'Enter password',
                         ),
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
+                          password=value!;
+                          if (password.trim().isEmpty) {
                             return 'password is required';
                           }
-                          if (value.length < 8) {
+                          if (password.length < 8) {
                             return 'password must be 8 char at least';
                           }
                         },
@@ -82,9 +84,16 @@ class LogIn extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: kPagePadding, vertical: kPagePadding),
                       child: ElevatedButton(
-                        onPressed: (){
+                        onPressed: ()async{
                           if (formkey.currentState!.validate()) {
-                            print('log In safely');
+                            if(await context.read<EmailAuthCubit>().login(password))
+                            {
+                              Navigator.pushNamed(context, '/third');
+                            }
+                            else
+                            {
+                              print('7omaaar');
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -104,8 +113,13 @@ class LogIn extends StatelessWidget {
                           style: TextStyle(color: Colors.blue),
                         ),
                         // ignore: avoid_print
-                        onTap: () =>
-                            Navigator.pushNamed(context, '/updatePassword'),
+                        onTap: () async{
+                          if(await context.read<EmailAuthCubit>().forgetPassword(context.read<EmailAuthCubit>().state.userData.email))
+                          {
+                            Navigator.pushNamed(context, '/updatePassword');
+                          }
+                        }
+
                       ),
                     ),
                   ],
