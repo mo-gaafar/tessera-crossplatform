@@ -98,8 +98,15 @@ class updatePassword extends StatelessWidget {
                   style: TextStyle(color: Colors.blue),
                 ),
                 // ignore: avoid_print
-                onTap: () =>
-                    Navigator.pushNamed(context, '/resendverification'),
+                onTap: () async{
+                  if (await context.read<EmailAuthCubit>().verifyEmail(context.read<EmailAuthCubit>().state.userData.email))
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Email sent check you mailbox'), duration: Duration(milliseconds: 300)));
+                  }
+                  else{
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Something wrong! This Email is not registerd'), duration: Duration(milliseconds: 300)));
+                  }
+                }
               ),
             ),
           ],

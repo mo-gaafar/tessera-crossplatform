@@ -39,4 +39,9 @@ class AuthRepository {
     final responseBody = await NetworkService.getPostApiResponse(url, data);
     return responseBody['success'];
   }
+
+    static Future<bool> checkEmailVerified(var data) async {
+    final responseBody = await NetworkService.getPostApiResponse('https://www.tessera.social/api/auth/verify/', data);
+    return responseBody['success'];
+  }
 }

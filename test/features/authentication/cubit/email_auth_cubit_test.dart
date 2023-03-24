@@ -21,7 +21,7 @@ void main() {
 
   emailAuthCubit = EmailAuthCubit();
   userModel = UserModel(
-      email: 'saeed13@gmail.com',
+      email: 'tessera.backend@gmail.com',
       username: 'Abd saed',
       password: 'Abd_saed??12');
 
@@ -60,7 +60,14 @@ void main() {
   });
 
   test('should return true when password is reseted', () async {
-    expect(await emailAuthCubit.resetPassword(userModel.email.toString(),userModel.password.toString()),
+    expect(
+        await emailAuthCubit.resetPassword(
+            userModel.email.toString(), userModel.password.toString()),
+        true);
+  });
+
+  test('should return true when Email is sent succefully', () async {
+    expect(await emailAuthCubit.verifyEmail(userModel.email.toString()),
         true);
   });
 

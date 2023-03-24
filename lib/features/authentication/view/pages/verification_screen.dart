@@ -13,7 +13,7 @@ class verificationScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-           automaticallyImplyLeading: false,
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           children: [
@@ -66,13 +66,10 @@ class verificationScreen extends StatelessWidget {
                 onTap: () => Navigator.pushNamed(context, '/login_signup'),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                child: const Text(
-                  'Recieved Email'
-                ),
+                child: const Text('Recieved Email'),
                 // ignore: avoid_print
                 onPressed: () => Navigator.pushNamed(context, '/login'),
               ),
@@ -81,14 +78,24 @@ class verificationScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: GestureDetector(
-                child: const Text(
-                  'Resend verification email',
-                  style: TextStyle(color: Colors.blue),
-                ),
-                // ignore: avoid_print
-                onTap: () =>
-                    Navigator.pushNamed(context, '/resendverification'),
-              ),
+                  child: const Text(
+                    'Resend verification email',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                  // ignore: avoid_print
+                  onTap: () async {
+                    if (await context.read<EmailAuthCubit>().verifyEmail(
+                        context.read<EmailAuthCubit>().state.userData.email)) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Email sent check you mailbox'),
+                          duration: Duration(milliseconds: 300)));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'Something wrong! This Email is not registerd'),
+                          duration: Duration(milliseconds: 300)));
+                    }
+                  }),
             ),
           ],
         ),

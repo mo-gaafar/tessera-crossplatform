@@ -87,6 +87,11 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
         _userModel.accessToken.toString(), jsonEncode(data));
   }
 
+  Future<bool> verifyEmail(String userEmail) async {
+    var data = {"email": userEmail};
+    return await AuthRepository.checkEmailVerified(jsonEncode(data));
+  }
+
   String getUsermodelEmail() {
     return _userModel.email;
   }
