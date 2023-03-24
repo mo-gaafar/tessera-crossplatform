@@ -5,7 +5,7 @@ import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 part 'auth_state.dart';
-
+///cubit for all authentication services 
 class AuthCubit extends Cubit<AuthState> {
   late AuthService _authService;
   AuthCubit() : super(AuthInitial());

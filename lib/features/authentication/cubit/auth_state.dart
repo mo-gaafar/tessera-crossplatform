@@ -1,5 +1,5 @@
 part of 'auth_cubit.dart';
-
+///states that the cubit emit
 abstract class AuthState extends Equatable {
   const AuthState();
 

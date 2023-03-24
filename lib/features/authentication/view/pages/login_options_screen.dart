@@ -23,9 +23,6 @@ class LoginOptionsScreen extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // const SizedBox(
-                  //   height: 70,
-                  // ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
@@ -46,9 +43,6 @@ class LoginOptionsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // const SizedBox(
-                  //   height: 150.0,
-                  // ),
                   Column(
                     children: [
                       const EmailButton(
@@ -92,9 +86,6 @@ class LoginOptionsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // const SizedBox(
-                  //   height: 15.0,
-                  // ),
                 ],
               ),
               if (context.watch<AuthCubit>().state is Loading)
