@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
+import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 part 'auth_state.dart';
@@ -28,13 +29,16 @@ class AuthCubit extends Cubit<AuthState> {
     UserModel? user = await authService.signIn();
 
     if (user != null) {
-      emit(SignedIn(user));
-      _authService = authService;
+      final loginRequest = await AuthRepository.googleLoginRequest(user);
+      if (loginRequest != null) {
+        emit(SignedIn(user));
+        _authService = authService;
 
-      // Persist data to local storage
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('userData', user.toJson());
-      prefs.setString('authService', _authService.toString());
+        // Persist data to local storage
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('userData', user.toJson());
+        prefs.setString('authService', _authService.toString());
+      }
     } else {
       emit(Error());
     }
