@@ -26,11 +26,13 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signIn(AuthService authService) async {
     emit(Loading());
-    UserModel? user = await authService.signIn();
 
-    if (user != null) {
-      final loginRequest = await AuthRepository.googleLoginRequest(user);
-      if (loginRequest != null) {
+    try {
+      UserModel? user = await authService.signIn();
+
+      if (user != null) {
+        // final loginRequest = await AuthRepository.googleLoginRequest(user);
+        // if (loginRequest != null) {
         emit(SignedIn(user));
         _authService = authService;
 
@@ -38,8 +40,11 @@ class AuthCubit extends Cubit<AuthState> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('userData', user.toJson());
         prefs.setString('authService', _authService.toString());
+        // }
+      } else {
+        emit(AuthInitial());
       }
-    } else {
+    } catch (e) {
       emit(Error());
     }
   }

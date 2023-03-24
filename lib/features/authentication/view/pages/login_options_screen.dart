@@ -59,20 +59,19 @@ class LoginOptionsScreen extends StatelessWidget {
                       const SizedBox(
                         height: 15,
                       ),
-                       ContinueButton(
+                      ContinueButton(
                           image: 'assets/images/facebook.png',
                           buttonText: 'Continue with Facebook',
                           onTap: () async {
-                          await context
-                              .read<AuthCubit>()
-                              .signIn(FacebookAuthService());
+                            await context
+                                .read<AuthCubit>()
+                                .signIn(FacebookAuthService());
 
-                          if (context.read<AuthCubit>().state is SignedIn) {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/third');
-                          }
-                        }),
-                          
+                            if (context.read<AuthCubit>().state is SignedIn) {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/third');
+                            }
+                          }),
                       const SizedBox(
                         height: 15.0,
                       ),
@@ -87,6 +86,14 @@ class LoginOptionsScreen extends StatelessWidget {
                           if (context.read<AuthCubit>().state is SignedIn) {
                             Navigator.of(context)
                                 .pushReplacementNamed('/third');
+                          } else if (context.read<AuthCubit>().state is Error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(seconds: 2),
+                                content: Text(
+                                    'Error retrieving data. Please try again.'),
+                              ),
+                            );
                           }
                         },
                       ),

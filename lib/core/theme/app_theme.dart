@@ -16,6 +16,10 @@ class AppTheme {
           // displayColor: AppColors.secondaryTextOnLight,
         ),
     scaffoldBackgroundColor: AppColors.lightBackground,
+    snackBarTheme: ThemeData.light().snackBarTheme.copyWith(
+          backgroundColor: Colors.red.shade900,
+          contentTextStyle: const TextStyle(color: Colors.white),
+        ),
   );
 
   /// Returns the app's dark theme.
