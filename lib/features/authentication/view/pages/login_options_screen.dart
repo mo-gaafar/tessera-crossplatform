@@ -57,14 +57,13 @@ class LoginOptionsScreen extends StatelessWidget {
                           image: 'assets/images/facebook.png',
                           buttonText: 'Continue with Facebook',
                           onTap: () async {
-                          await context
-                              .read<AuthCubit>()
-                              .signIn(FacebookAuthService());
+
+                          await context.read<AuthCubit>().signIn(FacebookAuthService());
 
                           if (context.read<AuthCubit>().state is SignedIn) {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/third');
+                            Navigator.of(context).pushReplacementNamed('/third');
                           }
+                          
                         }),
                           
                       const SizedBox(
