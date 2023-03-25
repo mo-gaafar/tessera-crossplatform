@@ -2,8 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
+import 'package:tessera/features/authentication/data/auth_repository.dart';
 
 /// Screen notifying the user to check their email to verify their account.
 class VerificationScreen extends StatelessWidget {
@@ -77,24 +80,34 @@ class VerificationScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: GestureDetector(
-                  child: const Text(
-                    'Resend verification email',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  // ignore: avoid_print
-                  onTap: () async {
-                    if (await context.read<EmailAuthCubit>().verifyEmail(
-                        context.read<EmailAuthCubit>().state.userData.email)) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Email sent check you mailbox'),
-                          duration: Duration(milliseconds: 300)));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              'Something wrong! This Email is not registerd'),
-                          duration: Duration(milliseconds: 300)));
-                    }
-                  }),
+                child: const Text(
+                  'Resend verification email',
+                  style: TextStyle(color: Colors.blue),
+                ),
+                // ignore: avoid_print
+                onTap: () async {
+                  final response = await AuthRepository.resendVerificationEmail(
+                      context.read<AuthCubit>().user.email);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: Duration(seconds: 2),
+                      content: Text(response),
+                    ),
+                  );
+
+                  // if (await context.read<EmailAuthCubit>().verifyEmail(
+                  //     context.read<EmailAuthCubit>().state.userData.email)) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  //       content: Text('Email sent check you mailbox'),
+                  //       duration: Duration(milliseconds: 300)));
+                  // } else {
+                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  //       content: Text(
+                  //           'Something wrong! This Email is not registerd'),
+                  //       duration: Duration(milliseconds: 300)));
+                  // }
+                },
+              ),
             ),
           ],
         ),

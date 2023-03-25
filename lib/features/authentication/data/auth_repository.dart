@@ -43,7 +43,10 @@ class AuthRepository {
   /// Requests backend to send a 'Forgot Password' email to the user.
   ///
   /// Returns [true] if the email is sent successfully, or [false] if the email is not sent.
-  static Future<bool> checkForgetPassword(var data) async {
+  static Future<bool> sendForgotPasswordEmail(String email) async {
+    final data = {
+      'email': email,
+    };
     final responseBody = await NetworkService.getPostApiResponse(
         'https://www.tessera.social/api/auth/forgetPassword', data);
     return responseBody['success'];
@@ -61,10 +64,13 @@ class AuthRepository {
   /// Requests backend to send a verification email to the user.
   ///
   /// Returns [true] if the email is sent successfully, or [false] if the email is not sent.
-  static Future<bool> checkEmailVerified(var data) async {
+  static Future<String> resendVerificationEmail(String email) async {
+    final data = {
+      'email': email,
+    };
     final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/auth/verify/', data);
-    return responseBody['success'];
+        'https://www.tessera.social/api/auth/verify/', jsonEncode(data));
+    return responseBody['message'];
   }
 
   /// Requests backend to log in the user using a social account (Google or Facebook).

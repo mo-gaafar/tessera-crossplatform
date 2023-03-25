@@ -29,7 +29,6 @@ class SignUp extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(kPagePadding),
-          //       // ignore: prefer_const_constructors
           child: Form(
             key: formkey,
             child: Column(
@@ -48,7 +47,7 @@ class SignUp extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      context.read<EmailAuthCubit>().state.userData.email,
+                      context.read<AuthCubit>().user.email,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(
@@ -73,8 +72,7 @@ class SignUp extends StatelessWidget {
                     if (value!.trim().isEmpty) {
                       return 'please re enter your email to confirm it';
                     }
-                    if (value !=
-                        context.read<EmailAuthCubit>().state.userData.email) {
+                    if (value != context.read<AuthCubit>().user.email) {
                       return 'email must be the same';
                     }
                   },
@@ -136,38 +134,37 @@ class SignUp extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(top: 10),
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (formkey.currentState!.validate()) {
-                        await context
-                            .read<AuthCubit>()
-                            .emailSignUp(_firstName, _lastName, _password);
-
-                        if (context.read<AuthCubit>().state is EmailSignedUp) {
-                          Navigator.pushNamed(context, '/verification');
-                        } else if (context.read<AuthCubit>().state
-                            is AuthError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(context.read<AuthCubit>().state.me),
-                            ),
-                          );
-                        }
-                        // if (await context.read<EmailAuthCubit>().signUp(
-                        //     context.read<EmailAuthCubit>().state.userData.email,
-                        //     '$_firstName $_lastName',
-                        //     _password)) {
-                        //   Navigator.pushNamed(context, '/verification');
-                        // }
+                  child: BlocListener<AuthCubit, AuthState>(
+                    listener: (context, state) {
+                      if (state is AuthError) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.message),
+                          ),
+                        );
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          AppColors.buttonColor, // Background Color),
-                    ),
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(color: Colors.black),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (formkey.currentState!.validate()) {
+                          await context
+                              .read<AuthCubit>()
+                              .emailSignUp(_firstName, _lastName, _password);
+
+                          if (context.read<AuthCubit>().state
+                              is EmailSignedUp) {
+                            Navigator.pushNamed(context, '/verification');
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            AppColors.buttonColor, // Background Color),
+                      ),
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ),
                 ),
@@ -179,35 +176,3 @@ class SignUp extends StatelessWidget {
     );
   }
 }
-
-
-        // body: Column(
-        //   children: [
-        //     Container(
-        //       padding: EdgeInsets.all(kPagePadding),
-        //       // ignore: prefer_const_constructors
-        //       child: Column(
-        //         // ignore: prefer_const_literals_to_create_immutables
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         // ignore: prefer_const_literals_to_create_immutables
-        //         children: [
-        //           const Text(
-        //             'Email',
-        //             style: TextStyle(color: Colors.cyan),
-        //           ),
-        //           const TextField(
-        //             decoration: InputDecoration(
-        //               enabledBorder: UnderlineInputBorder(
-        //                 borderSide: BorderSide(color: Colors.cyan),
-        //               ),
-        //               hintText: 'omaressam@gmail.com',
-
-        //             ),
-        //             onChanged: null,
-        //             enabled: false,
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
