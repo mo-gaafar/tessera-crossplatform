@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
-// ignore: camel_case_types
-class updatePassword extends StatelessWidget {
-  const updatePassword({super.key});
+/// Screen notifying the user that an email has been sent to update their password.
+class UpdatePassword extends StatelessWidget {
+  const UpdatePassword({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,6 +9,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
+/// Screen redirecting to login or signup depending on the user's input email.
 class LoginSignup extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   String inputEmail = '';

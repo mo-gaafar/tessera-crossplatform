@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
-// ignore: camel_case_types
-class verificationScreen extends StatelessWidget {
-  const verificationScreen({super.key});
+/// Screen notifying the user to check their email to verify their account.
+class VerificationScreen extends StatelessWidget {
+  const VerificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

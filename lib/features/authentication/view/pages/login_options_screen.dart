@@ -9,6 +9,7 @@ import '../../../../core/services/authentication/facebook_authentication.dart';
 import '../../../../core/services/authentication/google_authentication.dart';
 import '../../cubit/auth_cubit.dart';
 
+/// Screen that allows the user to choose between logging in / signing up with email, Google, or Facebook.
 class LoginOptionsScreen extends StatelessWidget {
   const LoginOptionsScreen({super.key});
 

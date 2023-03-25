@@ -6,6 +6,7 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 
+/// Sign up page requesting the user's first name, last name, and password.
 class SignUp extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   String _firstName = '';

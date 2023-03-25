@@ -8,6 +8,7 @@ import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 
+/// Login page requesting the user's password.
 class LogIn extends StatelessWidget {
   LogIn({super.key});
 

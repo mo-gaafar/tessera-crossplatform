@@ -39,7 +39,7 @@ class AppRouter {
         );
       case '/updatePassword':
         return MaterialPageRoute(
-          builder: (_) => const updatePassword(),
+          builder: (_) => const UpdatePassword(),
         );
       case '/typenewpassword':
         return MaterialPageRoute(
@@ -47,7 +47,7 @@ class AppRouter {
         );
       case '/verification':
         return MaterialPageRoute(
-          builder: (_) => const verificationScreen(),
+          builder: (_) => const VerificationScreen(),
         );
       case '/third':
         return MaterialPageRoute(

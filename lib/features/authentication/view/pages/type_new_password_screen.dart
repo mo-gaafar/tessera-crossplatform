@@ -7,7 +7,7 @@ import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 
-// ignore: camel_case_types
+/// Reset password page requesting the user's new password.
 class TypeNewPassword extends StatelessWidget {
   TypeNewPassword({super.key});
   final formkey = GlobalKey<FormState>();
