@@ -29,33 +29,31 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn(AuthService authService) async {
     emit(Loading());
 
-
     try {
       UserModel? user = await authService.signIn();
 
+      if (user != null) {
+        var response =
+            await AuthRepository.facebookLogin('facebook', user.toJson());
+        if (response['success'] == true) {
+          user.accessToken = response['token'];
+          emit(SignedIn(user));
+          _authService = authService;
 
-    if (user != null) {
-      var response =
-          await AuthRepository.facebookLogin('facebook', user.toJson());
-      if (response['success'] == true) {
-        user.accessToken = response['token'];
-        emit(SignedIn(user));
-        _authService = authService;
-        
-        // Persist data to local storage
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('userData', user.toJson());
-        prefs.setString('authService', _authService.toString());
+          // Persist data to local storage
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('userData', user.toJson());
+          prefs.setString('authService', _authService.toString());
         } else {
           emit(Error());
-          }
-        } else {
-          emit(AuthInitial());
-          }
-          } catch (e) {
-          emit(Error());
-          }
-
+        }
+      } else {
+        emit(AuthInitial());
+      }
+    } catch (e) {
+      emit(Error());
+    }
+  }
 
   Future<void> signOut() async {
     await _authService.signOut();
