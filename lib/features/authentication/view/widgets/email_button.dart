@@ -21,6 +21,11 @@ class EmailButton extends StatelessWidget {
       width: double.infinity,
       child: TextButton(
           style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
             backgroundColor: MaterialStateProperty.all<Color>(colourBackground),
             overlayColor: MaterialStateProperty.resolveWith<Color?>(
               (Set<MaterialState> states) {
@@ -41,10 +46,10 @@ class EmailButton extends StatelessWidget {
           child: Text(
             buttonText,
             style: TextStyle(
-                fontFamily: 'NeuePlak',
-                color: colourText,
-                fontSize: 15,
-                fontWeight: FontWeight.w100),
+              fontFamily: 'NeuePlak',
+              color: colourText,
+              fontSize: 17,
+            ),
           )),
     );
   }

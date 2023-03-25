@@ -33,8 +33,6 @@ class SplashScreen2 extends StatelessWidget {
         screenRouteFunction: () async {
           await context.read<AuthCubit>().checkIfSignedIn();
           await context.read<EmailAuthCubit>().checkIfSignedIn();
-          // print(context.read<EmailAuthCubit>().state);
-          // print(context.read<AuthCubit>().state);
           if (context.read<AuthCubit>().state is SignedIn ||
               context.read<EmailAuthCubit>().state is EmailSignedIn) {
             return '/third';
@@ -46,10 +44,13 @@ class SplashScreen2 extends StatelessWidget {
         duration: 1500,
         splash: Column(
           children: [
-            Image.asset(
-              'assets/images/AppIconMed.png',
-              width: 110.0,
-              height: 120.0,
+            Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'assets/images/AppIconMed.png',
+                width: 110.0,
+                height: 120.0,
+              ),
             ),
             const SizedBox(
               height: 20,

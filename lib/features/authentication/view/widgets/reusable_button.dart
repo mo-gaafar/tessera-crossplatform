@@ -15,6 +15,11 @@ class ContinueButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: ButtonStyle(
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
         overlayColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.hovered)) {
@@ -46,7 +51,9 @@ class ContinueButton extends StatelessWidget {
             Text(
               buttonText,
               style: const TextStyle(
-                  fontFamily: 'NeuePlak', color: Colors.blueGrey, fontSize: 15),
+                  fontFamily: 'NeuePlak',
+                  color: AppColors.secondaryTextOnLight,
+                  fontSize: 17),
             )
           ],
         ),

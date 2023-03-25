@@ -23,20 +23,28 @@ class LoginOptionsScreen extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'Let\'s get started',
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Hero(
+                        tag: 'logo',
+                        child: Image.asset(
+                          'assets/images/AppIconMed.png',
+                          height: 120,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Let\'s get started!',
                         style: TextStyle(
                             color: AppColors.textOnLight,
                             fontSize: 40.0,
                             fontFamily: 'NeuePlak'),
                       ),
-                      Text(
-                        'Sign up or log in to see what\'s happening near you',
+                      const Text(
+                        'Sign up or log in to see what\'s happening near you.',
                         style: TextStyle(
                             color: AppColors.secondaryTextOnLight,
                             fontSize: 20.0,
