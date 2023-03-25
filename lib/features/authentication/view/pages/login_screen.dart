@@ -1,4 +1,4 @@
-import 'dart:html';
+// ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +13,7 @@ class LogIn extends StatelessWidget {
 
   final formkey = GlobalKey<FormState>();
   String password = '';
-  FormValidator formValidator = FormValidator();
+  final FormValidator formValidator = FormValidator();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class LogIn extends StatelessWidget {
                           context.read<EmailAuthCubit>().state.userData.email),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5),
                       child: GestureDetector(
                         child: const Text(
                           'Change',
@@ -96,17 +96,14 @@ class LogIn extends StatelessWidget {
                                         .email,
                                     password);
                             if (userState == UserState.validLogin) {
-                              // ignore: use_build_context_synchronously
                               Navigator.pushNamed(context, '/third');
                             } else if (userState == UserState.inValidLogin) {
-                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content:
                                           Text('Invalid Email or Password'),
                                       duration: Duration(milliseconds: 300)));
                             } else {
-                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text('Unverified Email'),
@@ -124,25 +121,23 @@ class LogIn extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
-                      child: GestureDetector(
-                          child: const Text(
-                            'I forgot my password',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          // ignore: avoid_print
-                          onTap: () async {
-                            if (await context
-                                .read<EmailAuthCubit>()
-                                .forgetPassword(context
-                                    .read<EmailAuthCubit>()
-                                    .state
-                                    .userData
-                                    .email)) {
-                              Navigator.pushNamed(context, '/updatePassword');
-                            }
-                          }),
-                    ),
+                    GestureDetector(
+                        child: const Text(
+                          'I forgot my password',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        // ignore: avoid_print
+                        onTap: () async {
+                          if (await context
+                              .read<EmailAuthCubit>()
+                              .forgetPassword(context
+                                  .read<EmailAuthCubit>()
+                                  .state
+                                  .userData
+                                  .email)) {
+                            Navigator.pushNamed(context, '/updatePassword');
+                          }
+                        }),
                   ],
                 ),
               ],
@@ -153,26 +148,3 @@ class LogIn extends StatelessWidget {
     );
   }
 }
-
-
-        // body: Container(
-        //   padding: EdgeInsets.all(kPagePadding),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [Container(
-        //       padding: EdgeInsets.only(top: 20),
-        //       child: Column(
-        //         // ignore: prefer_const_literals_to_create_immutables
-        //         children: [
-        //           CircleAvatar(
-        //             backgroundColor: Colors.grey.shade300,
-        //             child: const Icon(
-        //               Icons.account_circle_outlined,
-        //               color: Colors.grey,
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //     )
-        //   ]),
-        // ),

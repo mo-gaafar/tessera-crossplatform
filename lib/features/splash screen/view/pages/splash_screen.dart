@@ -33,14 +33,12 @@ class SplashScreen2 extends StatelessWidget {
         screenRouteFunction: () async {
           await context.read<AuthCubit>().checkIfSignedIn();
           await context.read<EmailAuthCubit>().checkIfSignedIn();
-          print(context.read<EmailAuthCubit>().state);
-          print(context.read<AuthCubit>().state);
-          if (context.read<AuthCubit>().state is SignedIn || context.read<EmailAuthCubit>().state is EmailSignedIn)
-          {
+          // print(context.read<EmailAuthCubit>().state);
+          // print(context.read<AuthCubit>().state);
+          if (context.read<AuthCubit>().state is SignedIn ||
+              context.read<EmailAuthCubit>().state is EmailSignedIn) {
             return '/third';
-          }
-          else
-          {
+          } else {
             return '/loginOptions';
           }
         },

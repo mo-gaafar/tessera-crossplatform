@@ -5,8 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/constants/enums.dart';
-import 'package:tessera/core/services/authentication/authentication.dart';
-import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
@@ -24,17 +22,18 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
 
     if (userData != null) {
       final UserModel user = UserModel.fromJson(userData);
+      print(user);
       emit(EmailSignedIn(user));
-      print("EMIT");
+      // print("EMIT");
     }
   }
 
   Future<void> signIn(UserModel userData) async {
     emit(EmailSignedIn(userData));
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('User Data Prefernces');
-    print(userData.toJson());
-    print(userData.toJson().runtimeType);
+    // print('User Data Prefernces');
+    // print(userData.toJson());
+    // print(userData.toJson().runtimeType);
     prefs.setString('userData', userData.toJson());
     prefs.setString('authService', null.toString());
   }
@@ -57,8 +56,7 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     );
     var data = {"email": inputEmail};
 
-    return await AuthRepository.checkIfUserExists(
-        jsonEncode(data)); // keda hywadeeny 3ala path el signup
+    return await AuthRepository.checkIfUserExists(jsonEncode(data));
     // will return bool according to resopnse of backend
   }
 
@@ -83,8 +81,6 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
       signIn(_userModel);
     }
     return validSignup;
-    // if approved emit, sa3ethaa momken a3mel state taltaa esamah error
-    // hena momken yekoon fe response comming from the back end
   }
 
   /// Takes [password] entered by the user in login page as argument.
@@ -95,7 +91,7 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     emit(EmailAuthState(userData: _userModel));
     var data = {"email": _userModel.email, "password": password};
     var response = await AuthRepository.checkIfLogInValid(jsonEncode(data));
-    print(response);
+    // print(response);
     if (response['success']) {
       _userModel.accessToken = response['token'].toString();
       signIn(_userModel);
@@ -105,8 +101,6 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     } else {
       return UserState.unVerifiedEmail;
     }
-
-    // el mafrood testana response men el back end
   }
 
   /// Takes [email] entered by the user in sign up/ login page as arguments.
@@ -118,9 +112,9 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     };
     bool validForgetPasswordOperation =
         await AuthRepository.checkForgetPassword(jsonEncode(data));
-    if (validForgetPasswordOperation) {
-      signIn(_userModel);
-    }
+    // if (validForgetPasswordOperation) {
+    //   signIn(_userModel);
+    // }
     return validForgetPasswordOperation;
   }
 

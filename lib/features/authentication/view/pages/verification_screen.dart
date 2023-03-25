@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
@@ -20,10 +21,10 @@ class verificationScreen extends StatelessWidget {
             const Spacer(
               flex: 1,
             ),
-            CircleAvatar(
+            const CircleAvatar(
               backgroundColor: Colors.white,
               radius: 70,
-              child: const Icon(
+              child: Icon(
                 Icons.check,
                 color: Colors.green,
                 size: 70,
@@ -45,11 +46,9 @@ class verificationScreen extends StatelessWidget {
               padding: const EdgeInsets.all(6.0),
               // ignore: prefer_interpolation_to_compose_strings
               child: Text(
-                'We sent a link to ' +
-                    context.read<EmailAuthCubit>().state.userData.email +
-                    ' to verify your account.',
+                'We sent a link to ${context.read<EmailAuthCubit>().state.userData.email} to verify your account.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     color: AppColors.secondaryTextOnLight,
                     fontSize: 20.0,
                     fontFamily: 'NeuePlak'),
@@ -86,11 +85,11 @@ class verificationScreen extends StatelessWidget {
                   onTap: () async {
                     if (await context.read<EmailAuthCubit>().verifyEmail(
                         context.read<EmailAuthCubit>().state.userData.email)) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text('Email sent check you mailbox'),
                           duration: Duration(milliseconds: 300)));
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text(
                               'Something wrong! This Email is not registerd'),
                           duration: Duration(milliseconds: 300)));

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
@@ -10,6 +12,8 @@ class SignUp extends StatelessWidget {
   String _lastName = '';
   String _password = '';
   FormValidator formValidator = FormValidator();
+
+  SignUp({super.key});
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;

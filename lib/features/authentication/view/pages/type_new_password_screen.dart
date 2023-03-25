@@ -1,17 +1,18 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/constants.dart';
-import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 
 // ignore: camel_case_types
-class typeNewPassword extends StatelessWidget {
-  typeNewPassword({super.key});
+class TypeNewPassword extends StatelessWidget {
+  TypeNewPassword({super.key});
   final formkey = GlobalKey<FormState>();
   String _newPassword = '';
-    FormValidator formValidator=FormValidator();
+  FormValidator formValidator = FormValidator();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,17 +22,6 @@ class typeNewPassword extends StatelessWidget {
             "Update your password",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.close,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
         ),
         body: Container(
           padding: EdgeInsets.all(kPagePadding),
@@ -68,7 +58,7 @@ class typeNewPassword extends StatelessWidget {
                             true) {
                           Navigator.pushNamed(context, '/third');
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                               content: Text(
                                   'Something went wrong! try another password'),
                               duration: Duration(milliseconds: 300)));
