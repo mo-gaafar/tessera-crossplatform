@@ -28,8 +28,9 @@ class UserModel {
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return UserModel(
-      username: map['username'] as String,
+      username: map['username']==null? 'Any Username': map['username'] as String?,
       email: map['email'] as String,
       accessToken:
           map['accessToken'] != null ? map['accessToken'] as String : null,

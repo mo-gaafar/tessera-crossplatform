@@ -1,14 +1,19 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/constants/constants.dart';
+import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
+import 'package:tessera/core/services/validation/form_validator.dart';
 
 class LogIn extends StatelessWidget {
   LogIn({super.key});
 
   final formkey = GlobalKey<FormState>();
-  String password='';
+  String password = '';
+  FormValidator formValidator = FormValidator();
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +74,8 @@ class LogIn extends StatelessWidget {
                           hintText: 'Enter password',
                         ),
                         validator: (value) {
-                          password=value!;
-                          if (password.trim().isEmpty) {
-                            return 'password is required';
-                          }
-                          if (password.length < 8) {
-                            return 'password must be 8 char at least';
-                          }
+                          password = value!;
+                          return formValidator.passowrdValidty(password);
                         },
                       ),
                     ),
@@ -84,15 +84,33 @@ class LogIn extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: kPagePadding, vertical: kPagePadding),
                       child: ElevatedButton(
-                        onPressed: ()async{
+                        onPressed: () async {
                           if (formkey.currentState!.validate()) {
-                            if(await context.read<EmailAuthCubit>().login(context.read<EmailAuthCubit>().state.userData.email,password))
-                            {
+                            UserState userState = await context
+                                .read<EmailAuthCubit>()
+                                .login(
+                                    context
+                                        .read<EmailAuthCubit>()
+                                        .state
+                                        .userData
+                                        .email,
+                                    password);
+                            if (userState == UserState.validLogin) {
+                              // ignore: use_build_context_synchronously
                               Navigator.pushNamed(context, '/third');
-                            }
-                            else
-                            {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Wrong password'), duration: Duration(milliseconds: 300)));
+                            } else if (userState == UserState.inValidLogin) {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Invalid Email or Password'),
+                                      duration: Duration(milliseconds: 300)));
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Unverified Email'),
+                                      duration: Duration(milliseconds: 300)));
                             }
                           }
                         },
@@ -108,19 +126,22 @@ class LogIn extends StatelessWidget {
                     ),
                     Container(
                       child: GestureDetector(
-                        child: const Text(
-                          'I forgot my password',
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        // ignore: avoid_print
-                        onTap: () async{
-                          if(await context.read<EmailAuthCubit>().forgetPassword(context.read<EmailAuthCubit>().state.userData.email))
-                          {
-                            Navigator.pushNamed(context, '/updatePassword');
-                          }
-                        }
-
-                      ),
+                          child: const Text(
+                            'I forgot my password',
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                          // ignore: avoid_print
+                          onTap: () async {
+                            if (await context
+                                .read<EmailAuthCubit>()
+                                .forgetPassword(context
+                                    .read<EmailAuthCubit>()
+                                    .state
+                                    .userData
+                                    .email)) {
+                              Navigator.pushNamed(context, '/updatePassword');
+                            }
+                          }),
                     ),
                   ],
                 ),

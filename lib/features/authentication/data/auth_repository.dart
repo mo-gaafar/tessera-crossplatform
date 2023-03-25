@@ -19,6 +19,8 @@ class AuthRepository {
   static Future<bool> checkIfSignUpValid(var data) async {
     final responseBody = await NetworkService.getPostApiResponse(
         'https://www.tessera.social/api/auth/signup', data);
+        print('INSIDE checkIfSignUpValid');
+        print(responseBody);
     return responseBody['sucess'];
   }
 

@@ -4,13 +4,14 @@ import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/services/validation/form_validator.dart';
 
 // ignore: camel_case_types
 class typeNewPassword extends StatelessWidget {
   typeNewPassword({super.key});
   final formkey = GlobalKey<FormState>();
   String _newPassword = '';
-
+    FormValidator formValidator=FormValidator();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,12 +50,7 @@ class typeNewPassword extends StatelessWidget {
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
                     _newPassword = value!;
-                    if (_newPassword.trim().isEmpty) {
-                      return 'password is required';
-                    }
-                    if (_newPassword.length < 8) {
-                      return 'password must be 8 char at least';
-                    }
+                    return formValidator.passowrdValidty(_newPassword);
                   },
                 ),
                 Container(

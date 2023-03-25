@@ -15,7 +15,37 @@ part 'email_auth_state.dart';
 /// Holds usermodel object and authentication tokens for email.
 class EmailAuthCubit extends Cubit<EmailAuthState> {
   late UserModel _userModel;
+  String? userSignedInOrOut;
   EmailAuthCubit() : super(EmailAuthState(userData: UserModel(email: '')));
+
+  Future<void> checkIfSignedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userData = prefs.getString('userData');
+
+    if (userData != null) {
+      final UserModel user = UserModel.fromJson(userData);
+      emit(EmailSignedIn(user));
+      print("EMIT");
+    }
+  }
+
+  Future<void> signIn(UserModel userData) async {
+    emit(EmailSignedIn(userData));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('User Data Prefernces');
+    print(userData.toJson());
+    print(userData.toJson().runtimeType);
+    prefs.setString('userData', userData.toJson());
+    prefs.setString('authService', null.toString());
+  }
+
+  Future<void> signOut(UserModel userData) async {
+    emit(EmailSignedOut(userData));
+
+    // Remove data from local storage
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userData');
+  }
 
   /// Takes [inputEmail] entered by user in login_signup screen as arguments.
   /// Make an object of usermodel, pass the arguments and emit it as a state.
@@ -38,6 +68,7 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
   Future<bool> signUp(String email, String username, String password) async {
     _userModel =
         UserModel(email: email, username: username, password: password);
+    late bool validSignup;
     emit(EmailAuthState(userData: _userModel));
 
     var data = {
@@ -47,7 +78,11 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
       "emailConfirmation": _userModel.email,
       "password": password
     };
-    return await AuthRepository.checkIfSignUpValid(jsonEncode(data));
+    validSignup = await AuthRepository.checkIfSignUpValid(jsonEncode(data));
+    if (validSignup) {
+      signIn(_userModel);
+    }
+    return validSignup;
     // if approved emit, sa3ethaa momken a3mel state taltaa esamah error
     // hena momken yekoon fe response comming from the back end
   }
@@ -55,15 +90,21 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
   /// Takes [password] entered by the user in login page as argument.
   /// Make an object of usermodel, pass the arguments and emit it as a state.
   /// Return valid login or not according to response recieved from the back-end.
-  Future<bool> login(String email, String password) async {
+  Future<UserState> login(String email, String password) async {
     _userModel = UserModel(email: email, password: password);
     emit(EmailAuthState(userData: _userModel));
     var data = {"email": _userModel.email, "password": password};
     var response = await AuthRepository.checkIfLogInValid(jsonEncode(data));
+    print(response);
     if (response['success']) {
       _userModel.accessToken = response['token'].toString();
+      signIn(_userModel);
+      return UserState.validLogin;
+    } else if (response['message'] == 'Invalid Email or Password') {
+      return UserState.inValidLogin;
+    } else {
+      return UserState.unVerifiedEmail;
     }
-    return response['success'];
 
     // el mafrood testana response men el back end
   }
@@ -75,7 +116,12 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     var data = {
       "email": email,
     };
-    return await AuthRepository.checkForgetPassword(jsonEncode(data));
+    bool validForgetPasswordOperation =
+        await AuthRepository.checkForgetPassword(jsonEncode(data));
+    if (validForgetPasswordOperation) {
+      signIn(_userModel);
+    }
+    return validForgetPasswordOperation;
   }
 
   /// Takes [userEmail] and [newPassword] entered by the user in type new password page as arguments.
@@ -83,8 +129,13 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
   /// Return valid reset password or not according to response recieved from the back-end.
   Future<bool> resetPassword(String userEmail, String newPassword) async {
     var data = {"email": userEmail, "password": newPassword};
-    return await AuthRepository.checkResetPassword(
+    bool validResetPasswordOperation = await AuthRepository.checkResetPassword(
         _userModel.accessToken.toString(), jsonEncode(data));
+    if (validResetPasswordOperation) {
+      _userModel.password = newPassword;
+      signIn(_userModel);
+    }
+    return validResetPasswordOperation;
   }
 
   Future<bool> verifyEmail(String userEmail) async {

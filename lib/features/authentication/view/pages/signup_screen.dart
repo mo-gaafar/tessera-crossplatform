@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
+import 'package:tessera/core/services/validation/form_validator.dart';
 
 class SignUp extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   String _firstName = '';
   String _lastName = '';
   String _password = '';
+  FormValidator formValidator = FormValidator();
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;
@@ -121,12 +123,7 @@ class SignUp extends StatelessWidget {
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
                     _password = value!;
-                    if (_password.trim().isEmpty) {
-                      return 'password is required';
-                    }
-                    if (_password.length < 8) {
-                      return 'password must be 8 char at least';
-                    }
+                    return formValidator.passowrdValidty(_password);
                   },
                 ),
                 const Spacer(),
@@ -134,7 +131,7 @@ class SignUp extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10),
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       if (formkey.currentState!.validate()) {
                         if (await context.read<EmailAuthCubit>().signUp(
                             context.read<EmailAuthCubit>().state.userData.email,

@@ -18,16 +18,16 @@ abstract class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-class SignedIn extends EmailAuthState {
+class EmailSignedIn extends EmailAuthState {
   final UserModel user;
 
-  const SignedIn(this.user): super(userData: user);
+  const EmailSignedIn(this.user): super(userData: user);
 }
 
-class SignedOut extends EmailAuthState {
+class EmailSignedOut extends EmailAuthState {
   final UserModel user;
 
-  const SignedOut(this.user): super(userData: user);
+  const EmailSignedOut(this.user): super(userData: user);
 }
 
 class Error extends AuthState {}

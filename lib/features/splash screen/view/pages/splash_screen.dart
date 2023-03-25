@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
+import '../../../authentication/cubit/email_auth_cubit.dart';
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -35,9 +37,17 @@ class SplashScreen2 extends StatelessWidget {
     return AnimatedSplashScreen.withScreenRouteFunction(
         screenRouteFunction: () async {
           await context.read<AuthCubit>().checkIfSignedIn();
-          return context.read<AuthCubit>().state is SignedIn
-              ? '/third'
-              : '/loginOptions';
+          await context.read<EmailAuthCubit>().checkIfSignedIn();
+          print(context.read<EmailAuthCubit>().state);
+          print(context.read<AuthCubit>().state);
+          if (context.read<AuthCubit>().state is SignedIn || context.read<EmailAuthCubit>().state is EmailSignedIn)
+          {
+            return '/third';
+          }
+          else
+          {
+            return '/loginOptions';
+          }
         },
         splashIconSize: 300,
         duration: 1500,
