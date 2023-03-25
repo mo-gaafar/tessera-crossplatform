@@ -22,8 +22,8 @@ class LogIn extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Log in",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            "Log In",
+            style: TextStyle(fontSize: 25),
           ),
         ),
         body: Center(

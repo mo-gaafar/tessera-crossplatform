@@ -7,19 +7,19 @@ class FormValidator {
     RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
     RegExp numberRegExp = RegExp(r'[0-9]');
     if (password.trim().isEmpty) {
-      return 'password is required';
+      return 'Password is required.';
     }
     if (password.length < 8) {
-      return 'password must be 8 char at least';
+      return 'Password must be 8 characters at least.';
     }
     if (lowerCaseRegExp.hasMatch(password) == false) {
-      return 'must contains minimum of 1 lowecase char';
+      return 'Must contain minimum of 1 lowecase character.';
     } else if (upperCaseRegExp.hasMatch(password) == false) {
-      return 'must contains minimum of 1 uppercase char';
+      return 'Must contain minimum of 1 uppercase character.';
     } else if (specialCharRegExp.hasMatch(password) == false) {
-      return 'must contains minimum of 1 special char';
+      return 'Must contain minimum of 1 special character.';
     } else if (numberRegExp.hasMatch(password) == false) {
-      return 'must contains minimum of 1 number';
+      return 'Must contains minimum of 1 number.';
     } else {
       return null;
     }

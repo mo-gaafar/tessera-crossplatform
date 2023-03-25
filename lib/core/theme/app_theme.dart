@@ -20,6 +20,16 @@ class AppTheme {
           backgroundColor: Colors.red.shade900,
           contentTextStyle: const TextStyle(color: Colors.white),
         ),
+    appBarTheme: ThemeData.light().appBarTheme.copyWith(
+          // color: AppColors.prima,
+          elevation: 0,
+          toolbarHeight: 65,
+          titleTextStyle: const TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontFamily: 'NeuePlak',
+          ),
+        ),
   );
 
   /// Returns the app's dark theme.

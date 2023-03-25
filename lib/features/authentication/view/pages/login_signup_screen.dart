@@ -8,6 +8,7 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
+import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
 /// Screen redirecting to login or signup depending on the user's input email.
 class LoginSignup extends StatelessWidget {
@@ -21,8 +22,7 @@ class LoginSignup extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Log in or Sign up",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            "Log In or Sign Up",
           ),
         ),
         body: Form(
@@ -47,10 +47,10 @@ class LoginSignup extends StatelessWidget {
                       validator: (value) {
                         inputEmail = value!;
                         if (inputEmail.trim().isEmpty) {
-                          return 'email is required';
+                          return 'Email is required.';
                         }
                         if (!EmailValidator.validate(inputEmail)) {
-                          return 'this is not a valid email';
+                          return 'This is not a valid email.';
                         }
                       },
                     ),
@@ -85,35 +85,55 @@ class LoginSignup extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(top: 10),
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (formkey.currentState!.validate()) {
-                            // print(context
-                            //     .read<EmailAuthCubit>()
-                            //     .emailAuthentication(inputEmail));
-                            if (await context
-                                    .read<EmailAuthCubit>()
-                                    .emailAuthentication(inputEmail) ==
-                                UserState.login) {
-                              Navigator.pushNamed(context, '/login');
-                            } else {
-                              Navigator.pushNamed(context, '/signup');
-                            }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              AppColors.buttonColor, // Background Color),
-                        ),
-                        child: const Text(
-                          "Next",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
+                    const SizedBox(
+                      height: 10,
                     ),
+                    EmailButton(
+                      buttonText: 'Next',
+                      colourBackground: AppColors.primary,
+                      colourText: Colors.white,
+                      onTap: () async {
+                        if (formkey.currentState!.validate()) {
+                          if (await context
+                                  .read<EmailAuthCubit>()
+                                  .emailAuthentication(inputEmail) ==
+                              UserState.login) {
+                            Navigator.pushNamed(context, '/login');
+                          } else {
+                            Navigator.pushNamed(context, '/signup');
+                          }
+                        }
+                      },
+                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.only(top: 10),
+                    //   width: double.infinity,
+                    //   child: ElevatedButton(
+                    //     onPressed: () async {
+                    //       if (formkey.currentState!.validate()) {
+                    //         // print(context
+                    //         //     .read<EmailAuthCubit>()
+                    //         //     .emailAuthentication(inputEmail));
+                    //         if (await context
+                    //                 .read<EmailAuthCubit>()
+                    //                 .emailAuthentication(inputEmail) ==
+                    //             UserState.login) {
+                    //           Navigator.pushNamed(context, '/login');
+                    //         } else {
+                    //           Navigator.pushNamed(context, '/signup');
+                    //         }
+                    //       }
+                    //     },
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor:
+                    //           AppColors.buttonColor, // Background Color),
+                    //     ),
+                    //     child: const Text(
+                    //       "Next",
+                    //       style: TextStyle(color: Colors.black),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
