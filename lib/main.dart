@@ -9,17 +9,12 @@ import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 void main() {
   DartPluginRegistrant.ensureInitialized();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   final AppRouter _appRouter = AppRouter();
 
   @override

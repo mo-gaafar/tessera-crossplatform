@@ -10,10 +10,13 @@ import 'package:tessera/features/authentication/view/pages/update_password_scree
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
-//example screens
+
 import 'package:tessera/features/example/view/pages/example_screen.dart';
 
 
+
+
+/// Acts as the main router for the app. Contains all possible routes.
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
