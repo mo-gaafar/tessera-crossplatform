@@ -45,10 +45,11 @@ class LoginOptionsScreen extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      const EmailButton(
+                      EmailButton(
                         colourBackground: AppColors.primary,
                         buttonText: 'Continue with Email Address',
                         colourText: Colors.white,
+                        onTap: () => Navigator.of(context).pushReplacementNamed('/login_signup')
                       ),
                       const SizedBox(
                         height: 15,

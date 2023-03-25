@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import '../../../authentication/cubit/auth_cubit.dart';
 
+import '../../../authentication/cubit/email_auth_cubit.dart';
+
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({super.key});
 
@@ -21,9 +23,13 @@ class ExampleScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
+            await context.read<EmailAuthCubit>().signOut(context.read<EmailAuthCubit>().state.userData);
             await context.read<AuthCubit>().signOut();
 
             if (context.read<AuthCubit>().state is SignedOut) {
+              Navigator.of(context).pushReplacementNamed('/loginOptions');
+            }
+            if (context.read<EmailAuthCubit>().state is EmailSignedOut) {
               Navigator.of(context).pushReplacementNamed('/loginOptions');
             }
           },
