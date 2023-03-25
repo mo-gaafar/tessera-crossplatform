@@ -7,6 +7,7 @@ import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tessera/constants/enums.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
@@ -94,12 +95,12 @@ class LoginSignup extends StatelessWidget {
                       colourText: Colors.white,
                       onTap: () async {
                         if (formkey.currentState!.validate()) {
-                          if (await context
-                                  .read<EmailAuthCubit>()
-                                  .emailAuthentication(inputEmail) ==
-                              UserState.login) {
+                          final userStatus = await context
+                              .read<AuthCubit>()
+                              .checkIfUserExists(inputEmail);
+                          if (userStatus == UserState.login) {
                             Navigator.pushNamed(context, '/login');
-                          } else {
+                          } else if (userStatus == UserState.signup) {
                             Navigator.pushNamed(context, '/signup');
                           }
                         }

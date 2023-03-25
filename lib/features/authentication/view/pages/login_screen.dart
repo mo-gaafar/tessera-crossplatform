@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/enums.dart';
+import 'package:tessera/core/services/authentication/email_authentication.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/authentication/data/user_model.dart';
 
 /// Login page requesting the user's password.
 class LogIn extends StatelessWidget {
@@ -30,7 +33,6 @@ class LogIn extends StatelessWidget {
           child: Form(
             key: formkey,
             child: Column(
-              // ignore: prefer_const_literals_to_create_immutables
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 50),
@@ -45,12 +47,10 @@ class LogIn extends StatelessWidget {
                   ),
                 ),
                 Column(
-                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     Padding(
                       padding: EdgeInsets.only(top: kPagePadding),
-                      child: Text(
-                          context.read<EmailAuthCubit>().state.userData.email),
+                      child: Text(context.read<AuthCubit>().user.email),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
@@ -59,9 +59,7 @@ class LogIn extends StatelessWidget {
                           'Change',
                           style: TextStyle(color: Colors.blue),
                         ),
-                        // ignore: avoid_print
-                        onTap: () =>
-                            Navigator.pushNamed(context, '/login_signup'),
+                        onTap: () => Navigator.pop(context),
                       ),
                     ),
                     Padding(
@@ -87,29 +85,44 @@ class LogIn extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (formkey.currentState!.validate()) {
-                            UserState userState = await context
-                                .read<EmailAuthCubit>()
-                                .login(
-                                    context
-                                        .read<EmailAuthCubit>()
-                                        .state
-                                        .userData
-                                        .email,
-                                    password);
-                            if (userState == UserState.validLogin) {
-                              Navigator.pushNamed(context, '/third');
-                            } else if (userState == UserState.inValidLogin) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text('Invalid Email or Password'),
-                                      duration: Duration(milliseconds: 300)));
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Unverified Email'),
-                                      duration: Duration(milliseconds: 300)));
+                            await context.read<AuthCubit>().signIn(
+                                  EmailAuthService(
+                                    UserModel(
+                                        email: context
+                                            .read<AuthCubit>()
+                                            .user
+                                            .email,
+                                        password: password),
+                                  ),
+                                );
+
+                            if (context.read<AuthCubit>().state is SignedIn) {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/third');
                             }
+                            // UserState userState = await context
+                            //     .read<EmailAuthCubit>()
+                            //     .login(
+                            //         context
+                            //             .read<EmailAuthCubit>()
+                            //             .state
+                            //             .userData
+                            //             .email,
+                            //         password);
+                            // if (userState == UserState.validLogin) {
+                            //   Navigator.pushNamed(context, '/third');
+                            // } else if (userState == UserState.inValidLogin) {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //           content:
+                            //               Text('Invalid Email or Password'),
+                            //           duration: Duration(milliseconds: 300)));
+                            // } else {
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //       const SnackBar(
+                            //           content: Text('Unverified Email'),
+                            //           duration: Duration(milliseconds: 300)));
+                            // }
                           }
                         },
                         style: ElevatedButton.styleFrom(

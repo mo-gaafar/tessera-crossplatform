@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:tessera/features/authentication/data/auth_repository.dart';
+
 import '../../../features/authentication/data/user_model.dart';
 import 'authentication.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -9,7 +13,7 @@ class FacebookAuthService extends AuthService {
   ///
   /// Returns `null` if the user cancels the sign in process, or an exception is thrown.
   @override
-  Future<Either<String, UserModel>> signIn() async {
+  Future<Either<String?, UserModel>> signIn() async {
     final UserModel user;
 
     try {
@@ -23,12 +27,21 @@ class FacebookAuthService extends AuthService {
         // Convert to UserModel
         user = UserModel.fromFacebookAuth(userdata, accessToken.token);
 
-        return Right(user);
+        // Request login from server
+        final response =
+            await AuthRepository.socialAccountLogin('google', user);
+
+        if (response['success'] == true) {
+          // Suscessful login
+          user.accessToken = response['token'];
+          return Right(user);
+        }
       }
+      // Login refused by server
+      return const Left('Login failed. Please try again.');
     } catch (e) {
-      rethrow;
+      return const Left('Error retrieving data. Please try again.');
     }
-    return const Left('Error retrieving data. Please try again.');
   }
 
   /// Signs the user out using facebook's services.

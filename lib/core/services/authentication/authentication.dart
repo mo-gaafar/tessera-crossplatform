@@ -1,15 +1,12 @@
-import 'dart:convert';
-
 import 'package:tessera/core/services/authentication/facebook_authentication.dart';
 import 'package:tessera/core/services/authentication/google_authentication.dart';
-import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 import 'package:dartz/dartz.dart';
 
 /// Abstract class for authentication services.
 abstract class AuthService {
   /// Returns a [UserModel] if the user successfully signs in.
-  Future<Either<String, UserModel>> signIn();
+  Future<Either<String?, UserModel>> signIn();
 
   /// Signs the user out.
   Future<void> signOut();
@@ -32,51 +29,5 @@ abstract class AuthService {
     } else {
       return GoogleAuthService();
     }
-  }
-}
-
-class EmailAuthService extends AuthService {
-  EmailAuthService(this.email, this.password);
-
-  final String email;
-  final String password;
-
-  @override
-  Future<Either<String, UserModel>> signIn() async {
-    final data = {
-      'email': email,
-      'password': password,
-    };
-
-    try {
-      // Request login from server.
-      final response = await AuthRepository.emailAccountLogin(jsonEncode(data));
-
-      if (response['success'] == true) {
-        final user = UserModel(
-          email: email,
-          password: password,
-          accessToken: response['token'],
-        );
-
-        return Right(user);
-      } else {
-        return Left(response['message']);
-      }
-    } catch (e) {
-      throw 'Error retrieving data. Please try again.';
-    }
-  }
-
-  @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
-  }
-
-  @override
-  String toTag() {
-    // TODO: implement toTag
-    throw UnimplementedError();
   }
 }

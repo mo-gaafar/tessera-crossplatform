@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tessera/constants/enums.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
+import 'package:tessera/core/services/authentication/email_authentication.dart';
+import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 part 'auth_state.dart';
@@ -9,6 +14,7 @@ part 'auth_state.dart';
 ///cubit for all authentication services
 class AuthCubit extends Cubit<AuthState> {
   late AuthService _authService;
+  late UserModel user;
   AuthCubit() : super(AuthInitial());
 
   Future<void> checkIfSignedIn() async {
@@ -30,15 +36,15 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       var user = await authService.signIn();
 
-      // if (user != null)
-
       user.fold(
-        (error) => null,
+        (error) {
+          if (error != null) {
+            emit(AuthError());
+          } else {
+            emit(AuthInitial());
+          }
+        },
         (user) async {
-          //* var response =
-          //*     await AuthRepository.socialAccountLogin(authService.toTag(), user.toJson());
-          //* if (response['success'] == true) {
-          //* user.accessToken = response['token'];
           emit(SignedIn(user));
           _authService = authService;
 
@@ -46,9 +52,6 @@ class AuthCubit extends Cubit<AuthState> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('userData', user.toJson());
           prefs.setString('authService', _authService.toString());
-          //* } else {
-          //*   emit(Error());
-          //* }
         },
       );
 
@@ -74,7 +77,7 @@ class AuthCubit extends Cubit<AuthState> {
       //   emit(Error());
       // }
     } catch (e) {
-      emit(Error());
+      emit(AuthError());
     }
   }
 
@@ -87,5 +90,22 @@ class AuthCubit extends Cubit<AuthState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
     prefs.remove('authService');
+  }
+
+  Future<void> emailSignUp(
+      String firstName, String lastName, String password) async {
+    final response = await EmailAuthService.signUp(
+        user.email, firstName, lastName, password);
+    if (response['success'] == true) {
+      emit(EmailSignedUp());
+    } else {
+      emit(AuthError(message: response['message']));
+    }
+  }
+
+  Future<UserState> checkIfUserExists(String inputEmail) async {
+    // emit(Loading());
+    user = UserModel(email: inputEmail);
+    return await AuthRepository.checkIfUserExists(jsonEncode(inputEmail));
   }
 }

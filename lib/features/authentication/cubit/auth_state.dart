@@ -1,4 +1,5 @@
 part of 'auth_cubit.dart';
+
 ///states that the cubit emit
 abstract class AuthState extends Equatable {
   const AuthState();
@@ -17,6 +18,12 @@ class SignedIn extends AuthState {
   const SignedIn(this.user);
 }
 
+class EmailSignedUp extends AuthState {}
+
 class SignedOut extends AuthState {}
 
-class Error extends AuthState {}
+class AuthError extends AuthState {
+  final String message;
+
+  const AuthError({this.message = 'An error occured'});
+}

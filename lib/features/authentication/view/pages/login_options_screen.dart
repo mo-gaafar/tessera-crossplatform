@@ -92,7 +92,8 @@ class LoginOptionsScreen extends StatelessWidget {
                           if (context.read<AuthCubit>().state is SignedIn) {
                             Navigator.of(context)
                                 .pushReplacementNamed('/third');
-                          } else if (context.read<AuthCubit>().state is Error) {
+                          } else if (context.read<AuthCubit>().state
+                              is AuthError) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 duration: Duration(seconds: 2),
