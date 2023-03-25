@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 
@@ -138,12 +139,26 @@ class SignUp extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (formkey.currentState!.validate()) {
-                        if (await context.read<EmailAuthCubit>().signUp(
-                            context.read<EmailAuthCubit>().state.userData.email,
-                            '$_firstName $_lastName',
-                            _password)) {
+                        await context
+                            .read<AuthCubit>()
+                            .emailSignUp(_firstName, _lastName, _password);
+
+                        if (context.read<AuthCubit>().state is EmailSignedUp) {
                           Navigator.pushNamed(context, '/verification');
+                        } else if (context.read<AuthCubit>().state
+                            is AuthError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(context.read<AuthCubit>().state.me),
+                            ),
+                          );
                         }
+                        // if (await context.read<EmailAuthCubit>().signUp(
+                        //     context.read<EmailAuthCubit>().state.userData.email,
+                        //     '$_firstName $_lastName',
+                        //     _password)) {
+                        //   Navigator.pushNamed(context, '/verification');
+                        // }
                       }
                     },
                     style: ElevatedButton.styleFrom(
