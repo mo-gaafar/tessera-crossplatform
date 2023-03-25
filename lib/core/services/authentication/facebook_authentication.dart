@@ -1,6 +1,7 @@
 import '../../../features/authentication/data/user_model.dart';
 import 'authentication.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:dartz/dartz.dart';
 
 /// Implementation of [AuthService] for facebook [signIn()] and [signOut()].
 class FacebookAuthService extends AuthService {
@@ -8,7 +9,7 @@ class FacebookAuthService extends AuthService {
   ///
   /// Returns `null` if the user cancels the sign in process, or an exception is thrown.
   @override
-  Future<UserModel?> signIn() async {
+  Future<Either<String, UserModel>> signIn() async {
     final UserModel user;
 
     try {
@@ -22,12 +23,12 @@ class FacebookAuthService extends AuthService {
         // Convert to UserModel
         user = UserModel.fromFacebookAuth(userdata, accessToken.token);
 
-        return user;
+        return Right(user);
       }
     } catch (e) {
-      throw 'Error retrieving data. Please try again.';
+      rethrow;
     }
-    return null;
+    return const Left('Error retrieving data. Please try again.');
   }
 
   /// Signs the user out using facebook's services.

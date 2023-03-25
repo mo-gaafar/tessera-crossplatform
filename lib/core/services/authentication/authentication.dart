@@ -4,11 +4,12 @@ import 'package:tessera/core/services/authentication/facebook_authentication.dar
 import 'package:tessera/core/services/authentication/google_authentication.dart';
 import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
+import 'package:dartz/dartz.dart';
 
 /// Abstract class for authentication services.
 abstract class AuthService {
   /// Returns a [UserModel] if the user successfully signs in.
-  Future<UserModel?> signIn();
+  Future<Either<String, UserModel>> signIn();
 
   /// Signs the user out.
   Future<void> signOut();
@@ -41,7 +42,7 @@ class EmailAuthService extends AuthService {
   final String password;
 
   @override
-  Future<UserModel?> signIn() async {
+  Future<Either<String, UserModel>> signIn() async {
     final data = {
       'email': email,
       'password': password,
@@ -58,9 +59,9 @@ class EmailAuthService extends AuthService {
           accessToken: response['token'],
         );
 
-        return user;
+        return Right(user);
       } else {
-        return response['message'];
+        return Left(response['message']);
       }
     } catch (e) {
       throw 'Error retrieving data. Please try again.';

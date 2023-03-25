@@ -15,7 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userData = prefs.getString('userData');
     var authService = prefs.getString('authService');
-    if (userData != null && authService !=null) {
+    if (userData != null && authService != null) {
       final UserModel user = UserModel.fromJson(userData);
       emit(SignedIn(user));
 
@@ -28,26 +28,51 @@ class AuthCubit extends Cubit<AuthState> {
     emit(Loading());
 
     try {
-      UserModel? user = await authService.signIn();
+      var user = await authService.signIn();
 
-      if (user != null) {
-        //* var response =
-        //*     await AuthRepository.socialAccountLogin(authService.toTag(), user.toJson());
-        //* if (response['success'] == true) {
-        //* user.accessToken = response['token'];
-        emit(SignedIn(user));
-        _authService = authService;
+      // if (user != null)
 
-        // Persist data to local storage
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('userData', user.toJson());
-        prefs.setString('authService', _authService.toString());
-        //* } else {
-        //*   emit(Error());
-        //* }
-      } else {
-        emit(AuthInitial());
-      }
+      user.fold(
+        (error) => null,
+        (user) async {
+          //* var response =
+          //*     await AuthRepository.socialAccountLogin(authService.toTag(), user.toJson());
+          //* if (response['success'] == true) {
+          //* user.accessToken = response['token'];
+          emit(SignedIn(user));
+          _authService = authService;
+
+          // Persist data to local storage
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('userData', user.toJson());
+          prefs.setString('authService', _authService.toString());
+          //* } else {
+          //*   emit(Error());
+          //* }
+        },
+      );
+
+      //   if (user is UserModel) {
+      //     //* var response =
+      //     //*     await AuthRepository.socialAccountLogin(authService.toTag(), user.toJson());
+      //     //* if (response['success'] == true) {
+      //     //* user.accessToken = response['token'];
+      //     emit(SignedIn(user));
+      //     _authService = authService;
+
+      //     // Persist data to local storage
+      //     SharedPreferences prefs = await SharedPreferences.getInstance();
+      //     prefs.setString('userData', user.toJson());
+      //     prefs.setString('authService', _authService.toString());
+      //     //* } else {
+      //     //*   emit(Error());
+      //     //* }
+      //   } else {
+      //     emit(AuthInitial());
+      //   }
+      // } catch (e) {
+      //   emit(Error());
+      // }
     } catch (e) {
       emit(Error());
     }

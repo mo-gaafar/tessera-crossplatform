@@ -1,5 +1,6 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
+import 'package:dartz/dartz.dart';
 
 import 'authentication.dart';
 
@@ -9,7 +10,7 @@ class GoogleAuthService extends AuthService {
   ///
   /// Returns `null` if the user cancels the sign in process, or an error is caught.
   @override
-  Future<UserModel?> signIn() async {
+  Future<Either<String, UserModel>> signIn() async {
     final UserModel user;
 
     try {
@@ -24,12 +25,13 @@ class GoogleAuthService extends AuthService {
         // Convert to UserModel
         user = UserModel.fromGoogleAuth(googleUser, googleAuth);
 
-        return user;
+        return Right(user);
+      } else {
+        return const Left('');
       }
     } catch (e) {
-      throw 'Error retrieving data. Please try again.';
+      return const Left('Error retrieving data. Please try again.');
     }
-    return null;
   }
 
   /// Signs the user out using Google's services.
