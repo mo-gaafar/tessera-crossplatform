@@ -10,6 +10,9 @@ abstract class AuthService {
   /// Signs the user out.
   Future<void> signOut();
 
+  /// Returns 'facebook' or 'google' depending on the service.
+  String toTag();
+
   /// Returns a string representation of the class.
   @override
   String toString() {

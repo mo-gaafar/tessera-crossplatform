@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
@@ -57,15 +59,15 @@ class LoginOptionsScreen extends StatelessWidget {
                           image: 'assets/images/facebook.png',
                           buttonText: 'Continue with Facebook',
                           onTap: () async {
+                            await context
+                                .read<AuthCubit>()
+                                .signIn(FacebookAuthService());
 
-
-                          await context.read<AuthCubit>().signIn(FacebookAuthService());
-
-                          if (context.read<AuthCubit>().state is SignedIn) {
-                            Navigator.of(context).pushReplacementNamed('/third');
-                          }
-                          
-                        }),
+                            if (context.read<AuthCubit>().state is SignedIn) {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/third');
+                            }
+                          }),
                       const SizedBox(
                         height: 15.0,
                       ),

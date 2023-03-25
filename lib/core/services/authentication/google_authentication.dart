@@ -43,4 +43,7 @@ class GoogleAuthService extends AuthService {
       throw 'Error signing out. Please try again.';
     }
   }
+
+  @override
+  String toTag() => 'google';
 }

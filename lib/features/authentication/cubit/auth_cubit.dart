@@ -2,9 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
-import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
-import 'package:tessera/features/authentication/data/auth_repository.dart';
 
 part 'auth_state.dart';
 
@@ -33,20 +31,20 @@ class AuthCubit extends Cubit<AuthState> {
       UserModel? user = await authService.signIn();
 
       if (user != null) {
-        var response =
-            await AuthRepository.facebookLogin('facebook', user.toJson());
-        if (response['success'] == true) {
-          user.accessToken = response['token'];
-          emit(SignedIn(user));
-          _authService = authService;
+        //* var response =
+        //*     await AuthRepository.socialAccountLogin(authService.toTag(), user.toJson());
+        //* if (response['success'] == true) {
+        //* user.accessToken = response['token'];
+        emit(SignedIn(user));
+        _authService = authService;
 
-          // Persist data to local storage
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('userData', user.toJson());
-          prefs.setString('authService', _authService.toString());
-        } else {
-          emit(Error());
-        }
+        // Persist data to local storage
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('userData', user.toJson());
+        prefs.setString('authService', _authService.toString());
+        //* } else {
+        //*   emit(Error());
+        //* }
       } else {
         emit(AuthInitial());
       }
