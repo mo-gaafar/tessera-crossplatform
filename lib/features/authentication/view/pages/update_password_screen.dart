@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 /// Screen notifying the user that an email has been sent to update their password.
@@ -56,9 +57,8 @@ class UpdatePassword extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(6.0),
-              // ignore: prefer_interpolation_to_compose_strings
               child: Text(
-                'We sent a link to ${context.read<EmailAuthCubit>().state.userData.email} to update your password.',
+                'We sent a link to ${context.read<AuthCubit>().user.email} to update your password.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.secondaryTextOnLight,

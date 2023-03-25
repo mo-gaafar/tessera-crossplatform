@@ -9,6 +9,7 @@ import 'package:tessera/core/services/authentication/email_authentication.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 /// Login page requesting the user's password.
@@ -142,15 +143,28 @@ class LogIn extends StatelessWidget {
                         ),
                         // ignore: avoid_print
                         onTap: () async {
-                          if (await context
-                              .read<EmailAuthCubit>()
-                              .forgetPassword(context
-                                  .read<EmailAuthCubit>()
-                                  .state
-                                  .userData
-                                  .email)) {
+                          final response =
+                              await AuthRepository.sendForgotPasswordEmail(
+                                  context.read<AuthCubit>().user.email);
+
+                          if (response['success'] == true) {
                             Navigator.pushNamed(context, '/updatePassword');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(response['message']),
+                              ),
+                            );
                           }
+                          // if (await context
+                          //     .read<EmailAuthCubit>()
+                          //     .forgetPassword(context
+                          //         .read<EmailAuthCubit>()
+                          //         .state
+                          //         .userData
+                          //         .email)) {
+                          //   Navigator.pushNamed(context, '/updatePassword');
+                          // }
                         }),
                   ],
                 ),

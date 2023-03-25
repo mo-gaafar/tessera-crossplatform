@@ -43,13 +43,13 @@ class AuthRepository {
   /// Requests backend to send a 'Forgot Password' email to the user.
   ///
   /// Returns [true] if the email is sent successfully, or [false] if the email is not sent.
-  static Future<bool> sendForgotPasswordEmail(String email) async {
+  static Future<Map> sendForgotPasswordEmail(String email) async {
     final data = {
       'email': email,
     };
     final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/auth/forgetPassword', data);
-    return responseBody['success'];
+        'https://www.tessera.social/api/auth/forgetPassword', jsonEncode(data));
+    return responseBody;
   }
 
   /// Requests backend to reset the password of the user.

@@ -49,7 +49,7 @@ class VerificationScreen extends StatelessWidget {
               padding: const EdgeInsets.all(6.0),
               // ignore: prefer_interpolation_to_compose_strings
               child: Text(
-                'We sent a link to ${context.read<EmailAuthCubit>().state.userData.email} to verify your account.',
+                'We sent a link to ${context.read<AuthCubit>().user.email} to verify your account.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.secondaryTextOnLight,
