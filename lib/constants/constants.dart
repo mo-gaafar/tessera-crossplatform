@@ -1,0 +1,1 @@
+  double kPagePadding = 20;

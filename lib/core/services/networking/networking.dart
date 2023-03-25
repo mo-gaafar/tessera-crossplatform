@@ -40,6 +40,7 @@ class NetworkService {
             headers: _headers,
             body: data,
           )
+
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
       return responseJson;
@@ -53,6 +54,8 @@ class NetworkService {
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
+      return jsonDecode(response.body);
+    case 201:
       return jsonDecode(response.body);
     case 400:
       throw BadRequestException(response.body.toString());

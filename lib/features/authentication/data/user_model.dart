@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 /// Model class representing the user's data.
 class UserModel {
+
   final String email;
   String? username;
   String? userId;
@@ -37,6 +38,7 @@ class UserModel {
 
   /// Creates a [UserModel] from a [Map].
   factory UserModel.fromMap(Map<String, dynamic> map) {
+    print(map);
     return UserModel(
       email: map['email'] as String,
       username: map['username'] != null ? map['username'] as String : null,

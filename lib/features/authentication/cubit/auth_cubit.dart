@@ -14,8 +14,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkIfSignedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userData = prefs.getString('userData');
-
-    if (userData != null) {
+    var authService = prefs.getString('authService');
+    if (userData != null && authService !=null) {
       final UserModel user = UserModel.fromJson(userData);
       emit(SignedIn(user));
 

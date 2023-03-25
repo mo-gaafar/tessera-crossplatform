@@ -16,4 +16,5 @@ class AppColors {
 
   /// The secondary font color of text on a [lightBackground].
   static const Color secondaryTextOnLight = Color(0xff39364f);
+  static const Color buttonColor = Color(0xffd1410c);
 }
