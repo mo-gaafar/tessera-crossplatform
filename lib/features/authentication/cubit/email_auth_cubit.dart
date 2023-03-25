@@ -90,7 +90,7 @@ class EmailAuthCubit extends Cubit<EmailAuthState> {
     _userModel = UserModel(email: email, password: password);
     emit(EmailAuthState(userData: _userModel));
     var data = {"email": _userModel.email, "password": password};
-    var response = await AuthRepository.checkIfLogInValid(jsonEncode(data));
+    var response = await AuthRepository.emailAccountLogin(jsonEncode(data));
     // print(response);
     if (response['success']) {
       _userModel.accessToken = response['token'].toString();

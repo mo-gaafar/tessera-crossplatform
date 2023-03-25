@@ -28,7 +28,7 @@ class AuthRepository {
   /// Requests backend to log in the user.
   ///
   /// Returns [true] if the log in is successful, or [false] if the log in is unsuccessful.
-  static Future checkIfLogInValid(var data) async {
+  static Future<Map> emailAccountLogin(String data) async {
     final responseBody = await NetworkService.getPostApiResponse(
         'https://www.tessera.social/api/auth/login', data);
     return responseBody;
