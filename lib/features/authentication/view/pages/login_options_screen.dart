@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/view/widgets/reusable_button.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import '../../../../core/services/authentication/facebook_authentication.dart';
@@ -16,8 +17,7 @@ class LoginOptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
+      child: AppScaffold(
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Stack(
@@ -57,11 +57,12 @@ class LoginOptionsScreen extends StatelessWidget {
                   Column(
                     children: [
                       EmailButton(
-                          colourBackground: AppColors.primary,
-                          buttonText: 'Continue with Email Address',
-                          colourText: Colors.white,
-                          onTap: () =>
-                              Navigator.of(context).pushNamed('/login_signup')),
+                        colourBackground: AppColors.primary,
+                        buttonText: 'Continue with Email Address',
+                        colourText: Colors.white,
+                        onTap: () =>
+                            Navigator.of(context).pushNamed('/login_signup'),
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
@@ -92,15 +93,6 @@ class LoginOptionsScreen extends StatelessWidget {
                           if (context.read<AuthCubit>().state is SignedIn) {
                             Navigator.of(context)
                                 .pushReplacementNamed('/third');
-                          } else if (context.read<AuthCubit>().state
-                              is AuthError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                duration: Duration(seconds: 2),
-                                content: Text(
-                                    'Error retrieving data. Please try again.'),
-                              ),
-                            );
                           }
                         },
                       ),

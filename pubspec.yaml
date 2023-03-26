@@ -47,7 +47,6 @@ dependencies:
   email_validator: ^2.0.1
   flutter_svg: ^2.0.4
   dartz: ^0.10.1
-  # dartz: ^0.9.2
 
 
 dev_dependencies:

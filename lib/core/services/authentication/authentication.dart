@@ -1,3 +1,4 @@
+import 'package:tessera/core/services/authentication/email_authentication.dart';
 import 'package:tessera/core/services/authentication/facebook_authentication.dart';
 import 'package:tessera/core/services/authentication/google_authentication.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
@@ -27,7 +28,7 @@ abstract class AuthService {
     } else if (string == 'FacebookAuthService') {
       return FacebookAuthService();
     } else {
-      return GoogleAuthService();
+      return EmailAuthService();
     }
   }
 }

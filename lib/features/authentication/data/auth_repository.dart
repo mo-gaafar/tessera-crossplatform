@@ -9,16 +9,20 @@ class AuthRepository {
   /// Checks if the user already exists in the database, or is a new user.
   ///
   /// Returns [UserState.login] if the user exists, or [UserState.signup] if the user is new.
-  static Future<UserState> checkIfUserExists(String email) async {
+  static Future<UserState?> checkIfUserExists(String email) async {
     final data = {
       'email': email,
     };
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/auth/emailexist', jsonEncode(data));
-    if (responseBody['success'] == true) {
-      return UserState.login;
-    } else {
-      return UserState.signup;
+    try {
+      final responseBody = await NetworkService.getPostApiResponse(
+          'https://www.tessera.social/api/auth/emailexist', jsonEncode(data));
+      if (responseBody['success'] == true || responseBody['exist'] == true) {
+        return UserState.login;
+      } else {
+        return UserState.signup;
+      }
+    } catch (e) {
+      return null;
     }
   }
 
@@ -55,10 +59,18 @@ class AuthRepository {
   /// Requests backend to reset the password of the user.
   ///
   /// Returns [true] if the password is reset successfully, or [false] if the password is not reset.
-  static Future<bool> checkResetPassword(String token, var data) async {
-    String url = 'https://www.tessera.social/api/auth/reset-password/$token';
-    final responseBody = await NetworkService.getPostApiResponse(url, data);
-    return responseBody['success'];
+  static Future<Map> resetPassword(
+      String token, String email, String newPassword) async {
+    final data = {
+      'email': email,
+      'password': newPassword,
+    };
+
+    final responseBody = await NetworkService.getPostApiResponse(
+        'https://www.tessera.social/api/auth/reset-password/$token',
+        jsonEncode(data));
+
+    return responseBody;
   }
 
   /// Requests backend to send a verification email to the user.
@@ -84,8 +96,7 @@ class AuthRepository {
     };
 
     final response = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/user/auth/$service/app',
-        jsonEncode(data));
+        'https://www.tessera.social/api/auth/$service/app', jsonEncode(data));
 
     return response;
   }

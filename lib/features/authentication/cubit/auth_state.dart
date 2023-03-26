@@ -12,15 +12,13 @@ class AuthInitial extends AuthState {}
 
 class Loading extends AuthState {}
 
-class SignedIn extends AuthState {
-  final UserModel user;
-
-  const SignedIn(this.user);
-}
+class SignedIn extends AuthState {}
 
 class EmailSignedUp extends AuthState {}
 
 class SignedOut extends AuthState {}
+
+class OperationSuccess extends AuthState {}
 
 class AuthError extends AuthState {
   final String message;

@@ -6,16 +6,29 @@ import 'package:tessera/features/authentication/data/user_model.dart';
 
 import 'authentication.dart';
 
+/// Extends [AuthService] for email-facilitated [signIn()] and [signOut()] functionality.
+///
+/// Responsible for handling the sign up process for users as well.
 class EmailAuthService extends AuthService {
-  EmailAuthService(this.user);
+  /// Constructor for [EmailAuthService], instantiated with a required [UserModel]
+  /// that stores the user's email and password needed for [signIn()].
+  EmailAuthService.withData({required this.email, required this.password});
 
-  final UserModel user;
+  EmailAuthService();
 
+  late String email;
+  late String password;
+
+  /// Returns a [UserModel] if the user successfully signs in using email and password.
+  ///
+  /// Depends on the [AuthRepository.emailAccountLogin()] to handle the request to the server.
+  /// Makes use of Dartz's [Either] to return either a [UserModel] if successful or a [String] error message if not.
   @override
   Future<Either<String, UserModel>> signIn() async {
+    // The data to be sent along with the request.
     final data = {
-      'email': user.email,
-      'password': user.password,
+      'email': email,
+      'password': password,
     };
 
     try {
@@ -24,8 +37,8 @@ class EmailAuthService extends AuthService {
 
       if (response['success'] == true) {
         final loginUser = UserModel(
-          email: user.email,
-          password: user.password,
+          email: email,
+          password: password,
           accessToken: response['token'],
         );
 
@@ -38,7 +51,10 @@ class EmailAuthService extends AuthService {
     }
   }
 
-  static Future<Map> signUp(
+  /// Attempts to sign up a new user using the provided [email], [firstName], [lastName], and [password].
+  ///
+  /// Request done using the [AuthRepository.emailAccountSignUp()] method.
+  static Future<Map?> signUp(
       String email, String firstName, String lastName, String password) async {
     final data = {
       'firstName': firstName,
@@ -48,20 +64,18 @@ class EmailAuthService extends AuthService {
       'password': password,
     };
 
-    final response = await AuthRepository.emailAccountSignUp(jsonEncode(data));
-
-    return response;
+    try {
+      final response =
+          await AuthRepository.emailAccountSignUp(jsonEncode(data));
+      return response;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
-  Future<void> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
-  }
+  Future<void> signOut() async {}
 
   @override
-  String toTag() {
-    // TODO: implement toTag
-    throw UnimplementedError();
-  }
+  String toTag() => '';
 }
