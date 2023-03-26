@@ -11,10 +11,10 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: Colors.transparent,
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
+          SliverAppBar(
             elevation: 0,
             // backgroundColor: Colors.black,
             pinned: true,
@@ -22,26 +22,47 @@ class LandingPage extends StatelessWidget {
             //   'Tessera',
             //   style: TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
             // ),
-            flexibleSpace: SafeArea(
-              child: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Text(
-                  'Tessera',
-                  style:
-                      TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              title: SafeArea(
+                child: Center(
+                  child: Image.asset(
+                    'assets/images/LogoFullTextLarge.png',
+                    color: Colors.white,
+                    width: 180,
+                  ),
                 ),
-                // background: Container(
-                //   alignment: Alignment.center,
-                //   color: AppColors.primary,
-                //   child: Text(
-                //     // 'Restless?',
-                //     // 'Looking for a new thrill?',
-                //     // 'Don't know how to spend your weekend?',
-                //     'Need that adrenaline rush?',
-                //     style: TextStyle(fontSize: 22, color: Colors.white),
-                //   ),
-                // ),
               ),
+              background: Container(
+                  foregroundDecoration: BoxDecoration(
+                    gradient: RadialGradient(
+                      radius: 0.6,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                  child: Image.asset(
+                    'assets/images/StockConcert2.jpg',
+                    fit: BoxFit.cover,
+                  )),
+              //* Text(
+              //*   'Tessera',
+              //*   style:
+              //*       TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
+              //* ),
+              // background: Container(
+              //   alignment: Alignment.center,
+              //   color: AppColors.primary,
+              //   child: Text(
+              //     // 'Restless?',
+              //     // 'Looking for a new thrill?',
+              //     // 'Don't know how to spend your weekend?',
+              //     'Need that adrenaline rush?',
+              //     style: TextStyle(fontSize: 22, color: Colors.white),
+              //   ),
+              // ),
             ),
             expandedHeight: 200,
           ),
