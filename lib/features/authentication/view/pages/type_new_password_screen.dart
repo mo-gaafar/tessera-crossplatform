@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/constants.dart';
-import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
 /// Reset password page requesting the user's new password.
 class TypeNewPassword extends StatelessWidget {
@@ -16,7 +18,7 @@ class TypeNewPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: AppScaffold(
         appBar: AppBar(
           title: const Text(
             "Update your password",
@@ -45,34 +47,23 @@ class TypeNewPassword extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.all(kPagePadding),
-                  child: ElevatedButton(
-                    onPressed: () async {
+                  child: EmailButton(
+                    buttonText: 'Update password',
+                    colourBackground: AppColors.primary,
+                    colourText: Colors.white,
+                    onTap: () async {
                       if (formkey.currentState!.validate()) {
-                        if (await context.read<EmailAuthCubit>().resetPassword(
-                                context
-                                    .read<EmailAuthCubit>()
-                                    .state
-                                    .userData
-                                    .email,
-                                _newPassword) ==
-                            true) {
-                          Navigator.pushNamed(context, '/third');
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                              content: Text(
-                                  'Something went wrong! try another password'),
-                              duration: Duration(milliseconds: 300)));
+                        await context
+                            .read<AuthCubit>()
+                            .resetPassword(_newPassword);
+
+                        if (context.read<AuthCubit>().state
+                            is OperationSuccess) {
+                          Navigator.pushReplacementNamed(
+                              context, '/loginOptions');
                         }
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          AppColors.buttonColor, // Background Color),
-                    ),
-                    child: const Text(
-                      "Update password",
-                      style: TextStyle(color: Colors.black),
-                    ),
                   ),
                 )
               ],

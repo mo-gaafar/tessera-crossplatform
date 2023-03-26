@@ -7,8 +7,8 @@ import 'package:tessera/constants/constants.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tessera/constants/enums.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
 /// Screen redirecting to login or signup depending on the user's input email.
@@ -20,7 +20,7 @@ class LoginSignup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: AppScaffold(
         appBar: AppBar(
           title: const Text(
             "Log In or Sign Up",
@@ -39,6 +39,7 @@ class LoginSignup extends StatelessWidget {
                   children: [
                     const Text(
                       'Email',
+                      style: TextStyle(fontSize: 20),
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
@@ -106,35 +107,6 @@ class LoginSignup extends StatelessWidget {
                         }
                       },
                     ),
-                    // Container(
-                    //   padding: const EdgeInsets.only(top: 10),
-                    //   width: double.infinity,
-                    //   child: ElevatedButton(
-                    //     onPressed: () async {
-                    //       if (formkey.currentState!.validate()) {
-                    //         // print(context
-                    //         //     .read<EmailAuthCubit>()
-                    //         //     .emailAuthentication(inputEmail));
-                    //         if (await context
-                    //                 .read<EmailAuthCubit>()
-                    //                 .emailAuthentication(inputEmail) ==
-                    //             UserState.login) {
-                    //           Navigator.pushNamed(context, '/login');
-                    //         } else {
-                    //           Navigator.pushNamed(context, '/signup');
-                    //         }
-                    //       }
-                    //     },
-                    //     style: ElevatedButton.styleFrom(
-                    //       backgroundColor:
-                    //           AppColors.buttonColor, // Background Color),
-                    //     ),
-                    //     child: const Text(
-                    //       "Next",
-                    //       style: TextStyle(color: Colors.black),
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

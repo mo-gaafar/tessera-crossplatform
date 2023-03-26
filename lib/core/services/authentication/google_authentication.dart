@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';

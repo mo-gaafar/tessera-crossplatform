@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 
 /// Screen notifying the user that an email has been sent to update their password.
 class UpdatePassword extends StatelessWidget {
@@ -13,7 +13,7 @@ class UpdatePassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: AppScaffold(
         appBar: AppBar(
           title: const Text(
             "Update your password",
@@ -58,7 +58,7 @@ class UpdatePassword extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(6.0),
               child: Text(
-                'We sent a link to ${context.read<AuthCubit>().user.email} to update your password.',
+                'We sent a link to ${context.read<AuthCubit>().currentUser.email} to update your password.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.secondaryTextOnLight,
@@ -74,31 +74,23 @@ class UpdatePassword extends StatelessWidget {
                   style: TextStyle(color: Colors.blue),
                 ),
                 // ignore: avoid_print
-                onTap: () => Navigator.pushNamed(context, '/login_signup'),
+                onTap: () => Navigator.popUntil(
+                    context, ModalRoute.withName('/login_signup')),
               ),
             ),
             const Spacer(flex: 2),
             Padding(
               padding: const EdgeInsets.all(15),
               child: GestureDetector(
-                  child: const Text(
-                    'Resend verification email',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  // ignore: avoid_print
-                  onTap: () async {
-                    if (await context.read<EmailAuthCubit>().verifyEmail(
-                        context.read<EmailAuthCubit>().state.userData.email)) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Email sent check you mailbox'),
-                          duration: Duration(milliseconds: 300)));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text(
-                              'Something wrong! This Email is not registerd'),
-                          duration: Duration(milliseconds: 300)));
-                    }
-                  }),
+                child: const Text(
+                  'Resend verification email',
+                  style: TextStyle(color: Colors.blue),
+                ),
+                // ignore: avoid_print
+                onTap: () async {
+                  await context.read<AuthCubit>().forgotPassword();
+                },
+              ),
             ),
           ],
         ),

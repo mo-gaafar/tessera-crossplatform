@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
-import 'package:tessera/features/authentication/data/auth_repository.dart';
 
 /// Screen notifying the user to check their email to verify their account.
 class VerificationScreen extends StatelessWidget {
@@ -15,7 +13,7 @@ class VerificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: AppScaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
         ),
@@ -49,7 +47,7 @@ class VerificationScreen extends StatelessWidget {
               padding: const EdgeInsets.all(6.0),
               // ignore: prefer_interpolation_to_compose_strings
               child: Text(
-                'We sent a link to ${context.read<AuthCubit>().user.email} to verify your account.',
+                'We sent a link to ${context.read<AuthCubit>().currentUser.email} to verify your account.',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.secondaryTextOnLight,
@@ -86,26 +84,7 @@ class VerificationScreen extends StatelessWidget {
                 ),
                 // ignore: avoid_print
                 onTap: () async {
-                  final response = await AuthRepository.resendVerificationEmail(
-                      context.read<AuthCubit>().user.email);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      duration: Duration(seconds: 2),
-                      content: Text(response),
-                    ),
-                  );
-
-                  // if (await context.read<EmailAuthCubit>().verifyEmail(
-                  //     context.read<EmailAuthCubit>().state.userData.email)) {
-                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  //       content: Text('Email sent check you mailbox'),
-                  //       duration: Duration(milliseconds: 300)));
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  //       content: Text(
-                  //           'Something wrong! This Email is not registerd'),
-                  //       duration: Duration(milliseconds: 300)));
-                  // }
+                  await context.read<AuthCubit>().sendVerificationEmail();
                 },
               ),
             ),

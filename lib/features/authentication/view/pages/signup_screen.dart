@@ -3,9 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-import 'package:tessera/features/authentication/cubit/email_auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 
 /// Sign up page requesting the user's first name, last name, and password.
 class SignUp extends StatelessWidget {
@@ -20,7 +21,7 @@ class SignUp extends StatelessWidget {
   Widget build(BuildContext context) {
     double kPagePadding = 20;
     return SafeArea(
-      child: Scaffold(
+      child: AppScaffold(
         appBar: AppBar(
           title: const Text(
             "Sign up",
@@ -39,15 +40,13 @@ class SignUp extends StatelessWidget {
                   children: [
                     const Text(
                       'Email',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(color: Colors.grey, fontSize: 20),
                     ),
                     const SizedBox(
                       height: 2,
                     ),
                     Text(
-                      context.read<AuthCubit>().user.email,
+                      context.read<AuthCubit>().currentUser.email,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(
@@ -72,7 +71,7 @@ class SignUp extends StatelessWidget {
                     if (value!.trim().isEmpty) {
                       return 'please re enter your email to confirm it';
                     }
-                    if (value != context.read<AuthCubit>().user.email) {
+                    if (value != context.read<AuthCubit>().currentUser.email) {
                       return 'email must be the same';
                     }
                   },
@@ -123,7 +122,7 @@ class SignUp extends StatelessWidget {
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
                       ),
-                      hintText: 'Passowrd',
+                      hintText: 'Password',
                       helperText: 'Password must have at least 8 characters.'),
                   validator: (value) {
                     _password = value!;
@@ -134,38 +133,22 @@ class SignUp extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(top: 10),
                   width: double.infinity,
-                  child: BlocListener<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                      if (state is AuthError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(state.message),
-                          ),
-                        );
+                  child: EmailButton(
+                    buttonText: 'Sign Up',
+                    colourBackground: AppColors.primary,
+                    colourText: Colors.white,
+                    onTap: () async {
+                      if (formkey.currentState!.validate()) {
+                        // Attempt email sign up
+                        await context
+                            .read<AuthCubit>()
+                            .emailSignUp(_firstName, _lastName, _password);
+
+                        if (context.read<AuthCubit>().state is EmailSignedUp) {
+                          Navigator.pushNamed(context, '/verification');
+                        }
                       }
                     },
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        if (formkey.currentState!.validate()) {
-                          await context
-                              .read<AuthCubit>()
-                              .emailSignUp(_firstName, _lastName, _password);
-
-                          if (context.read<AuthCubit>().state
-                              is EmailSignedUp) {
-                            Navigator.pushNamed(context, '/verification');
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            AppColors.buttonColor, // Background Color),
-                      ),
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
                   ),
                 ),
               ],

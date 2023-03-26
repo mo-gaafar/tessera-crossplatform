@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:tessera/features/authentication/data/auth_repository.dart';
 
 import '../../../features/authentication/data/user_model.dart';
