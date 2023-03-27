@@ -33,23 +33,22 @@ class LandingPage extends StatelessWidget {
                 ),
               ),
               background: Container(
-                  foregroundDecoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.6),
-                        Colors.transparent,
-                      ],
-                    ),
+                foregroundDecoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0.3, 0.75],
+                    colors: [
+                      Colors.black.withOpacity(0.8),
+                      Colors.transparent,
+                    ],
                   ),
-                  child: Image.asset(
-                    'assets/images/StockConcert${1 + _random.nextInt(5)}.jpg',
-                    fit: BoxFit.cover,
-                  )),
-              //* Text(
-              //*   'Tessera',
-              //*   style:
-              //*       TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
-              //* ),
+                ),
+                child: Image.asset(
+                  'assets/images/StockConcert${1 + _random.nextInt(5)}.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
             expandedHeight: 200,
           ),
