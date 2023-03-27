@@ -3,8 +3,8 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class NearbyEvents extends StatelessWidget {
-  NearbyEvents({
+class EventsSection extends StatelessWidget {
+  const EventsSection({
     super.key,
     required this.title,
     this.radius = 20,
@@ -19,13 +19,13 @@ class NearbyEvents extends StatelessWidget {
       children: [
         SliverPositioned.fill(
           child: Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                color: AppColors.lightBackground,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(radius),
-                ),
-              )),
+            decoration: BoxDecoration(
+              color: AppColors.lightBackground,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(radius),
+              ),
+            ),
+          ),
         ),
         SliverPadding(
           padding: const EdgeInsets.all(10),
@@ -41,7 +41,7 @@ class NearbyEvents extends StatelessWidget {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(fontSize: 25),
+                          style: const TextStyle(fontSize: 25),
                         ),
                         // FilterChip(
                         //   selected: false,

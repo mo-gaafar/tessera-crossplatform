@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:tessera/constants/app_colors.dart';
-import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
-import 'package:tessera/features/landing_page/view/widgets/nearby_events_section.dart';
+import 'dart:math';
+
+import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+  LandingPage({super.key});
+  final _random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -35,16 +34,15 @@ class LandingPage extends StatelessWidget {
               ),
               background: Container(
                   foregroundDecoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      radius: 0.6,
+                    gradient: LinearGradient(
                       colors: [
-                        Colors.black.withOpacity(0.7),
+                        Colors.black.withOpacity(0.6),
                         Colors.transparent,
                       ],
                     ),
                   ),
                   child: Image.asset(
-                    'assets/images/StockConcert2.jpg',
+                    'assets/images/StockConcert${1 + _random.nextInt(5)}.jpg',
                     fit: BoxFit.cover,
                   )),
               //* Text(
@@ -52,22 +50,12 @@ class LandingPage extends StatelessWidget {
               //*   style:
               //*       TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
               //* ),
-              // background: Container(
-              //   alignment: Alignment.center,
-              //   color: AppColors.primary,
-              //   child: Text(
-              //     // 'Restless?',
-              //     // 'Looking for a new thrill?',
-              //     // 'Don't know how to spend your weekend?',
-              //     'Need that adrenaline rush?',
-              //     style: TextStyle(fontSize: 22, color: Colors.white),
-              //   ),
-              // ),
             ),
             expandedHeight: 200,
           ),
-          NearbyEvents(title: 'Events Near New Cairo'),
-          NearbyEvents(title: 'Events We Think You\'ll Love!', radius: 0),
+          const EventsSection(title: 'Events Near New Cairo'),
+          const EventsSection(
+              title: 'Events We Think You\'ll Love!', radius: 0),
         ],
       ),
       // appBar: AppBar(
