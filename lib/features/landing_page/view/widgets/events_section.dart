@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
 import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -8,10 +9,12 @@ class EventsSection extends StatelessWidget {
     super.key,
     required this.title,
     this.radius = 20,
+    this.hasFilters = false,
   });
 
   final String title;
   final double radius;
+  final bool hasFilters;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +35,7 @@ class EventsSection extends StatelessWidget {
           sliver: MultiSliver(
             pushPinnedChildren: true,
             children: [
+              // Header
               SliverPinnedHeader(
                 child: ColoredBox(
                   color: AppColors.lightBackground,
@@ -39,21 +43,21 @@ class EventsSection extends StatelessWidget {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          title,
-                          style: const TextStyle(fontSize: 25),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Text(
+                            title,
+                            style: const TextStyle(fontSize: 25),
+                          ),
                         ),
-                        // FilterChip(
-                        //   selected: false,
-                        //   label: Text('text'),
-                        //   onSelected: (value) {},
-                        //   showCheckmark: false,
-                        // )
+                        hasFilters ? const EventFilters() : const SizedBox(),
                       ],
                     ),
                   ),
                 ),
               ),
+
+              // Actual events list
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) => Padding(
@@ -75,37 +79,3 @@ class EventsSection extends StatelessWidget {
     );
   }
 }
-
-// class NearbyEvents extends MultiSliver {
-//   NearbyEvents({
-//     Key? key,
-//     required String title,
-//     Color headerColor = Colors.white,
-//     Color titleColor = Colors.black,
-//     // required List<Widget> items,
-//   }) : super(
-//           key: key,
-//           pushPinnedChildren: true,
-//           children: [
-//             SliverPinnedHeader(
-//               child: ColoredBox(
-//                 color: headerColor,
-//                 child: ListTile(
-//                   textColor: titleColor,
-//                   title: Text(title),
-//                 ),
-//               ),
-//             ),
-//             SliverList(
-//               delegate: SliverChildBuilderDelegate(
-//                 (context, index) => EventCard(
-//                     eventTitle: 'The Weeknd Tour',
-//                     eventImage: Image.asset('assets/images/placeholder.jpg'),
-//                     eventDate: '12/12/2021',
-//                     eventLocation: 'Koshk Omar Cultural Center'),
-//                 childCount: 10,
-//               ),
-//             ),
-//           ],
-//         );
-// }

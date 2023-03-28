@@ -15,12 +15,7 @@ class LandingPage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             elevation: 0,
-            // backgroundColor: Colors.black,
             pinned: true,
-            // title: Text(
-            //   'Tessera',
-            //   style: TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
-            // ),
             flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: SafeArea(
@@ -54,53 +49,11 @@ class LandingPage extends StatelessWidget {
           ),
           const EventsSection(title: 'Events Near New Cairo'),
           const EventsSection(
-              title: 'Events We Think You\'ll Love!', radius: 0),
+              title: 'Events We Think You\'ll Love!',
+              radius: 0,
+              hasFilters: true),
         ],
       ),
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   title: const Text(
-      //     'Tessera',
-      //     style: TextStyle(fontSize: 40, fontFamily: 'NeuePlak-Extended'),
-      //   ),
-      // ),
-      // backgroundColor: AppColors.primary,
-      // body: ListView(
-      //   clipBehavior: Clip.none,
-      //   children: [
-      //     const Text(
-      //       // 'Restless?',
-      //       // 'Looking for a new thrill?',
-      //       // 'Don't know how to spend your weekend?',
-      //       'Need that adrenaline rush?',
-      //       style: TextStyle(fontSize: 22, color: Colors.white),
-      //     ),
-      //     Container(
-      //       clipBehavior: Clip.none,
-      //       padding: const EdgeInsets.all(20),
-      //       alignment: Alignment.topLeft,
-      //       // margin: const EdgeInsets.only(top: 90),
-      //       decoration: BoxDecoration(
-      //           borderRadius:
-      //               const BorderRadius.vertical(top: Radius.circular(30)),
-      //           color: AppColors.lightBackground),
-      //       child: Column(
-      //         mainAxisSize: MainAxisSize.min,
-      //         children: List.generate(
-      //             10,
-      //             (index) => Padding(
-      //                   padding: const EdgeInsets.symmetric(vertical: 5),
-      //                   child: EventCard(
-      //                       eventTitle: 'The Weeknd Tour',
-      //                       eventImage:
-      //                           Image.asset('assets/images/placeholder.jpg'),
-      //                       eventDate: '12/12/2021',
-      //                       eventLocation: 'Koshk Omar Cultural Center'),
-      //                 )),
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
