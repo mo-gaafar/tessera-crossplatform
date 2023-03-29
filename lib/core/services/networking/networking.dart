@@ -6,10 +6,23 @@ import 'package:http/http.dart' as http;
 
 import 'exceptions.dart';
 
+/// Operates as a helper class for making network calls.
+///
+/// Focuses on implementing GET and POST requests. Responses are first handled
+/// by [returnResponse()] and checked for errors before returning their bodies.
 class NetworkService {
+  static final Map<String, String> _headers = {
+    'Accept-Charset': 'utf-8',
+    'Content-Type': 'application/json'
+  };
+
+  /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponse(String url) async {
     try {
-      final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _headers,
+      );
       final responseJson = returnResponse(response);
       debugPrint(response.body.toString());
       return responseJson;
@@ -18,10 +31,16 @@ class NetworkService {
     }
   }
 
+  /// Returns the response body in JSON format from a POST request.
   static Future getPostApiResponse(String url, dynamic data) async {
     try {
       http.Response response = await http
-          .post(Uri.parse(url), body: data)
+          .post(
+            Uri.parse(url),
+            headers: _headers,
+            body: data,
+          )
+
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
       return responseJson;
@@ -31,9 +50,12 @@ class NetworkService {
   }
 }
 
+/// Checks the response status code and throws an [AppException] if an error is found.
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
+      return jsonDecode(response.body);
+    case 201:
       return jsonDecode(response.body);
     case 400:
       throw BadRequestException(response.body.toString());

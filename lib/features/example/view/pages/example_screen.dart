@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
+import '../../../authentication/cubit/auth_cubit.dart';
 
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({super.key});
@@ -17,7 +20,18 @@ class ExampleScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const Center(),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            await context.read<AuthCubit>().signOut();
+
+            if (context.read<AuthCubit>().state is SignedOut) {
+              Navigator.of(context).pushReplacementNamed('/loginOptions');
+            }
+          },
+          child: const Text('Sign out'),
+        ),
+      ),
     );
   }
 }
