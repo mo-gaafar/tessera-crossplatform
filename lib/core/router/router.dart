@@ -11,6 +11,7 @@ import 'package:tessera/features/authentication/view/pages/verification_screen.d
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
 import 'package:tessera/features/example/view/pages/example_screen.dart';
+import 'package:tessera/features/landing_page/view/pages/landing_page.dart';
 
 /// Acts as the main router for the app. Contains all possible routes.
 

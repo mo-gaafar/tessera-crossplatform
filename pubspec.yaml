@@ -39,6 +39,10 @@ dependencies:
   bloc: any
   flutter_bloc: ^8.1.2
   equatable: ^2.0.5
+
+  sliver_tools: ^0.2.8
+  animated_icon_button: ^1.0.2
+
   google_sign_in: ^6.0.2
   shared_preferences: ^2.0.18
   page_transition: ^2.0.9
@@ -47,6 +51,7 @@ dependencies:
   email_validator: ^2.0.1
   flutter_svg: ^2.0.4
   dartz: ^0.10.1
+
 
 
 dev_dependencies:
@@ -76,8 +81,8 @@ flutter:
     - assets/images/
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -9,6 +9,8 @@ class AppTheme {
       primary: AppColors.primary,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
+      onSecondaryContainer: Colors.black,
+      onTertiaryContainer: AppColors.secondaryTextOnLight,
     ),
     textTheme: ThemeData.light().textTheme.apply(
           fontFamily: 'NeuePlak',
@@ -16,6 +18,7 @@ class AppTheme {
           // displayColor: AppColors.secondaryTextOnLight,
         ),
     scaffoldBackgroundColor: AppColors.lightBackground,
+    cardColor: Colors.grey.shade300,
     snackBarTheme: ThemeData.light().snackBarTheme.copyWith(
           backgroundColor: Colors.red.shade900,
           contentTextStyle: const TextStyle(color: Colors.white),
@@ -38,7 +41,11 @@ class AppTheme {
       surface: AppColors.primary,
       primary: AppColors.primary,
       secondary: AppColors.secondary,
+      onSecondaryContainer: const Color(0xfff2f2f2),
+      onTertiaryContainer: Colors.grey,
     ),
     textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'NeuePlak'),
+    cardColor: Colors.grey.shade900,
+    scaffoldBackgroundColor: AppColors.darkBackground,
   );
 }
