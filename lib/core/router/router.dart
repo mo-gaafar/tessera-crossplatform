@@ -52,7 +52,7 @@ class AppRouter {
         );
       case '/third':
         return MaterialPageRoute(
-          builder: (_) => const ExampleScreen(),
+          builder: (_) => LandingPage(),
         );
       default:
         return MaterialPageRoute(

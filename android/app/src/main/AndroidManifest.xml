@@ -11,6 +11,7 @@
         <provider android:authorities="com.facebook.orca.provider.PlatformProvider" /> <!-- allows sharing to Messenger app -->
     </queries>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 
 
    <application

@@ -18,5 +18,5 @@ class AppColors {
   static const Color secondaryTextOnLight = Color(0xff39364f);
 
   static const Color darkBackground = Color(0xff121212);
-  static const Color buttonColor = Color(0xffd1410c)
+  static const Color buttonColor = Color(0xffd1410c);
 }
