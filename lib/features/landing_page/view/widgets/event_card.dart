@@ -24,7 +24,7 @@ class EventCard extends StatelessWidget {
         width: double.maxFinite,
         height: 100,
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(
@@ -43,10 +43,11 @@ class EventCard extends StatelessWidget {
                   children: [
                     Text(
                       eventTitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
                         fontFamily: 'NeuePlak',
+                        color:
+                            Theme.of(context).colorScheme.onSecondaryContainer,
                       ),
                     ),
                     // Text('Event Date'),
@@ -59,10 +60,12 @@ class EventCard extends StatelessWidget {
                         const SizedBox(width: 2),
                         Text(
                           eventLocation,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: AppColors.secondaryTextOnLight,
                             fontFamily: 'NeuePlak',
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
                           ),
                         ),
                       ],

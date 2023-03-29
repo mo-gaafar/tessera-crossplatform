@@ -23,7 +23,7 @@ class EventsSection extends StatelessWidget {
         SliverPositioned.fill(
           child: Container(
             decoration: BoxDecoration(
-              color: AppColors.lightBackground,
+              color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(radius),
               ),
@@ -38,7 +38,7 @@ class EventsSection extends StatelessWidget {
               // Header
               SliverPinnedHeader(
                 child: ColoredBox(
-                  color: AppColors.lightBackground,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: ListTile(
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

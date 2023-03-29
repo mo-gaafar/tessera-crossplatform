@@ -1,4 +1,7 @@
+import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
@@ -10,10 +13,24 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            actions: [
+              AnimatedIconButton(
+                icons: [
+                  AnimatedIconItem(
+                      icon: const Icon(Icons.light_mode),
+                      onPressed: () =>
+                          context.read<ThemeCubit>().toggleTheme()),
+                  AnimatedIconItem(
+                      icon: const Icon(Icons.dark_mode),
+                      onPressed: () =>
+                          context.read<ThemeCubit>().toggleTheme()),
+                ],
+              )
+            ],
             elevation: 0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -32,10 +49,12 @@ class LandingPage extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: const [0.3, 0.75],
+                    stops: const [0.5, 0.8, 1],
                     colors: [
-                      Colors.black.withOpacity(0.8),
-                      Colors.transparent,
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.4),
+                      // Colors.transparent,
+                      Colors.black,
                     ],
                   ),
                 ),

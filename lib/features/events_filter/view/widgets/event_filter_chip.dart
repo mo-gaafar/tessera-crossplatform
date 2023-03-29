@@ -29,7 +29,8 @@ class _EventFilterChipState extends State<EventFilterChip> {
         selectedColor: AppColors.secondary,
         labelStyle: widget.isSelected
             ? const TextStyle(color: Colors.white)
-            : const TextStyle(color: AppColors.secondaryTextOnLight),
+            : TextStyle(
+                color: Theme.of(context).colorScheme.onSecondaryContainer),
         // showCheckmark: false,
         checkmarkColor: Colors.white.withOpacity(0.7),
         onSelected: (value) {
