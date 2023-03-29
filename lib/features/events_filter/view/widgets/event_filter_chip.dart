@@ -19,12 +19,15 @@ class _EventFilterChipState extends State<EventFilterChip> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 5),
+      padding: const EdgeInsets.only(right: 7),
       child: FilterChip(
         // shape:
         //     const StadiumBorder(side: BorderSide(color: AppColors.secondary)),
         padding: const EdgeInsets.symmetric(horizontal: 5),
-        label: Text(widget.label),
+        label: Text(
+          widget.label,
+          style: TextStyle(fontSize: 12),
+        ),
         selected: widget.isSelected,
         selectedColor: AppColors.secondary,
         labelStyle: widget.isSelected

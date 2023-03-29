@@ -31,28 +31,27 @@ class EventsSection extends StatelessWidget {
           ),
         ),
         SliverPadding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
           sliver: MultiSliver(
             pushPinnedChildren: true,
             children: [
               // Header
               SliverPinnedHeader(
-                child: ColoredBox(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  child: ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            title,
-                            style: const TextStyle(fontSize: 25),
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 0),
+                        child: Text(
+                          title,
+                          style: const TextStyle(fontSize: 20),
                         ),
-                        hasFilters ? const EventFilters() : const SizedBox(),
-                      ],
-                    ),
+                      ),
+                      hasFilters ? const EventFilters() : const SizedBox(),
+                    ],
                   ),
                 ),
               ),
@@ -70,6 +69,11 @@ class EventsSection extends StatelessWidget {
                         eventLocation: 'Koshk Omar Cultural Center'),
                   ),
                   childCount: 10,
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 20,
                 ),
               ),
             ],

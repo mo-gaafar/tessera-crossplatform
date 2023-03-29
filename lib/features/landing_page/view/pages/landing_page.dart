@@ -45,13 +45,15 @@ class LandingPage extends StatelessWidget {
             elevation: 0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
+              titlePadding: EdgeInsets.only(bottom: 10),
               centerTitle: true,
               title: SafeArea(
-                child: Center(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
                   child: Image.asset(
                     'assets/images/LogoFullTextLarge.png',
                     color: Colors.white,
-                    width: 180,
+                    width: 150,
                   ),
                 ),
               ),
@@ -60,10 +62,10 @@ class LandingPage extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: const [0.5, 0.8, 1],
+                    stops: const [0.7, 1],
                     colors: [
-                      Colors.black.withOpacity(0.7),
-                      Colors.black.withOpacity(0.4),
+                      // Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.2),
                       // Colors.transparent,
                       Colors.black,
                     ],
@@ -75,7 +77,7 @@ class LandingPage extends StatelessWidget {
                 ),
               ),
             ),
-            expandedHeight: 200,
+            expandedHeight: 250,
           ),
           const EventsSection(title: 'Events Near New Cairo'),
           const EventsSection(

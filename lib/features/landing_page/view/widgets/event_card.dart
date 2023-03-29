@@ -44,7 +44,7 @@ class EventCard extends StatelessWidget {
                     Text(
                       eventTitle,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'NeuePlak',
                         color:
                             Theme.of(context).colorScheme.onSecondaryContainer,
@@ -55,17 +55,17 @@ class EventCard extends StatelessWidget {
                       children: [
                         const Icon(
                           Icons.location_on,
-                          size: 15,
+                          size: 12,
                         ),
                         const SizedBox(width: 2),
                         Text(
                           eventLocation,
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 10,
                             fontFamily: 'NeuePlak',
                             color: Theme.of(context)
                                 .colorScheme
-                                .onSecondaryContainer,
+                                .onTertiaryContainer,
                           ),
                         ),
                       ],
