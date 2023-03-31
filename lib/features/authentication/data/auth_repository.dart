@@ -22,7 +22,7 @@ class AuthRepository {
         return UserState.signup;
       }
     } catch (e) {
-      return null;
+      return e.toString().contains('"success"') ? UserState.signup : null;
     }
   }
 
