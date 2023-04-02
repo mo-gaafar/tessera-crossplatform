@@ -39,7 +39,7 @@ class EmailAuthService extends AuthService {
         final loginUser = UserModel(
           email: email,
           password: password,
-          accessToken: response['token'],
+          accessToken: response['accessToken'],
         );
 
         return Right(loginUser);

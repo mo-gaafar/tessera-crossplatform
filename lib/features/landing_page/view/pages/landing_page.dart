@@ -32,11 +32,11 @@ class LandingPage extends StatelessWidget {
               AnimatedIconButton(
                 icons: [
                   AnimatedIconItem(
-                      icon: const Icon(Icons.light_mode),
+                      icon: const Icon(Icons.light_mode, color: Colors.black),
                       onPressed: () =>
                           context.read<ThemeCubit>().toggleTheme()),
                   AnimatedIconItem(
-                      icon: const Icon(Icons.dark_mode),
+                      icon: const Icon(Icons.dark_mode, color: Colors.white),
                       onPressed: () =>
                           context.read<ThemeCubit>().toggleTheme()),
                 ],
@@ -52,7 +52,7 @@ class LandingPage extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Image.asset(
                     'assets/images/LogoFullTextLarge.png',
-                    color: Colors.white,
+                    // color: Colors.white,
                     width: 150,
                   ),
                 ),
