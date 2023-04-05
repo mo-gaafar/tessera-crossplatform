@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tessera/features/Booking/view/widgets/event_page.dart';
+import 'package:tessera/features/Booking/view/widgets/pop_up.dart';
 
 class EventScreen extends StatelessWidget {
   const EventScreen({super.key});
@@ -23,41 +24,12 @@ class EventScreen extends StatelessWidget {
         buttonText: 'Tickets',
         seemoreButton: 'hi',
         onTap_seeMore: () {
-          Navigator.of(context).pushNamed('/second');
+          Navigator.pushNamed(context, '/third');
         },
         onTap_ticket: () {
-          _dialogBuilder(context);
+          showAlertDialog(context);
         },
       ),
-    );
-  }
-
-  Future<void> _dialogBuilder(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('booking'),
-          content: const Text('Choose the number of tickets and add a promo code if you have'),
-          actions: <Widget>[
-            const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Enter your promocode',
-            ),
-          ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('checkout'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

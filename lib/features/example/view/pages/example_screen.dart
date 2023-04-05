@@ -14,10 +14,16 @@ class ExampleScreen extends StatelessWidget {
           IconButton(
             onPressed: () => context.read<ThemeCubit>().toggleTheme(),
             icon: const Icon(Icons.dark_mode),
-          )
+          ),
         ],
       ),
-      body: const Center(),
+      body: Center(
+        child: TextButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('/second');
+            },
+            child: Text('event')),
+      ),
     );
   }
 }

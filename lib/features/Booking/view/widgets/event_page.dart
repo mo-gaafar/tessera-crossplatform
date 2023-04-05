@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tessera/features/Booking/view/widgets/email_button.dart';
 import 'package:tessera/features/Booking/view/widgets/rounded_button.dart';
-
 
 class EventPage extends StatelessWidget {
   final String headerImage;
@@ -48,8 +46,13 @@ class EventPage extends StatelessWidget {
           style: TextStyle(
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
-        leading: Icon(Icons.close),
         backgroundColor: AppColors.primary,
+        leading: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context,'/');
+              },
+              icon: Icon(Icons.close)),
+        
       ),
       bottomNavigationBar: BottomAppBar(
           child: Padding(
@@ -71,7 +74,8 @@ class EventPage extends StatelessWidget {
                 child: EmailButton(
                     buttonText: 'Ticket',
                     colourBackground: AppColors.primary,
-                    colourText: Colors.white,onTap: onTap_ticket,)),
+                    colourText: Colors.white,
+                    onTap: onTap_ticket)),
           ],
         ),
       )),
@@ -81,7 +85,6 @@ class EventPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            //mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -219,11 +222,7 @@ class EventPage extends StatelessWidget {
                     fontWeight: FontWeight.w100),
               ),
               TextButton(
-                onPressed: () {
-                  onTap_seeMore;
-                  print('follow more was pressed');
-                  
-                },
+                onPressed: onTap_seeMore,
                 child: Text(
                   'see more',
                   style: TextStyle(color: AppColors.secondary, fontSize: 20),
@@ -269,9 +268,9 @@ class EventPage extends StatelessWidget {
                           fontSize: 20,
                           fontWeight: FontWeight.w100),
                     ),
-                    Text(
+                    const Text(
                       'Organizer',
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontFamily: 'NeuePlak',
                           color: Color.fromARGB(255, 44, 42, 42),
                           fontSize: 15,
@@ -283,46 +282,10 @@ class EventPage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(
-                'Tags',
-                style: TextStyle(
-                    fontFamily: 'NeuePlak',
-                    color: Color.fromARGB(255, 44, 42, 42),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w100),
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    RoundedButton(buttonText: '#booktok'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RoundedButton(buttonText: '#tiktok'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RoundedButton(buttonText: '#books'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RoundedButton(buttonText: '#fictional'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    RoundedButton(buttonText: '#grumpy'),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
             ],
           ),
         ),
       ),
     );
   }
-
 }
