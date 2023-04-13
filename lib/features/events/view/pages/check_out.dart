@@ -3,25 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tessera/features/Booking/view/widgets/email_button.dart';
+import 'package:tessera/features/events/view/widgets/email_button.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
-  final int _duration = 20; //1800;
+  final int _duration = 10; //1800;
   final String feesText; //money or free
-  final Function()? onTap_checkout;
-  final Function()? timerOut;
-  CheckOut(
-      {Key? key, required this.feesText, this.onTap_checkout, this.timerOut})
-      : super(key: key);
+
+  CheckOut({Key? key, required this.feesText}) : super(key: key);
+
+  bool view() {
+    if (feesText == 'Free') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/second');
+              Navigator.pop(context);
             },
             icon: Icon(Icons.close)),
         elevation: 3,
@@ -44,7 +50,16 @@ class CheckOut extends StatelessWidget {
                 duration: _duration,
                 fillColor: AppColors.secondary,
                 ringColor: AppColors.primary,
-                onComplete: timerOut,
+                onComplete: () {
+                  //back to event page
+                  Navigator.pushNamed(context, '/second');
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 2),
+                    content: Text('TIME OUT'),
+                    shape: StadiumBorder(),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                },
               ),
             ),
             Expanded(
@@ -55,9 +70,7 @@ class CheckOut extends StatelessWidget {
                   colourText: Colors.white,
                   onTap: () {
                     if (formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      Navigator.pushNamed(context, '/fifth');
+                      Navigator.pushNamed(context, '/third');
                     }
                   },
                 )),
@@ -160,38 +173,24 @@ class CheckOut extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  Text(
-                    'pay with',
-                    style: const TextStyle(
-                        fontFamily: 'NeuePlak',
-                        color: AppColors.textOnLight,
-                        fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your card number',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
+                  Visibility(
+                    visible: view(),
+                    child: Column(
+                      children: [
+                        Text(
+                          'pay with',
+                          style: const TextStyle(
+                              fontFamily: 'NeuePlak',
+                              color: AppColors.textOnLight,
+                              fontSize: 20),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Enter your Expiration date',
+                            hintText: 'Enter your card number',
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -200,15 +199,51 @@ class CheckOut extends StatelessWidget {
                             return null;
                           },
                         ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        child: TextFormField(
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Enter your Expiration date',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Enter your security code',
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter some text';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            hintText: 'Enter your security code',
+                            hintText: 'Enter your zip code',
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -217,23 +252,8 @@ class CheckOut extends StatelessWidget {
                             return null;
                           },
                         ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your zip code',
+                      ],
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
                   ),
                 ],
               ),

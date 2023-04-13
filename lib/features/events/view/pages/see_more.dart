@@ -1,29 +1,27 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:tessera/features/events/view/pages/event_screen.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:tessera/features/Booking/view/widgets/event_page.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
+import 'package:provider/provider.dart';
+import 'package:tessera/features/events/data/event_data.dart';
 
 class SeeMore extends StatelessWidget {
-  final String seemoreText;
-  final String dateText;
-  final String timeText;
-  final String titleText;
-
-  const SeeMore({Key? key, required this.seemoreText,
-  required this.dateText, required this.timeText,required this.titleText}) : super(key: key);
-
+  const SeeMore({super.key, required this.title, required this.date, required this.time, required this.details});
+  final String title;
+  final String date;
+  final String time;
+  final String details;
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
             appBar: AppBar(
               leading: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context,'/second');
+                Navigator.pop(context);
               },
               icon: Icon(Icons.close)),
                   elevation: 3,
@@ -34,24 +32,27 @@ class SeeMore extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              //event name
               Text(
-                    titleText,
+                    title,
                     style: TextStyle(
                         fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 25),
                   ),
                   SizedBox(
                     height: 20,
                   ),
+                  //timeText+ ', '+dateText
               Text(
-                timeText+ ', '+dateText,
+                date+ ', '+time,
                 style: const TextStyle(
                     fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 20),
               ),
               SizedBox(
                     height: 20,
                   ),
+                  //seemore text
               Text(
-                seemoreText ,
+                details ,
                 style: const TextStyle(
                     fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 20),
               ),

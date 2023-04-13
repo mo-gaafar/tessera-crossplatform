@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tessera/features/Booking/view/pages/order_completed_screen.dart';
+import 'package:tessera/features/events/view/pages/order_completed.dart';
 import 'package:tessera/features/example/view/pages/example_screen.dart';
-import 'package:tessera/features/Booking/view/pages/check_out_screen.dart';
-import 'package:tessera/features/Booking/view/pages/event_screen.dart';
-import 'package:tessera/features/Booking/view/pages/see_more_screen.dart';
-import 'package:tessera/features/Booking/view/pages/order_completed_screen.dart';
+import 'package:tessera/features/events/view/pages/check_out.dart';
+import 'package:tessera/features/events/view/pages/event_screen.dart';
+import 'package:tessera/features/events/view/pages/see_more.dart';
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -14,19 +13,19 @@ class AppRouter {
         );
       case '/second':
         return MaterialPageRoute(
-          builder: (_) => EventScreen(),
+          builder: (_) => EventPage(),
         );
       case '/third':
         return MaterialPageRoute(
-          builder: (_) => SeemoreScreen(),
+          builder: (_) => OrderComplete(),
         );
       case '/fourth':
       return MaterialPageRoute(
-        builder: (_) => CheckoutScreen(),
+        builder: (_) => Container(),
       );
       case '/fifth':
       return MaterialPageRoute(
-        builder: (_) => OrdercompleteScreen(),
+        builder: (_) => Container(),
       );
       default:
         return MaterialPageRoute(

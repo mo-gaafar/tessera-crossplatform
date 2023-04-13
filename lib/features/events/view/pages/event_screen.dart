@@ -1,40 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tessera/features/Booking/view/widgets/email_button.dart';
-import 'package:tessera/features/Booking/view/widgets/rounded_button.dart';
+import 'package:tessera/features/events/view/widgets/email_button.dart';
+import 'package:tessera/features/events/view/widgets/rounded_button.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
+import 'package:provider/provider.dart';
+import 'package:tessera/features/events/data/event_data.dart';
+import 'package:tessera/features/events/view/widgets/pop_up.dart';
+import 'package:tessera/features/events/view/pages/see_more.dart';
 
-class EventPage extends StatelessWidget {
-  final String headerImage;
-  final String organizerName;
-  final String headerText;
-  final String dateText;
-  final String timeText;
-  final String placeText;
-  final String locationText;
-  final String feesText; //money or free
-  final String aboutText; //for see more
-  final String buttonText;
-  final String seemoreButton;
-  final Function()? onTap_ticket;
-  final Function()? onTap_seeMore;
+class EventPage extends StatefulWidget {
+  const EventPage({super.key});
 
-  const EventPage({
-    Key? key,
-    required this.headerImage,
-    required this.organizerName,
-    required this.headerText,
-    required this.dateText,
-    required this.timeText,
-    required this.placeText,
-    required this.locationText,
-    required this.feesText,
-    required this.aboutText,
-    required this.buttonText,
-    required this.seemoreButton,
-    this.onTap_ticket,
-    this.onTap_seeMore,
-  }) : super(key: key);
+  @override
+  State<EventPage> createState() => _EventPageState();
+}
+
+class _EventPageState extends State<EventPage> {
+  late EventModel eventData;
+  @override
+  void initState() async {
+    super.initState();
+    // Add listeners to this class
+    eventData = await context
+        .read<EventBookCubit>()
+        .getEventData('6427c9ffd13c6e22aab0a743');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +33,16 @@ class EventPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 3,
         title: Text(
-          headerText,
+          eventData.eventName,
           style: TextStyle(
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
         backgroundColor: AppColors.primary,
         leading: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context,'/');
-              },
-              icon: Icon(Icons.close)),
-        
+            onPressed: () {
+              Navigator.pushNamed(context, '/'); //back to landing page
+            },
+            icon: Icon(Icons.close)),
       ),
       bottomNavigationBar: BottomAppBar(
           child: Padding(
@@ -62,8 +52,8 @@ class EventPage extends StatelessWidget {
             Expanded(
               child: Text(
                 textAlign: TextAlign.center,
-                feesText,
-                style: TextStyle(
+                eventData.ticketTiersPrice.toString(),
+                style: const TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
                     fontSize: 30),
@@ -75,7 +65,25 @@ class EventPage extends StatelessWidget {
                     buttonText: 'Ticket',
                     colourBackground: AppColors.primary,
                     colourText: Colors.white,
-                    onTap: onTap_ticket)),
+                    //ticket
+                    onTap: () async{
+                      if( await context.read<EventBookCubit>().eventFull('6427c9ffd13c6e22aab0a743')==true)
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Text('The event is fully booked'),
+                        shape: StadiumBorder(),
+                        behavior: SnackBarBehavior.floating,
+                        ));
+
+                      }
+                      else
+                      {
+                        //free or charged
+                          showAlertDialog(context,eventData.promoCodesAvailable,eventData.ticketTiersPrice);
+                      } 
+                      
+                    })),
           ],
         ),
       )),
@@ -92,12 +100,12 @@ class EventPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage(headerImage),
+                    image: AssetImage('assets/images/LogoFullTextTicketSmall.png'),
                   ),
                 ),
               ),
               Text(
-                headerText,
+                eventData.eventName,
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
@@ -116,16 +124,18 @@ class EventPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      //date text
                       Text(
-                        dateText,
+                         eventData.startDateTimeUtc,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
                             fontSize: 20,
                             fontWeight: FontWeight.w100),
                       ),
+                      //time text
                       Text(
-                        timeText,
+                        eventData.startDateTimeUtc,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -149,16 +159,18 @@ class EventPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      //offline or online
                       Text(
-                        placeText,
+                        eventData.eventStatus,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
                             fontSize: 20,
                             fontWeight: FontWeight.w100),
                       ),
+                      //location
                       Text(
-                        locationText,
+                        eventData.location,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -213,8 +225,9 @@ class EventPage extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w100),
               ),
+              //desciption
               Text(
-                aboutText,
+                eventData.description,
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: Color.fromARGB(255, 44, 42, 42),
@@ -222,7 +235,12 @@ class EventPage extends StatelessWidget {
                     fontWeight: FontWeight.w100),
               ),
               TextButton(
-                onPressed: onTap_seeMore,
+                onPressed: () {
+                  //Navigator.pushNamed(context, '/third');
+                   Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) =>SeeMore(title: eventData.eventName, date: eventData.startDateTimeUtc, time: eventData.startDateTimeUtc, details: eventData.description),),);
+                },
                 child: Text(
                   'see more',
                   style: TextStyle(color: AppColors.secondary, fontSize: 20),
@@ -246,39 +264,15 @@ class EventPage extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/no_profile_pic.jpg'),
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      organizerName,
-                      style: const TextStyle(
-                          fontFamily: 'NeuePlak',
-                          color: Color.fromARGB(255, 44, 42, 42),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w100),
-                    ),
-                    const Text(
-                      'Organizer',
+              //how many tickets left/ full capacity or not
+               Text(
+                      eventData.v.toString() +'tickts'+'left',
                       style: TextStyle(
                           fontFamily: 'NeuePlak',
                           color: Color.fromARGB(255, 44, 42, 42),
                           fontSize: 15,
                           fontWeight: FontWeight.w100),
                     ),
-                  ],
-                ),
-              ),
               const SizedBox(
                 height: 5,
               ),
