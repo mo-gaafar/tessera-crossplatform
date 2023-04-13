@@ -9,7 +9,7 @@ abstract class EventsFilterState {
 
 class EventsFilterInitial extends EventsFilterState {}
 
-class SelectionChanged extends EventsFilterState {
+class ChipTapped extends EventsFilterState {
   // @override
   // List<Object> get props => [];
 }

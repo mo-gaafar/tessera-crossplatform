@@ -1,8 +1,7 @@
 class FilterRepository {
-  static Future<List<String>> getFilteredCategories(
-      {String location = '', String isFree = '', String isOnline = ''}) async {
+  static Future<List<String>> getFilteredCategories() async {
     // TODO: Implement API call to get filtered categories.
-    throw UnimplementedError();
+    return categories;
   }
 
   static List<String> categories = [
@@ -18,4 +17,17 @@ class FilterRepository {
     'This Weekend',
     'Next Week'
   ];
+
+  static Future getNearbyEvents() async {
+    // TODO: Implement getNearbyEvents
+    throw UnimplementedError();
+  }
+
+  static Future queryEvents() async {
+    return UnimplementedError();
+  }
+
+  static Future getQueriedCategories() async {
+    return UnimplementedError();
+  }
 }

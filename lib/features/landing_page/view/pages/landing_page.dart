@@ -28,7 +28,7 @@ class LandingPage extends StatelessWidget {
                           .pushReplacementNamed('/loginOptions');
                     }
                   },
-                  icon: Icon(Icons.logout)),
+                  icon: const Icon(Icons.logout)),
               AnimatedIconButton(
                 icons: [
                   AnimatedIconItem(
@@ -45,16 +45,18 @@ class LandingPage extends StatelessWidget {
             elevation: 0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.only(bottom: 10),
+              titlePadding: EdgeInsets.zero,
               centerTitle: true,
               title: SafeArea(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Image.asset(
-                    'assets/images/LogoFullTextLarge.png',
-                    // color: Colors.white,
-                    width: 150,
-                  ),
+                child: SizedBox(
+                  height: 200,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Image.asset(
+                      'assets/images/LogoFullTextLarge.png',
+                      color: constraints.maxHeight > 100 ? Colors.white : null,
+                      width: 150,
+                    );
+                  }),
                 ),
               ),
               background: Container(

@@ -10,7 +10,7 @@ class EventFilters extends StatelessWidget {
     return BlocProvider<EventsFilterCubit>(
       create: (context) => EventsFilterCubit(),
       child: BlocConsumer<EventsFilterCubit, EventsFilterState>(
-        listenWhen: (previous, current) => current is SelectionChanged,
+        listenWhen: (previous, current) => current is ChipTapped,
         buildWhen: (previous, current) => current is FilterCriteriaSelected,
         listener: (context, state) {
           context.read<EventsFilterCubit>().editSelection();

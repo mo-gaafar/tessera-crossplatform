@@ -1,6 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:tessera/features/events_filter/data/filter_criteria_model.dart';
 import 'package:tessera/features/events_filter/data/filter_repository.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filter_chip.dart';
@@ -11,16 +9,20 @@ part 'events_filter_state.dart';
 class EventsFilterCubit extends Cubit<EventsFilterState> {
   EventsFilterCubit() : super(EventsFilterInitial()) {
     // Initialize the filter criteria.
+    initCriteria();
+  }
+
+  Future<void> initCriteria() async {
     var onlineList = FilterCriteria.fromList(['Online']);
     var free = FilterCriteria.fromList(['Free']);
-    var categoryList = FilterCriteria.fromList(FilterRepository.categories);
+    var categoryList =
+        FilterCriteria.fromList(await FilterRepository.getFilteredCategories());
     var dateList = FilterCriteria.fromList(FilterRepository.dates);
     criteria = [onlineList, free, categoryList, dateList];
-
     editSelection();
   }
 
-  late List<FilterCriteria> criteria;
+  late List<FilterCriteria> criteria = [];
 
   // FilterCriteria getCategories() {
   //   var categoryList = FilterRepository.getFilteredCategories();
@@ -29,7 +31,7 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
 
   /// Emits a [SelectionChanged] event when a filter chip is selected.
   void onSelectionChanged() {
-    emit(SelectionChanged());
+    emit(ChipTapped());
   }
 
   /// Returns a sorted concatenated list of all [FilterCriteria]s passed in, after
@@ -64,6 +66,15 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
       },
     );
 
+    // TODO: Call getFilteredEvents() here, and figure out how to pass it to view.
+
     emit(FilterCriteriaSelected(chips));
+  }
+
+  Future getFilteredEvents() async {
+    // TODO:
+    // Input: selected chips
+    // Output: filtered events
+    final events = await FilterRepository.queryEvents();
   }
 }
