@@ -13,7 +13,7 @@ class AppRouter {
         );
       case '/second':
         return MaterialPageRoute(
-          builder: (_) => EventPage(),
+          builder: (_) => Container(),
         );
       case '/third':
         return MaterialPageRoute(

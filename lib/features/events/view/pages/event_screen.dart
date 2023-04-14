@@ -8,23 +8,142 @@ import 'package:provider/provider.dart';
 import 'package:tessera/features/events/data/event_data.dart';
 import 'package:tessera/features/events/view/widgets/pop_up.dart';
 import 'package:tessera/features/events/view/pages/see_more.dart';
+import 'package:tessera/features/events/view/pages/check_out.dart';
+
+List splitting(String data) {
+  int idx = data.indexOf(":");
+  return [data.substring(0, idx).trim(), data.substring(idx + 1).trim()];
+}
 
 class EventPage extends StatefulWidget {
-  const EventPage({super.key});
+  const EventPage({super.key, required this.eventData});
+  final EventModel eventData;
 
   @override
   State<EventPage> createState() => _EventPageState();
 }
 
 class _EventPageState extends State<EventPage> {
-  late EventModel eventData;
+  late EventModel _eventData;
+  final formKey = GlobalKey<FormState>();
+  String? tier;
+  String promo = '';
+  int count = 0;
+
+  Future<void> showInformationDialog(BuildContext context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) {
+          bool isChecked = false;
+          return StatefulBuilder(builder: (context, setState) {
+            return AlertDialog(
+                content: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: const Text('VIP'),
+                      leading: Radio(
+                        value: 'VIP',
+                        groupValue: tier,
+                        onChanged: (value) {
+                          setState(() {
+                            tier = value;
+                          });
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Regular'),
+                      leading: Radio(
+                        value: 'Regular',
+                        groupValue: tier,
+                        onChanged: (value) {
+                          setState(() {
+                            tier = value;
+                          });
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                count++;
+                              });
+                            },
+                            icon: const Icon(Icons.add)),
+                        Text(count.toString()),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                count--;
+                              });
+                            },
+                            icon: const Icon(Icons.remove)),
+                      ],
+                    ),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Promocode',
+                      ),
+                      validator: (value) {
+                        print('da5al');
+                        if (value == null || value.isEmpty) {
+                          return null;
+                        } else {
+                          if (value == _eventData.promoCodesCode) {
+                            promo = value;
+                            return null;
+                          } else {
+                            return 'Not a valid promocode';
+                          }
+                        }
+                      },
+                    ),
+                    Row(
+                      children: [
+                        TextButton(
+                          child: const Text("Cancel"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("CheckOut"),
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CheckOut(
+                                      feesText: 'Free'),
+                                ),
+                              );
+                            }
+                          },
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ));
+          });
+        });
+  }
+
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    // Add listeners to this class
-    eventData = await context
-        .read<EventBookCubit>()
-        .getEventData('6427c9ffd13c6e22aab0a743');
+    _eventData = widget.eventData; // initialize the attribute
   }
 
   @override
@@ -33,7 +152,7 @@ class _EventPageState extends State<EventPage> {
       appBar: AppBar(
         elevation: 3,
         title: Text(
-          eventData.eventName,
+          _eventData.eventName,
           style: TextStyle(
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
@@ -52,7 +171,7 @@ class _EventPageState extends State<EventPage> {
             Expanded(
               child: Text(
                 textAlign: TextAlign.center,
-                eventData.ticketTiersPrice.toString(),
+                _eventData.ticketTiersPrice.toString(),
                 style: const TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
@@ -66,23 +185,24 @@ class _EventPageState extends State<EventPage> {
                     colourBackground: AppColors.primary,
                     colourText: Colors.white,
                     //ticket
-                    onTap: () async{
-                      if( await context.read<EventBookCubit>().eventFull('6427c9ffd13c6e22aab0a743')==true)
-                      {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        duration: Duration(seconds: 2),
-                        content: Text('The event is fully booked'),
-                        shape: StadiumBorder(),
-                        behavior: SnackBarBehavior.floating,
-                        ));
-
+                    onTap: () async {
+                      if (context.mounted) {
+                        if (await context
+                                .read<EventBookCubit>()
+                                .eventFull('6427c9ffd13c6e22aab0a743') ==
+                            true) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 2),
+                            content:
+                                Text('Unfourntly The event is fully booked'),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                        } else {
+                          //free or charged
+                          await showInformationDialog(context);
+                        }
                       }
-                      else
-                      {
-                        //free or charged
-                          showAlertDialog(context,eventData.promoCodesAvailable,eventData.ticketTiersPrice);
-                      } 
-                      
                     })),
           ],
         ),
@@ -100,12 +220,13 @@ class _EventPageState extends State<EventPage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/images/LogoFullTextTicketSmall.png'),
+                    image:
+                        AssetImage('assets/images/LogoFullTextTicketSmall.png'),
                   ),
                 ),
               ),
               Text(
-                eventData.eventName,
+                _eventData.eventName,
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
@@ -126,7 +247,7 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       //date text
                       Text(
-                         eventData.startDateTimeUtc,
+                        _eventData.startDateTimeUtc,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -135,7 +256,7 @@ class _EventPageState extends State<EventPage> {
                       ),
                       //time text
                       Text(
-                        eventData.startDateTimeUtc,
+                        _eventData.startDateTimeUtc,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -161,7 +282,7 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       //offline or online
                       Text(
-                        eventData.eventStatus,
+                        _eventData.eventStatus,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -170,7 +291,7 @@ class _EventPageState extends State<EventPage> {
                       ),
                       //location
                       Text(
-                        eventData.location,
+                        _eventData.location,
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -227,7 +348,7 @@ class _EventPageState extends State<EventPage> {
               ),
               //desciption
               Text(
-                eventData.description,
+                _eventData.description,
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: Color.fromARGB(255, 44, 42, 42),
@@ -237,9 +358,16 @@ class _EventPageState extends State<EventPage> {
               TextButton(
                 onPressed: () {
                   //Navigator.pushNamed(context, '/third');
-                   Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>SeeMore(title: eventData.eventName, date: eventData.startDateTimeUtc, time: eventData.startDateTimeUtc, details: eventData.description),),);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SeeMore(
+                          title: _eventData.eventName,
+                          date: _eventData.startDateTimeUtc,
+                          time: _eventData.startDateTimeUtc,
+                          details: _eventData.description),
+                    ),
+                  );
                 },
                 child: Text(
                   'see more',
@@ -265,14 +393,14 @@ class _EventPageState extends State<EventPage> {
                 height: 20,
               ),
               //how many tickets left/ full capacity or not
-               Text(
-                      eventData.v.toString() +'tickts'+'left',
-                      style: TextStyle(
-                          fontFamily: 'NeuePlak',
-                          color: Color.fromARGB(255, 44, 42, 42),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w100),
-                    ),
+              Text(
+                _eventData.v.toString() + 'tickts' + 'left',
+                style: TextStyle(
+                    fontFamily: 'NeuePlak',
+                    color: Color.fromARGB(255, 44, 42, 42),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w100),
+              ),
               const SizedBox(
                 height: 5,
               ),

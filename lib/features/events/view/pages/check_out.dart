@@ -52,7 +52,7 @@ class CheckOut extends StatelessWidget {
                 ringColor: AppColors.primary,
                 onComplete: () {
                   //back to event page
-                  Navigator.pushNamed(context, '/second');
+                  Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 2),
                     content: Text('TIME OUT'),

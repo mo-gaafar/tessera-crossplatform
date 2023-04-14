@@ -15,40 +15,23 @@ class EventBookCubit extends Cubit<EventBookState> {
   // basic info is added to the event model
   Future<EventModel> getEventData(var data) async {
     emit(EventLoading());
-    Map eventinfo = await EventRepository.eventBasicInfo(jsonEncode(data));
+    //Map eventinfo = await EventRepository.eventBasicInfo(jsonEncode(data));
 
     _eventModel = EventModel(
-      startDateTimeTimezone: eventinfo['startDateTime']['timezone'],
-      startDateTimeUtc: eventinfo['startDateTime']['utc'],
-      endDateTimeTimezone: eventinfo['endDateTime']['timezone'],
-      endDateTimeUtc: eventinfo['endDateTime']['utc'],
-      eventName: eventinfo['eventName'],
-      description: eventinfo['description'],
-      categories: eventinfo['categories'],
-      location: eventinfo['location'],
-      startSellingTimezone: eventinfo['startSelling']['timezone'],
-      startSellingUtc: eventinfo['startSelling']['utc'],
-      endSellingTimezone: eventinfo['endSelling']['timezone'],
-      endSellingUtc: eventinfo['endSelling']['utc'],
-      publicDateTimezone: eventinfo['publicDate']['timezone'],
-      publicDateUtc: eventinfo['publicDate']['utc'],
-      eventId: eventinfo['_id'],
-      ticketTiersQuantitySold: eventinfo['ticketTiers']['quantitySold'],
-      ticketTiersCapacity: eventinfo['ticketTiers']['capacity'],
-      ticketTiersTier: eventinfo['ticketTiers']['tier'],
-      ticketTiersPrice: eventinfo['ticketTiers']['price'],
-      ticketTiersId: eventinfo['ticketTiers']['_id'],
-      eventStatus: eventinfo['eventStatus'],
-      promoCodesAvailable:eventinfo['promoCodesAvailable'],
-      promoCodesCode: eventinfo['promoCodes']['code'],
-      promoCodesPercentage: eventinfo['promoCodes']['percentage'],
-      promoCodesRemainingUses: eventinfo['promoCodes']['remainingUses'],
-      promoCodesId: eventinfo['promoCodes']['_id'],
-      isVerified: eventinfo['isVerified'],
-      isPublic: eventinfo['isPublic'],
-      createdAt: eventinfo['createdAt'],
-      updatedAt: eventinfo['updatedAt'],
-      v: eventinfo['__v'],
+      startDateTimeTimezone: 'America/Los_Angeles',
+      startDateTimeUtc: '2023-05-21T12:00:00.000Z',
+      endDateTimeTimezone: 'America/Los_Angeles',
+      endDateTimeUtc: '2023-05-21T18:00:00.000Z',
+      eventName: 'booktok',
+      description: 'blabla',
+      location: 'cairo sheikh zayed',
+      ticketTiersQuantitySold: 0,
+      ticketTiersCapacity: 20,
+      ticketTiersTier: 'regular',
+      ticketTiersPrice: 10,
+      eventStatus: 'offline',
+      promoCodesAvailable: true,
+      promoCodesCode: 'spring',
     );
     emit(
       EventChosen(),
@@ -57,8 +40,9 @@ class EventBookCubit extends Cubit<EventBookState> {
   }
 
   Future<bool> eventAlreadyBooked(var data) async {
-    EventState eventinfo =
-        await EventRepository.checkIfAlreadyBooked(jsonEncode(data));
+    //EventState eventinfo =
+    //    await EventRepository.checkIfAlreadyBooked(jsonEncode(data));
+    EventState eventinfo = EventState.notBooked;
     if (eventinfo == EventState.booked) {
       emit(
         EventAlreadyBooked(),
@@ -99,8 +83,8 @@ class EventBookCubit extends Cubit<EventBookState> {
   }
 
   Future<bool> eventFull(var data) async {
-    EventState eventinfo =
-        await EventRepository.checkIfEventFull(jsonEncode(data));
+    EventState eventinfo = EventState.notFullCapacity;
+    //await EventRepository.checkIfEventFull(jsonEncode(data));
     if (eventinfo == EventState.fullCapacity) {
       emit(
         EventFull(),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
+import 'package:tessera/features/events/data/event_data.dart';
+import 'package:tessera/features/events/view/pages/event_screen.dart';
 
 class ExampleScreen extends StatelessWidget {
   const ExampleScreen({super.key});
@@ -19,10 +23,23 @@ class ExampleScreen extends StatelessWidget {
       ),
       body: Center(
         child: TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/second');
-            },
-            child: Text('event')),
+          onPressed: () async {
+            EventModel event = await context
+              .read<EventBookCubit>()
+              .getEventData('6427c9ffd13c6e22aab0a743');
+            if(context.mounted)
+            {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return EventPage(eventData: event);
+                  }),
+                );
+            }
+
+            print('hii');
+          },
+          child: const Text('event'),
+        ),
       ),
     );
   }

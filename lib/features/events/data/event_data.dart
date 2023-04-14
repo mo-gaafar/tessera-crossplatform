@@ -22,7 +22,7 @@ class EventModel {
   String? publicDateUtc;
 
   String? eventId;
-  String? ticketTiersQuantitySold;
+  int? ticketTiersQuantitySold;
   int? ticketTiersCapacity;
   final String ticketTiersTier;
   final int ticketTiersPrice;
@@ -31,7 +31,7 @@ class EventModel {
 
   final String  eventStatus;
   final bool  promoCodesAvailable;
-  String? promoCodesCode;
+  final String promoCodesCode;
   int? promoCodesPercentage;
   int? promoCodesRemainingUses;
   String? promoCodesId;
@@ -40,7 +40,7 @@ class EventModel {
   bool? isPublic;
   String? createdAt;
   String? updatedAt;
-  final int v;
+  int? v;
 
   EventModel({
     required this.startDateTimeTimezone,
@@ -65,7 +65,7 @@ class EventModel {
     this.ticketTiersId,
     required this.eventStatus,
     required this.promoCodesAvailable,
-    this.promoCodesCode,
+    required this.promoCodesCode,
     this.promoCodesPercentage,
     this.promoCodesRemainingUses,
     this.promoCodesId,
@@ -73,7 +73,7 @@ class EventModel {
     this.isPublic,
     this.createdAt,
     this.updatedAt,
-    required this.v
+    this.v
   });
 
   /// Returns a [Map] representation of the [UserModel].
@@ -132,14 +132,14 @@ class EventModel {
       publicDateTimezone: map['publicDateTimezone'] != null ? map['publicDateTimezone'] as String : null,
       publicDateUtc:map['publicDateUtc'] != null ? map['publicDateUtc'] as String : null,
       eventId: map['eventId'] != null ? map['eventId'] as String : null,
-      ticketTiersQuantitySold:map['ticketTiersQuantitySold'] != null ? map['ticketTiersQuantitySold'] as String : null,
+      ticketTiersQuantitySold:map['ticketTiersQuantitySold'] != null ? map['ticketTiersQuantitySold'] as int : null,
       ticketTiersCapacity: map['ticketTiersCapacity'] != null ? map['ticketTiersCapacity'] as int : null,
       ticketTiersTier:map['ticketTiersTier'] as String ,
       ticketTiersPrice: map['ticketTiersPrice']  as int ,
       ticketTiersId:map['ticketTiersId'] != null ? map['ticketTiersId'] as String : null,
       eventStatus: map['eventStatus']  as String,
       promoCodesAvailable: map['promoCodesAvailable']  as bool,
-      promoCodesCode:map['promoCodesCode'] != null ? map['promoCodesCode'] as String : null,
+      promoCodesCode:map['promoCodesCode'] as String ,
       promoCodesPercentage: map['promoCodesPercentage'] != null ? map['promoCodesPercentage'] as int : null,
       promoCodesRemainingUses:map['promoCodesRemainingUses'] != null ? map['promoCodesRemainingUses'] as int : null,
       promoCodesId: map['promoCodesId'] != null ? map['promoCodesId'] as String : null,
@@ -147,7 +147,7 @@ class EventModel {
       isPublic: map['isPublic'] != null ? map['isPublic'] as bool : null,
       createdAt:map['createdAt'] != null ? map['createdAt'] as String : null,
       updatedAt:map['updatedAt'] != null ? map['updatedAt'] as String : null,
-      v:map['v']  as int ,
+      v:map['v'] != null ? map['v'] as int : null,
 
  
     );
