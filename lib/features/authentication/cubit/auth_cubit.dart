@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tessera/constants/enums.dart';
 import 'package:tessera/core/services/authentication/authentication.dart';
 import 'package:tessera/core/services/authentication/email_authentication.dart';
+import 'package:tessera/core/services/location/location_service.dart';
 import 'package:tessera/features/authentication/data/auth_repository.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
@@ -65,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
           // Signed in successfully
           currentUser = user;
           emit(SignedIn());
+          currentUser.location = await LocationService.getUserAddress();
           _authService = authService;
 
           // Persist data to local storage

@@ -3,6 +3,10 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:tessera/core/services/location/location_service.dart';
+import 'package:tessera/core/services/networking/networking.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -29,6 +33,8 @@ class SplashScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen.withScreenRouteFunction(
         screenRouteFunction: () async {
+          await LocationService.handleLocationPermission();
+
           await context.read<AuthCubit>().checkIfSignedIn();
           if (context.read<AuthCubit>().state is SignedIn) {
             return '/third';

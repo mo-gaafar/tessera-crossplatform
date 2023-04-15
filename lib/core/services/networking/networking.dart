@@ -24,7 +24,6 @@ class NetworkService {
         headers: _headers,
       );
       final responseJson = returnResponse(response);
-      debugPrint(response.body.toString());
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -40,7 +39,6 @@ class NetworkService {
             headers: _headers,
             body: data,
           )
-
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
       return responseJson;

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
 import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+
+import 'no_events_found.dart';
 
 class EventsSection extends StatelessWidget {
   const EventsSection({
@@ -14,12 +18,13 @@ class EventsSection extends StatelessWidget {
   });
 
   final String title;
-  final eventList;
+  final List eventList;
   final double radius;
   final bool hasFilters;
 
   @override
   Widget build(BuildContext context) {
+    // print(context.watch<EventsFilterCubit>().state);
     return SliverStack(
       children: [
         SliverPositioned.fill(
@@ -58,24 +63,23 @@ class EventsSection extends StatelessWidget {
                 ),
               ),
 
-              eventList.isEmpty
-                  ? SliverToBoxAdapter(
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: const Text(
-                          'No events found',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    )
-                  : const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 20,
-                      ),
-                    ),
+              SliverToBoxAdapter(
+                child: context.read<EventsFilterCubit>().state
+                            is NearbyEventsLoaded &&
+                        eventList.isEmpty
+                    ? const NoEventsFound(
+                        // description: 'nearby',
+                        )
+                    : const SizedBox(),
+              ),
+
+              SliverToBoxAdapter(
+                child:
+                    context.read<EventsFilterCubit>().state is EventsFiltered &&
+                            eventList.isEmpty
+                        ? const NoEventsFound()
+                        : const SizedBox(),
+              ),
 
               // Actual events list
               SliverList(
@@ -85,11 +89,6 @@ class EventsSection extends StatelessWidget {
                     child: eventList[index],
                   ),
                   childCount: eventList.length,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 20,
                 ),
               ),
             ],

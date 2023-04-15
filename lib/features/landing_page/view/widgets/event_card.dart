@@ -2,24 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/landing_page/view/data/event_card_model.dart';
 
 class EventCard extends StatelessWidget {
-  final String eventTitle;
-  final DateTime eventDate;
-  final String eventLocation;
-  final Image eventImage;
-  const EventCard(
-      {super.key,
-      required this.eventTitle,
-      required this.eventDate,
-      required this.eventLocation,
-      required this.eventImage});
+  final EventCardModel event;
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
       padding: const EdgeInsets.all(0),
-      onPressed: () {},
+      onPressed: () {
+        print(event.id);
+      },
       child: Container(
         clipBehavior: Clip.hardEdge,
         width: double.maxFinite,
@@ -34,8 +29,9 @@ class EventCard extends StatelessWidget {
             Row(
               children: [
                 SizedBox(
+                  height: 100,
                   width: 100,
-                  child: eventImage,
+                  child: event.image,
                 ),
                 const SizedBox(width: 10),
                 Flexible(
@@ -44,7 +40,7 @@ class EventCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        eventTitle,
+                        event.title,
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'NeuePlak',
@@ -62,7 +58,7 @@ class EventCard extends StatelessWidget {
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            eventLocation,
+                            event.location,
                             style: TextStyle(
                               fontSize: 10,
                               fontFamily: 'NeuePlak',
@@ -88,7 +84,7 @@ class EventCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Text(
-                '${eventDate.day.toString()} ${DateFormat('MMM').format(eventDate).toUpperCase()}',
+                '${event.date.day.toString()} ${DateFormat('MMM').format(event.date).toUpperCase()}',
                 style: const TextStyle(
                   fontSize: 10,
                   color: Colors.white,

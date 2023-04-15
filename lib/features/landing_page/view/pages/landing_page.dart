@@ -9,10 +9,26 @@ import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   LandingPage({super.key});
-  final _random = Random();
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  late Image headerImage;
+
+  @override
+  void initState() {
+    super.initState();
+    headerImage = Image.asset(
+      'assets/images/StockConcert${1 + Random().nextInt(5)}.jpg',
+      fit: BoxFit.cover,
+    );
+  }
+
+  // final userLocation = 'New York, ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,24 +91,35 @@ class LandingPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: Image.asset(
-                  'assets/images/StockConcert${1 + _random.nextInt(5)}.jpg',
-                  fit: BoxFit.cover,
-                ),
+                child: headerImage,
               ),
             ),
             expandedHeight: 250,
           ),
-          EventsSection(
-            title: 'Events Near New Cairo',
-            eventList: [
-              EventCard(
-                  eventTitle: 'The Weeknd Tour',
-                  eventImage: Image.asset('assets/images/placeholder.jpg'),
-                  eventDate: DateTime.now(),
-                  eventLocation: 'Koshk Omar Cultural Center')
-            ],
+
+          // Events Near You
+          BlocConsumer<EventsFilterCubit, EventsFilterState>(
+            listenWhen: (previous, current) => previous is EventsFilterInitial,
+            buildWhen: (previous, current) => current is NearbyEventsLoaded,
+            listener: (context, state) async {
+              var location = context.read<AuthCubit>().currentUser.location;
+
+              await context
+                  .read<EventsFilterCubit>()
+                  .initNearbyEvents(location!['area'], location['country']);
+            },
+            builder: (context, state) {
+              var location = context.read<AuthCubit>().currentUser.location;
+
+              return EventsSection(
+                title: 'Events Near ${location!['area']}',
+                eventList:
+                    state is NearbyEventsLoaded ? state.nearbyEvents : [],
+              );
+            },
           ),
+
+          // Events We Think You'll Love
           BlocBuilder<EventsFilterCubit, EventsFilterState>(
             builder: (context, state) {
               return EventsSection(
@@ -103,6 +130,25 @@ class LandingPage extends StatelessWidget {
                   hasFilters: true);
             },
           ),
+
+          // Loading indicator
+          SliverToBoxAdapter(
+            child: BlocBuilder<EventsFilterCubit, EventsFilterState>(
+              builder: (context, state) {
+                return state is EventsLoading
+                    ? Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: const CircularProgressIndicator.adaptive(),
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+
+          // Fill remaining space
           SliverFillRemaining(
             hasScrollBody: false,
             child: Container(

@@ -52,6 +52,8 @@ dependencies:
   flutter_svg: ^2.0.4
   dartz: ^0.10.1
   intl: ^0.18.0
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
 
 
 
