@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
@@ -81,11 +83,32 @@ class LandingPage extends StatelessWidget {
             ),
             expandedHeight: 250,
           ),
-          const EventsSection(title: 'Events Near New Cairo'),
-          const EventsSection(
-              title: 'Events We Think You\'ll Love!',
-              radius: 0,
-              hasFilters: true),
+          EventsSection(
+            title: 'Events Near New Cairo',
+            eventList: [
+              EventCard(
+                  eventTitle: 'The Weeknd Tour',
+                  eventImage: Image.asset('assets/images/placeholder.jpg'),
+                  eventDate: DateTime.now(),
+                  eventLocation: 'Koshk Omar Cultural Center')
+            ],
+          ),
+          BlocBuilder<EventsFilterCubit, EventsFilterState>(
+            builder: (context, state) {
+              return EventsSection(
+                  title: 'Events We Think You\'ll Love!',
+                  eventList:
+                      state is EventsFiltered ? state.filteredEvents : [],
+                  radius: 0,
+                  hasFilters: true);
+            },
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          ),
         ],
       ),
     );

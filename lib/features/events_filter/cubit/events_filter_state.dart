@@ -22,3 +22,12 @@ class FilterCriteriaSelected extends EventsFilterState {
   // @override
   // List<Object> get props => [filterCriteria];
 }
+
+class EventsFiltered extends EventsFilterState {
+  const EventsFiltered(this.filteredEvents);
+
+  final List<EventCard> filteredEvents;
+
+  // @override
+  // List<Object> get props => [filterCriteria];
+}

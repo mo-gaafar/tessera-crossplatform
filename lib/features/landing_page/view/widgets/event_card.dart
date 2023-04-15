@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 
 class EventCard extends StatelessWidget {
   final String eventTitle;
-  final String eventDate;
+  final DateTime eventDate;
   final String eventLocation;
   final Image eventImage;
   const EventCard(
@@ -28,7 +29,7 @@ class EventCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(
-          alignment: Alignment.topRight,
+          alignment: Alignment.bottomRight,
           children: [
             Row(
               children: [
@@ -37,78 +38,62 @@ class EventCard extends StatelessWidget {
                   child: eventImage,
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      eventTitle,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'NeuePlak',
-                        color:
-                            Theme.of(context).colorScheme.onSecondaryContainer,
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        eventTitle,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'NeuePlak',
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
+                        ),
                       ),
-                    ),
-                    // Text('Event Date'),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 12,
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          eventLocation,
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontFamily: 'NeuePlak',
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onTertiaryContainer,
+                      // Text('Event Date'),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            size: 12,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          const SizedBox(width: 2),
+                          Text(
+                            eventLocation,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: 'NeuePlak',
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
             Container(
               margin: const EdgeInsets.all(15),
-              // padding: const EdgeInsets.all(5),
-              height: 30,
-              width: 30,
+              padding: const EdgeInsets.all(4),
+              // height: 20,
+              // width: 30,
               decoration: BoxDecoration(
-                color: AppColors.primary,
+                color: AppColors.primary.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Stack(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      '16',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontFamily: 'NeuePlak',
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      'FEB',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.white,
-                        fontFamily: 'NeuePlak',
-                      ),
-                    ),
-                  ),
-                ],
+              child: Text(
+                '${eventDate.day.toString()} ${DateFormat('MMM').format(eventDate).toUpperCase()}',
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.white,
+                  fontFamily: 'NeuePlak',
+                ),
               ),
             ),
           ],

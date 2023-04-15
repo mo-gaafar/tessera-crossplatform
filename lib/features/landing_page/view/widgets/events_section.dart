@@ -8,11 +8,13 @@ class EventsSection extends StatelessWidget {
   const EventsSection({
     super.key,
     required this.title,
+    required this.eventList,
     this.radius = 20,
     this.hasFilters = false,
   });
 
   final String title;
+  final eventList;
   final double radius;
   final bool hasFilters;
 
@@ -56,19 +58,33 @@ class EventsSection extends StatelessWidget {
                 ),
               ),
 
+              eventList.isEmpty
+                  ? SliverToBoxAdapter(
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: const Text(
+                          'No events found',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 20,
+                      ),
+                    ),
+
               // Actual events list
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: EventCard(
-                        eventTitle: 'The Weeknd Tour',
-                        eventImage:
-                            Image.asset('assets/images/placeholder.jpg'),
-                        eventDate: '12/12/2021',
-                        eventLocation: 'Koshk Omar Cultural Center'),
+                    child: eventList[index],
                   ),
-                  childCount: 10,
+                  childCount: eventList.length,
                 ),
               ),
               const SliverToBoxAdapter(

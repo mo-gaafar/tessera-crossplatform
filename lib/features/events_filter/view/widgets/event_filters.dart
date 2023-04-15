@@ -7,25 +7,22 @@ class EventFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<EventsFilterCubit>(
-      create: (context) => EventsFilterCubit(),
-      child: BlocConsumer<EventsFilterCubit, EventsFilterState>(
-        listenWhen: (previous, current) => current is ChipTapped,
-        buildWhen: (previous, current) => current is FilterCriteriaSelected,
-        listener: (context, state) {
-          context.read<EventsFilterCubit>().editSelection();
-        },
-        builder: (context, state) {
-          return SizedBox(
-            height: 40,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children:
-                  state is FilterCriteriaSelected ? state.filterCriteria : [],
-            ),
-          );
-        },
-      ),
+    return BlocConsumer<EventsFilterCubit, EventsFilterState>(
+      listenWhen: (previous, current) => current is ChipTapped,
+      buildWhen: (previous, current) => current is FilterCriteriaSelected,
+      listener: (context, state) {
+        context.read<EventsFilterCubit>().editSelection();
+      },
+      builder: (context, state) {
+        return SizedBox(
+          height: 40,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children:
+                state is FilterCriteriaSelected ? state.filterCriteria : [],
+          ),
+        );
+      },
     );
   }
 }

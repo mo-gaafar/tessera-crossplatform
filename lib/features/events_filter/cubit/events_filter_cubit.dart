@@ -1,7 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz_unsafe.dart';
+import 'package:flutter/material.dart';
 import 'package:tessera/features/events_filter/data/filter_criteria_model.dart';
 import 'package:tessera/features/events_filter/data/filter_repository.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filter_chip.dart';
+import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 
 part 'events_filter_state.dart';
 
@@ -13,21 +16,25 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
   }
 
   Future<void> initCriteria() async {
-    var onlineList = FilterCriteria.fromList(['Online']);
-    var free = FilterCriteria.fromList(['Free']);
-    var categoryList =
-        FilterCriteria.fromList(await FilterRepository.getFilteredCategories());
-    var dateList = FilterCriteria.fromList(FilterRepository.dates);
-    criteria = [onlineList, free, categoryList, dateList];
+    var online = FilterCriteria.fromList(['Online'], 'online');
+    var free = FilterCriteria.fromList(['Free'], 'free');
+
+    // Gets all categories present in the database.
+    var allEvents = await FilterRepository.getFilteredEvents(
+        FilterRepository.filterQueriesMap());
+    var categories = FilterCriteria.fromList(
+      allEvents['categoriesRetreived'],
+      'category',
+    );
+
+    var dateList =
+        FilterCriteria.fromList(FilterRepository.dates, 'futureDate');
+
+    criteria = [online, free, dateList, categories];
     editSelection();
   }
 
   late List<FilterCriteria> criteria = [];
-
-  // FilterCriteria getCategories() {
-  //   var categoryList = FilterRepository.getFilteredCategories();
-  //   return FilterCriteria.fromList(categoryList);
-  // }
 
   /// Emits a [SelectionChanged] event when a filter chip is selected.
   void onSelectionChanged() {
@@ -43,17 +50,15 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
   /// a list one by one, where they are then sorted by their [isSelected] property,
   /// placing the selected chips at the beginning of the list.
   /// The sorted list is then emitted as a [FilterCriteriaSelected] event.
-  void editSelection() {
+  void editSelection() async {
     final List<EventFilterChip> chips = [];
 
     // Loop through each [FilterCriteria] object.
     for (var i = 0; i < criteria.length; i++) {
-      final List<EventFilterChip> selected = criteria[i].returnSelected();
-      selected.forEach(
-        (element) {
-          chips.add(element);
-        },
-      );
+      final List<EventFilterChip> selected = criteria[i].returnDisplayedChips();
+      for (var element in selected) {
+        chips.add(element);
+      }
     }
 
     // Sort the list by their [isSelected] property.
@@ -67,14 +72,45 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     );
 
     // TODO: Call getFilteredEvents() here, and figure out how to pass it to view.
+    getFilteredEvents();
 
     emit(FilterCriteriaSelected(chips));
   }
 
-  Future getFilteredEvents() async {
-    // TODO:
-    // Input: selected chips
-    // Output: filtered events
-    final events = await FilterRepository.queryEvents();
+  void getFilteredEvents() async {
+    var queries = FilterRepository.filterQueriesMap();
+
+    // Loop through each [FilterCriteria] object and add the selected chip's label
+    // to the [queries] map.
+    for (var element in criteria) {
+      var selected = element.returnSelected();
+      if (selected != null) {
+        queries[element.type] = element.returnSelected()!['label'];
+      }
+    }
+
+    final response = await FilterRepository.getFilteredEvents(queries);
+
+    if (response['success'] == 'true') {
+      List filteredEvents = response['filteredEvents'];
+
+      // Generate a list of [EventCard]s from the filtered events.
+      List<EventCard> eventCards = List.generate(
+        filteredEvents.length,
+        (index) => EventCard(
+          eventTitle: filteredEvents[index]['basicInfo']['eventName'],
+          eventDate: DateTime.parse(
+              filteredEvents[index]['basicInfo']['startDateTime']),
+          eventLocation: filteredEvents[index]['basicInfo']['location']
+              ['venueName'],
+          eventImage: Image.network(
+              filteredEvents[index]['basicInfo']['eventImage'],
+              fit: BoxFit.cover),
+        ),
+      );
+
+      emit(EventsFiltered(eventCards));
+      print('kk');
+    }
   }
 }
