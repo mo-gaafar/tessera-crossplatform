@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
-import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import 'no_events_found.dart';

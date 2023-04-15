@@ -1,8 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz_unsafe.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events_filter/data/filter_criteria_model.dart';
 import 'package:tessera/features/events_filter/data/filter_repository.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filter_chip.dart';

@@ -42,10 +42,8 @@ class FilterCriteria {
   FilterCriteria.fromList(List list, String inputType) {
     filterChips = [];
     type = inputType;
-    list.forEach(
-      (element) {
-        filterChips.add(EventFilterChip(label: element));
-      },
-    );
+    for (var element in list) {
+      filterChips.add(EventFilterChip(label: element));
+    }
   }
 }

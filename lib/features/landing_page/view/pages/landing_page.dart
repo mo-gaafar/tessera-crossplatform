@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
-import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
