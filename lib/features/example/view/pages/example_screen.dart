@@ -26,7 +26,7 @@ class ExampleScreen extends StatelessWidget {
           onPressed: () async {
             EventModel event = await context
               .read<EventBookCubit>()
-              .getEventData('6427c9ffd13c6e22aab0a743');
+              .getEventData();
             if(context.mounted)
             {
                 Navigator.of(context).push(
@@ -36,7 +36,7 @@ class ExampleScreen extends StatelessWidget {
                 );
             }
 
-            print('hii');
+            print('hii landing page');
           },
           child: const Text('event'),
         ),

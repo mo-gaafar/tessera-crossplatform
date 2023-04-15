@@ -19,7 +19,7 @@ showAlertDialog(BuildContext context,bool promocode,int pricing) {
     onPressed: () {
       Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>CheckOut(feesText: pricing.toString()),),);
+                MaterialPageRoute(builder: (context) =>CheckOut(feesText: pricing.toString(), ticketTier: 'Free',),),);
     },
   );
 

@@ -1,5 +1,5 @@
 class FormValidator {
-  String? passowrdValidty(String password) {
+  String? nameValidty(String password) {
     // String pattern =
     //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
     RegExp lowerCaseRegExp = RegExp(r'[a-z]');

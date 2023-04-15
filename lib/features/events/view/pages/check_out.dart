@@ -9,12 +9,13 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final int _duration = 10; //1800;
+  final String ticketTier;
   final String feesText; //money or free
 
-  CheckOut({Key? key, required this.feesText}) : super(key: key);
+  CheckOut({Key? key, required this.feesText, required this.ticketTier}) : super(key: key);
 
   bool view() {
-    if (feesText == 'Free') {
+    if (ticketTier == 'Free') {
       return false;
     } else {
       return true;

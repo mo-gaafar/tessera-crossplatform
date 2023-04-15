@@ -15,6 +15,16 @@ List splitting(String data) {
   return [data.substring(0, idx).trim(), data.substring(idx + 1).trim()];
 }
 
+List<String> addTier(var data) {
+  List<String> ticketTierAndprice = [];
+  for (int i = 0; i < data.filteredEvents[0]['ticketTiers'].length; i++)
+    ticketTierAndprice.add(data.filteredEvents[0]['ticketTiers'][i]
+            ['tierName'].toString() +
+        data.filteredEvents[0]['ticketTiers'][i]['price']..toString());
+
+  return ticketTierAndprice;
+}
+
 class EventPage extends StatefulWidget {
   const EventPage({super.key, required this.eventData});
   final EventModel eventData;
@@ -26,15 +36,17 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   late EventModel _eventData;
   final formKey = GlobalKey<FormState>();
-  String? tier;
+  String tier = '';
+  late int tierIndex = 0;
   String promo = '';
   int count = 0;
 
+  //POP UP
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(
         context: context,
         builder: (context) {
-          bool isChecked = false;
+          //bool isChecked = false;
           return StatefulBuilder(builder: (context, setState) {
             return AlertDialog(
                 content: SingleChildScrollView(
@@ -42,30 +54,26 @@ class _EventPageState extends State<EventPage> {
                 key: formKey,
                 child: Column(
                   children: [
-                    ListTile(
-                      title: const Text('VIP'),
-                      leading: Radio(
-                        value: 'VIP',
-                        groupValue: tier,
-                        onChanged: (value) {
-                          setState(() {
-                            tier = value;
-                          });
-                        },
+                    for (int i = 0;
+                        i < _eventData.filteredEvents[0]['ticketTiers'].length;
+                        i++)
+                      Row(
+                        children: [
+                          Radio(
+                              value: _eventData.filteredEvents[0]['ticketTiers']
+                                      [i]['tierName']
+                                  .toString(),
+                              groupValue: tier,
+                              onChanged: (value) {
+                                setState(() {
+                                  tier = value.toString();
+                                  tierIndex = i;
+                                });
+                              }),
+                          Text(_eventData.filteredEvents[0]['ticketTiers'][i]
+                              ['tierName'])
+                        ],
                       ),
-                    ),
-                    ListTile(
-                      title: const Text('Regular'),
-                      leading: Radio(
-                        value: 'Regular',
-                        groupValue: tier,
-                        onChanged: (value) {
-                          setState(() {
-                            tier = value;
-                          });
-                        },
-                      ),
-                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -99,7 +107,7 @@ class _EventPageState extends State<EventPage> {
                         if (value == null || value.isEmpty) {
                           return null;
                         } else {
-                          if (value == _eventData.promoCodesCode) {
+                          if (value == 'spring') {
                             promo = value;
                             return null;
                           } else {
@@ -124,7 +132,13 @@ class _EventPageState extends State<EventPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CheckOut(
-                                      feesText: 'Free'),
+                                      feesText: _eventData.filteredEvents[0]
+                                              ['ticketTiers'][tierIndex]
+                                              ['price']
+                                          .toString(),
+                                      ticketTier: _eventData.filteredEvents[0]
+                                              ['ticketTiers'][tierIndex][
+                                          'tierName']), //GIVING THE PRICE AS STRING
                                 ),
                               );
                             }
@@ -152,7 +166,8 @@ class _EventPageState extends State<EventPage> {
       appBar: AppBar(
         elevation: 3,
         title: Text(
-          _eventData.eventName,
+          _eventData.filteredEvents[0]['basicInfo']
+              ['eventName'], //APP BAR EVENT NAME
           style: TextStyle(
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
@@ -164,6 +179,7 @@ class _EventPageState extends State<EventPage> {
             icon: Icon(Icons.close)),
       ),
       bottomNavigationBar: BottomAppBar(
+          //INCLUDES THE TICKET AND PRICE
           child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -171,7 +187,8 @@ class _EventPageState extends State<EventPage> {
             Expanded(
               child: Text(
                 textAlign: TextAlign.center,
-                _eventData.ticketTiersPrice.toString(),
+                _eventData.filteredEvents[0]['ticketTiers'][tierIndex]['price']
+                    .toString(),
                 style: const TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
@@ -187,9 +204,9 @@ class _EventPageState extends State<EventPage> {
                     //ticket
                     onTap: () async {
                       if (context.mounted) {
-                        if (await context
-                                .read<EventBookCubit>()
-                                .eventFull('6427c9ffd13c6e22aab0a743') ==
+                        //String ticketTierName = _eventData.filteredEvents[0].ticketTiers[tierIndex].tierName;
+                        if (_eventData.tierCapacityFull[tierIndex]
+                                ['isCapacityFull'] ==
                             true) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             duration: Duration(seconds: 2),
@@ -220,13 +237,13 @@ class _EventPageState extends State<EventPage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.fill,
-                    image:
-                        AssetImage('assets/images/LogoFullTextTicketSmall.png'),
+                    image: NetworkImage(_eventData.filteredEvents[0]
+                        ['basicInfo']['eventImage']), //EVENT IMAGE
                   ),
                 ),
               ),
               Text(
-                _eventData.eventName,
+                _eventData.filteredEvents[0]['basicInfo']['eventName'],
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: AppColors.textOnLight,
@@ -247,7 +264,19 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       //date text
                       Text(
-                        _eventData.startDateTimeUtc,
+                        splitting(_eventData.filteredEvents[0]['ticketTiers']
+                            [tierIndex]['startSelling'])[0],
+                        style: TextStyle(
+                            fontFamily: 'NeuePlak',
+                            color: Color.fromARGB(255, 44, 42, 42),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w100),
+                      ),
+                      //date text end
+                      Text(
+                        'to' +
+                            splitting(_eventData.filteredEvents[0]
+                                ['ticketTiers'][tierIndex]['endSelling'])[0],
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
@@ -256,13 +285,25 @@ class _EventPageState extends State<EventPage> {
                       ),
                       //time text
                       Text(
-                        _eventData.startDateTimeUtc,
+                        splitting(_eventData.filteredEvents[0]['ticketTiers']
+                            [tierIndex]['startSelling'])[1],
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: Color.fromARGB(255, 44, 42, 42),
                             fontSize: 20,
                             fontWeight: FontWeight.w100),
-                      )
+                      ),
+                      //time text end
+                      Text(
+                        'to' +
+                            splitting(_eventData.filteredEvents[0]
+                                ['ticketTiers'][tierIndex]['endSelling'])[1],
+                        style: TextStyle(
+                            fontFamily: 'NeuePlak',
+                            color: Color.fromARGB(255, 44, 42, 42),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w100),
+                      ),
                     ],
                   )
                 ],
@@ -281,23 +322,45 @@ class _EventPageState extends State<EventPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //offline or online
-                      Text(
-                        _eventData.eventStatus,
-                        style: TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: Color.fromARGB(255, 44, 42, 42),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w100),
-                      ),
+                      if (_eventData.filteredEvents[0]['isOnline'] == true) ...[
+                        Text(
+                          'online',
+                          style: TextStyle(
+                              fontFamily: 'NeuePlak',
+                              color: Color.fromARGB(255, 44, 42, 42),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w100),
+                        ),
+                        TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Click here to get to your event live ',
+                              style: TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: Color.fromARGB(255, 44, 42, 42),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w100),
+                            ))
+                      ] else ...[
+                        Text(
+                          'Offline',
+                          style: TextStyle(
+                              fontFamily: 'NeuePlak',
+                              color: Color.fromARGB(255, 44, 42, 42),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w100),
+                        ),
+                        Text(
+                          _eventData.filteredEvents[0]['basicInfo']
+                              ['location']!['city'],
+                          style: TextStyle(
+                              fontFamily: 'NeuePlak',
+                              color: Color.fromARGB(255, 44, 42, 42),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w100),
+                        )
+                      ],
                       //location
-                      Text(
-                        _eventData.location,
-                        style: TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: Color.fromARGB(255, 44, 42, 42),
-                            fontSize: 20,
-                            fontWeight: FontWeight.w100),
-                      )
                     ],
                   )
                 ],
@@ -348,7 +411,7 @@ class _EventPageState extends State<EventPage> {
               ),
               //desciption
               Text(
-                _eventData.description,
+                _eventData.filteredEvents[0]['summary'],
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
                     color: Color.fromARGB(255, 44, 42, 42),
@@ -362,10 +425,13 @@ class _EventPageState extends State<EventPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => SeeMore(
-                          title: _eventData.eventName,
-                          date: _eventData.startDateTimeUtc,
-                          time: _eventData.startDateTimeUtc,
-                          details: _eventData.description),
+                          title: _eventData.filteredEvents[0]['basicInfo']
+                              ['eventName'],
+                          date: splitting(_eventData.filteredEvents[0]
+                              ['ticketTiers'][tierIndex]['startSelling'])[0],
+                          time: splitting(_eventData.filteredEvents[0]
+                              ['ticketTiers'][tierIndex]['startSelling'])[1],
+                          details: _eventData.filteredEvents[0]['description']),
                     ),
                   );
                 },
@@ -393,14 +459,27 @@ class _EventPageState extends State<EventPage> {
                 height: 20,
               ),
               //how many tickets left/ full capacity or not
-              Text(
-                _eventData.v.toString() + 'tickts' + 'left',
-                style: TextStyle(
-                    fontFamily: 'NeuePlak',
-                    color: Color.fromARGB(255, 44, 42, 42),
-                    fontSize: 15,
-                    fontWeight: FontWeight.w100),
-              ),
+              if (_eventData.filteredEvents[0]['creatorId'] == null) ...[
+                Text(
+                  'NO KNOWN ORGANIZER',
+                  style: TextStyle(
+                      fontFamily: 'NeuePlak',
+                      color: Color.fromARGB(255, 44, 42, 42),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w100),
+                ),
+              ] else ...[
+                Text(
+                  'organizers name:' +
+                      _eventData.filteredEvents[0]['creatorId']['firstName'] +
+                      _eventData.filteredEvents[0]['creatorId']['lasttName'],
+                  style: TextStyle(
+                      fontFamily: 'NeuePlak',
+                      color: Color.fromARGB(255, 44, 42, 42),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w100),
+                ),
+              ],
               const SizedBox(
                 height: 5,
               ),
