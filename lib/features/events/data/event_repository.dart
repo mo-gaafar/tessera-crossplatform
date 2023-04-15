@@ -62,7 +62,7 @@ class EventRepository {
 
   static Future eventBasicInfo() async {
     final responseBody = await NetworkService.getGetApiResponse(
-        'https://www.tessera.social/api/attendee/event/643ad9fd53ce2a393ad6a245');
+        'https://www.tessera.social/api/attendee/event/643aa02d4d2e42199562be5f');
     print(responseBody);
     return responseBody;
   }

@@ -459,7 +459,7 @@ class _EventPageState extends State<EventPage> {
                 height: 20,
               ),
               //how many tickets left/ full capacity or not
-              if (_eventData.filteredEvents[0]['creatorId'] == null) ...[
+              /*if (_eventData.filteredEvents[0]['creatorId'] == null) ...[
                 Text(
                   'NO KNOWN ORGANIZER',
                   style: TextStyle(
@@ -479,7 +479,7 @@ class _EventPageState extends State<EventPage> {
                       fontSize: 20,
                       fontWeight: FontWeight.w100),
                 ),
-              ],
+              ],*/
               const SizedBox(
                 height: 5,
               ),

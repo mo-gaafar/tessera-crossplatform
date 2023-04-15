@@ -44,7 +44,7 @@ class FilteredEvents {
   final String description;
   final List<dynamic> ticketTiers;
   final bool isOnline;
-  final String eventUrl;
+  String? eventUrl;
   CreatorId? creatorId;
 
   FilteredEvents(
@@ -53,8 +53,9 @@ class FilteredEvents {
       required this.description,
       required this.ticketTiers,
       required this.isOnline,
-      required this.eventUrl,
-      this.creatorId});
+      this.eventUrl,
+      this.creatorId,
+      });
 
   factory FilteredEvents.fromMap(Map<String, dynamic> map){
       return FilteredEvents(
@@ -63,7 +64,7 @@ class FilteredEvents {
         description : map['description'] as String,
         ticketTiers : map['ticketTiers'] as List<dynamic>,
         isOnline : map['isOnline'] as bool,
-        eventUrl : map['eventUrl'] as String,
+        eventUrl : map['eventUrl'] != null ? map['eventUrl'] as String : null,
         creatorId : map['creatorId'] != null ? map['creatorId'] as CreatorId : null
         );
   }
@@ -75,7 +76,7 @@ class FilteredEvents {
         'ticketTiers': ticketTiers,
         'isOnline': isOnline,
         'eventUrl': eventUrl,
-        'creatorId': creatorId
+        'creatorId': creatorId,
       };
 
   String toJson() => json.encode(toMap());
