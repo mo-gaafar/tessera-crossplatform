@@ -23,7 +23,7 @@ void main() {
         'should return lightTheme as the state when ThemeCubit is initialized.',
         () => expect(
           themeCubit.state,
-          ThemeState(theme: lightTheme),
+          ThemeState(theme: AppTheme.lightTheme),
         ),
       );
 
@@ -31,7 +31,7 @@ void main() {
         'emits darkTheme state when toggleTheme() is triggered.',
         build: () => themeCubit,
         act: (bloc) => bloc.toggleTheme(),
-        expect: () => <ThemeState>[ThemeState(theme: darkTheme)],
+        expect: () => <ThemeState>[ThemeState(theme: AppTheme.darkTheme)],
       );
     },
   );

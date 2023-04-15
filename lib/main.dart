@@ -1,32 +1,52 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tessera/core/router/router.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
 void main() {
-  runApp(const MyApp());
+  DartPluginRegistrant.ensureInitialized();
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   final AppRouter _appRouter = AppRouter();
-  // This widget is the root of your application.
+  final snackbarKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ThemeCubit>(
-      create: (context) => ThemeCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AuthCubit(),
+        ),
+      ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: state.theme,
-            onGenerateRoute: _appRouter.onGenerateRoute,
+          return BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is AuthError) {
+                snackbarKey.currentState?.showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              }
+            },
+            child: MaterialApp(
+              scaffoldMessengerKey: snackbarKey,
+              title: 'Flutter Demo',
+              theme: state.theme,
+              onGenerateRoute: _appRouter.onGenerateRoute,
+            ),
           );
         },
       ),
