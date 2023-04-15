@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
-import 'package:tessera/features/events_filter/data/filter_criteria_model.dart';
 
 class EventFilterChip extends StatefulWidget {
   EventFilterChip({super.key, required this.label, this.isSelected = false});
@@ -26,7 +25,7 @@ class _EventFilterChipState extends State<EventFilterChip> {
         padding: const EdgeInsets.symmetric(horizontal: 5),
         label: Text(
           widget.label,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
         selected: widget.isSelected,
         selectedColor: AppColors.secondary,

@@ -3,14 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
   LandingPage({super.key});
-  final _random = Random();
 
+  @override
+  State<LandingPage> createState() => _LandingPageState();
+}
+
+class _LandingPageState extends State<LandingPage> {
+  late Image headerImage;
+
+  @override
+  void initState() {
+    super.initState();
+    headerImage = Image.asset(
+      'assets/images/StockConcert${1 + Random().nextInt(5)}.jpg',
+      fit: BoxFit.cover,
+    );
+  }
+
+  // final userLocation = 'New York, ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +45,7 @@ class LandingPage extends StatelessWidget {
                           .pushReplacementNamed('/loginOptions');
                     }
                   },
-                  icon: Icon(Icons.logout)),
+                  icon: const Icon(Icons.logout)),
               AnimatedIconButton(
                 icons: [
                   AnimatedIconItem(
@@ -45,16 +62,18 @@ class LandingPage extends StatelessWidget {
             elevation: 0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: EdgeInsets.only(bottom: 10),
+              titlePadding: EdgeInsets.zero,
               centerTitle: true,
               title: SafeArea(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Image.asset(
-                    'assets/images/LogoFullTextLarge.png',
-                    // color: Colors.white,
-                    width: 150,
-                  ),
+                child: SizedBox(
+                  height: 200,
+                  child: LayoutBuilder(builder: (context, constraints) {
+                    return Image.asset(
+                      'assets/images/LogoFullTextLarge.png',
+                      color: constraints.maxHeight > 100 ? Colors.white : null,
+                      width: 150,
+                    );
+                  }),
                 ),
               ),
               background: Container(
@@ -71,19 +90,70 @@ class LandingPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                child: Image.asset(
-                  'assets/images/StockConcert${1 + _random.nextInt(5)}.jpg',
-                  fit: BoxFit.cover,
-                ),
+                child: headerImage,
               ),
             ),
             expandedHeight: 250,
           ),
-          const EventsSection(title: 'Events Near New Cairo'),
-          const EventsSection(
-              title: 'Events We Think You\'ll Love!',
-              radius: 0,
-              hasFilters: true),
+
+          // Events Near You
+          BlocConsumer<EventsFilterCubit, EventsFilterState>(
+            listenWhen: (previous, current) => previous is EventsFilterInitial,
+            buildWhen: (previous, current) => current is NearbyEventsLoaded,
+            listener: (context, state) async {
+              var location = context.read<AuthCubit>().currentUser.location;
+
+              await context
+                  .read<EventsFilterCubit>()
+                  .initNearbyEvents(location!['area'], location['country']);
+            },
+            builder: (context, state) {
+              var location = context.read<AuthCubit>().currentUser.location;
+
+              return EventsSection(
+                title: 'Events Near ${location!['area']}',
+                eventList:
+                    state is NearbyEventsLoaded ? state.nearbyEvents : [],
+              );
+            },
+          ),
+
+          // Events We Think You'll Love
+          BlocBuilder<EventsFilterCubit, EventsFilterState>(
+            builder: (context, state) {
+              return EventsSection(
+                  title: 'Events We Think You\'ll Love!',
+                  eventList:
+                      state is EventsFiltered ? state.filteredEvents : [],
+                  radius: 0,
+                  hasFilters: true);
+            },
+          ),
+
+          // Loading indicator
+          SliverToBoxAdapter(
+            child: BlocBuilder<EventsFilterCubit, EventsFilterState>(
+              builder: (context, state) {
+                return state is EventsLoading
+                    ? Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(top: 20),
+                        width: double.infinity,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: const CircularProgressIndicator.adaptive(),
+                      )
+                    : const SizedBox();
+              },
+            ),
+          ),
+
+          // Fill remaining space
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          ),
         ],
       ),
     );
