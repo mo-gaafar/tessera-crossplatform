@@ -54,6 +54,8 @@ dependencies:
   intl: ^0.18.0
   geolocator: ^9.0.2
   geocoding: ^2.1.0
+  font_awesome_flutter: ^10.4.0
+  circular_countdown_timer: ^0.2.3
 
 
 

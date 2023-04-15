@@ -5,6 +5,7 @@ import 'package:tessera/core/router/router.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
 
 void main() {
   DartPluginRegistrant.ensureInitialized();
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AuthCubit(),
+        ),
+        BlocProvider(
+          create: (context) => EventBookCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

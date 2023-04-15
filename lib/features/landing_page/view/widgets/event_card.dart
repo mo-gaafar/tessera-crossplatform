@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
+import 'package:tessera/features/events/data/event_data.dart';
+import 'package:tessera/features/events/view/pages/event_screen.dart';
 import 'package:tessera/features/landing_page/view/data/event_card_model.dart';
 
 class EventCard extends StatelessWidget {
@@ -12,8 +16,16 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoButton(
       padding: const EdgeInsets.all(0),
-      onPressed: () {
-        print(event.id);
+      onPressed: () async {
+        EventModel eventModel =
+            await context.read<EventBookCubit>().getEventData(event.id);
+        if (context.mounted) {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (BuildContext context) {
+              return EventPage(eventData: eventModel);
+            }),
+          );
+        }
       },
       child: Container(
         clipBehavior: Clip.hardEdge,
