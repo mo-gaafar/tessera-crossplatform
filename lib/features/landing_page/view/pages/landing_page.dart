@@ -101,17 +101,19 @@ class _LandingPageState extends State<LandingPage> {
             listenWhen: (previous, current) => previous is EventsFilterInitial,
             buildWhen: (previous, current) => current is NearbyEventsLoaded,
             listener: (context, state) async {
-              var location = context.read<AuthCubit>().currentUser.location;
+              var location =
+                  context.select((AuthCubit auth) => auth.currentUser.location);
 
-              await context
-                  .read<EventsFilterCubit>()
-                  .initNearbyEvents(location!['area'], location['country']);
+              await context.select(
+                (EventsFilterCubit event) => event.initNearbyEvents('OR', 'US'),
+              );
             },
             builder: (context, state) {
-              var location = context.read<AuthCubit>().currentUser.location;
+              var location =
+                  context.select((AuthCubit auth) => auth.currentUser.location);
 
               return EventsSection(
-                title: 'Events Near ${location!['area']}',
+                title: 'Events Near ',
                 eventList:
                     state is NearbyEventsLoaded ? state.nearbyEvents : [],
               );
