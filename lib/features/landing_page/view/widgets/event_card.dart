@@ -8,6 +8,10 @@ import 'package:tessera/features/events/data/event_data.dart';
 import 'package:tessera/features/events/view/pages/event_screen.dart';
 import 'package:tessera/features/landing_page/view/data/event_card_model.dart';
 
+/// A card displaying a single event.
+///
+/// Takes in an [EventCardModel] and displays the event's title, image, date and
+/// location.
 class EventCard extends StatelessWidget {
   final EventCardModel event;
   const EventCard({super.key, required this.event});

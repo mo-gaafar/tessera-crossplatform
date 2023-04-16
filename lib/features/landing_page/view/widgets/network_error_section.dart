@@ -8,6 +8,7 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 
+/// Displays a network error message when a connection error occurs.
 class NetworkErrorSection extends StatelessWidget {
   const NetworkErrorSection({super.key, required this.refresh});
 

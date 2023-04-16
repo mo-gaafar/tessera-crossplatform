@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A widget to display when no events are found.
 class NoEventsFound extends StatelessWidget {
   const NoEventsFound({super.key, this.description = 'found'});
 

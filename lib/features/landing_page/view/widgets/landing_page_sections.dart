@@ -8,6 +8,7 @@ import 'package:tessera/features/landing_page/view/widgets/sliver_loading.dart';
 
 import 'events_section.dart';
 
+/// A widget containing all the sections of the landing page.
 class LandingPageSections extends StatelessWidget {
   const LandingPageSections({super.key});
 

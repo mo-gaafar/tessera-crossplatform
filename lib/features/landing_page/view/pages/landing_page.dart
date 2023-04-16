@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:tessera/features/landing_page/view/widgets/landing_page_sections.dart';
 import 'package:tessera/features/landing_page/view/widgets/network_error_section.dart';
 
+/// The landing page of the app.
 class LandingPage extends StatefulWidget {
   LandingPage({super.key});
 

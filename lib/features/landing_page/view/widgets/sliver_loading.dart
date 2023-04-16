@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 
+/// Displays a loading indicator when the events are being fetched.
+///
+/// Compatible with [SliverList].
 class SliverLoading extends StatelessWidget {
   const SliverLoading({super.key});
 

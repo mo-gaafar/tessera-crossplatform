@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// A model class representing a single event card.
+///
+/// Uses only the required attributes of events returned.
 class EventCardModel {
   final String title;
   final Image image;

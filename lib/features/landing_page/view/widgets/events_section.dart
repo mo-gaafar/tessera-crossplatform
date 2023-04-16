@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import 'no_events_found.dart';
-
+/// A section of the landing page containing a header and a list of events.
 class EventsSection extends StatelessWidget {
   const EventsSection({
     super.key,
@@ -60,9 +57,6 @@ class EventsSection extends StatelessWidget {
                   ),
                 ),
               ),
-              // if (context.read<EventsFilterCubit>().state is EventsLoading)
-              //   const SliverToBoxAdapter(
-              //       child: Center(child: CircularProgressIndicator.adaptive())),
 
               // Actual events list
               SliverList(

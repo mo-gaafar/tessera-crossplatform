@@ -47,6 +47,8 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
   }
 
   /// Initializes nearby events according to user location passed in.
+  ///
+  /// Emits a [NearbyEventsLoaded] event with the list of [EventCard]s.
   Future<void> initNearbyEvents(String area, String country) async {
     var queries = FilterRepository.filterQueriesMap();
 
@@ -76,6 +78,8 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     emit(ChipTapped());
   }
 
+  /// Emits a [Refresh] event when the user attempts to refresh events after
+  /// network error.
   void attempRefresh() {
     emit(Refresh());
   }
@@ -161,6 +165,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     return queries;
   }
 
+  /// Generates a list of [EventCard]s from the filtered events.
+  ///
+  /// Each event returned from the API is converted to an [EventCardModel] object,
+  /// and then passed to the [EventCard] widget.
   List<EventCard> generateEventCards(List filteredEvents) {
     return List.generate(
       filteredEvents.length,

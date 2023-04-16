@@ -1,7 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:tessera/core/services/networking/networking.dart';
 
+/// Repository for handling the API calls used by [EventsFilterCubit].
 class FilterRepository {
+  /// Gets filtered events according to the [data] passed in.
+  ///
+  /// Returns either a [Map] of the events or an error message.
   static Future<Either<String, Map>> getFilteredEvents(Map data) async {
     try {
       final response = await NetworkService.getGetApiResponse(
@@ -12,6 +16,7 @@ class FilterRepository {
     }
   }
 
+  /// Iniitial Map representing the filter queries to be passed to [getFilteredEvents].
   static Map<String, String> filterQueriesMap() {
     return {
       'category': '',
@@ -25,6 +30,7 @@ class FilterRepository {
     };
   }
 
+  /// List of dates to be displayed as filter chips.
   static List<String> dates = [
     'Today',
     'Tomorrow',
