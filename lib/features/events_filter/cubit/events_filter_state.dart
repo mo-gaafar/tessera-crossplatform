@@ -12,6 +12,12 @@ class EventsLoading extends EventsFilterState {}
 
 class EventsLoaded extends EventsFilterState {}
 
+class EventsError extends EventsFilterState {
+  const EventsError(this.message);
+
+  final String message;
+}
+
 class FilterCriteriaSelected extends EventsFilterState {
   const FilterCriteriaSelected(this.filterCriteria);
 

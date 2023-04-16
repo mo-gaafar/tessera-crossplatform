@@ -173,11 +173,11 @@ class _EventPageState extends State<EventPage> {
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
         backgroundColor: AppColors.primary,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/'); //back to landing page
-            },
-            icon: Icon(Icons.close)),
+        // leading: IconButton(
+        //     onPressed: () {
+        //       Navigator.pushNamed(context, '/'); //back to landing page
+        //     },
+        //     icon: Icon(Icons.close)),
       ),
       bottomNavigationBar: BottomAppBar(
           //INCLUDES THE TICKET AND PRICE

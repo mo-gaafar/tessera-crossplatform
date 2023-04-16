@@ -28,16 +28,22 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     // Gets all categories present in the database.
     var allEvents = await FilterRepository.getFilteredEvents(
         FilterRepository.filterQueriesMap());
-    var categories = FilterCriteria.fromList(
-      allEvents['categoriesRetreived'],
-      'category',
+
+    allEvents.fold(
+      (error) => emit(EventsError(error)),
+      (allEvents) {
+        var categories = FilterCriteria.fromList(
+          allEvents['categoriesRetreived'],
+          'category',
+        );
+
+        var dateList =
+            FilterCriteria.fromList(FilterRepository.dates, 'futureDate');
+
+        criteria = [online, free, dateList, categories];
+        editSelection();
+      },
     );
-
-    var dateList =
-        FilterCriteria.fromList(FilterRepository.dates, 'futureDate');
-
-    criteria = [online, free, dateList, categories];
-    editSelection();
   }
 
   /// Initializes nearby events according to user location passed in.
@@ -52,14 +58,17 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     // Call API request to get filtered events by [queries].
     final response = await FilterRepository.getFilteredEvents(queries);
 
-    if (response['success'] == 'true') {
-      List filteredEvents = response['filteredEvents'];
+    response.fold(
+      (error) => emit(EventsError(error)),
+      (response) {
+        List filteredEvents = response['filteredEvents'];
 
-      // Generate a list of [EventCard]s from the filtered events.
-      final List<EventCard> eventCards = generateEventCards(filteredEvents);
+        // Generate a list of [EventCard]s from the filtered events.
+        final List<EventCard> eventCards = generateEventCards(filteredEvents);
 
-      emit(NearbyEventsLoaded(eventCards));
-    }
+        emit(NearbyEventsLoaded(eventCards));
+      },
+    );
   }
 
   /// Emits a [SelectionChanged] event when a filter chip is selected.
@@ -115,14 +124,17 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     // Call API request to get filtered events by [queries].
     final response = await FilterRepository.getFilteredEvents(queries);
 
-    if (response['success'] == 'true') {
-      List filteredEvents = response['filteredEvents'];
+    response.fold(
+      (error) => emit(EventsError(error)),
+      (response) {
+        List filteredEvents = response['filteredEvents'];
 
-      // Generate a list of [EventCard]s from the filtered events.
-      final List<EventCard> eventCards = generateEventCards(filteredEvents);
+        // Generate a list of [EventCard]s from the filtered events.
+        final List<EventCard> eventCards = generateEventCards(filteredEvents);
 
-      emit(EventsFiltered(eventCards));
-    }
+        emit(EventsFiltered(eventCards));
+      },
+    );
   }
 
   /// Prepare queries map to be passed to [FilterRepository.getFilteredEvents()]
