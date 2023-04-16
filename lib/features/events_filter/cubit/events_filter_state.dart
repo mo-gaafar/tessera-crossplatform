@@ -18,6 +18,8 @@ class EventsError extends EventsFilterState {
   final String message;
 }
 
+class Refresh extends EventsFilterState {}
+
 class FilterCriteriaSelected extends EventsFilterState {
   const FilterCriteriaSelected(this.filterCriteria);
 

@@ -16,11 +16,11 @@ class LandingPageSections extends StatelessWidget {
     return MultiSliver(
       children: [
         BlocConsumer<EventsFilterCubit, EventsFilterState>(
-          listenWhen: (previous, current) => previous is EventsFilterInitial,
+          listenWhen: (previous, current) =>
+              previous is EventsFilterInitial || previous is Refresh,
           buildWhen: (previous, current) => current is NearbyEventsLoaded,
           listener: (context, state) async {
             var location = context.read<AuthCubit>().currentUser.location;
-
             await context
                 .read<EventsFilterCubit>()
                 .initNearbyEvents(location!['area'], location['country']);

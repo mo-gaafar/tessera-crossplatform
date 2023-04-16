@@ -1,17 +1,13 @@
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'dart:math';
 
-import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
 import 'package:tessera/features/landing_page/view/widgets/landing_page_sections.dart';
 import 'package:tessera/features/landing_page/view/widgets/network_error_section.dart';
-import 'package:tessera/features/landing_page/view/widgets/no_events_found.dart';
-import 'package:tessera/features/landing_page/view/widgets/sliver_loading.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({super.key});

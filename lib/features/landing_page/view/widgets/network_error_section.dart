@@ -55,9 +55,10 @@ class NetworkErrorSection extends StatelessWidget {
                     'Try Again',
                     style: TextStyle(color: AppColors.secondary),
                   ),
-                  onPressed: () {
-                    context.read<EventsFilterCubit>().initCriteria();
-                    refresh;
+                  onPressed: () async {
+                    context.read<EventsFilterCubit>().attempRefresh();
+                    await context.read<EventsFilterCubit>().initCriteria();
+                    // refresh;
                   },
                 ),
               ],
