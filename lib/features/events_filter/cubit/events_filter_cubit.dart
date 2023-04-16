@@ -47,6 +47,8 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     queries['area'] = area;
     queries['country'] = country;
 
+    emit(EventsLoading());
+
     // Call API request to get filtered events by [queries].
     final response = await FilterRepository.getFilteredEvents(queries);
 

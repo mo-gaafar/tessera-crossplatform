@@ -1,11 +1,8 @@
 part of 'auth_cubit.dart';
 
 ///states that the cubit emit
-abstract class AuthState extends Equatable {
+abstract class AuthState {
   const AuthState();
-
-  @override
-  List<Object> get props => [];
 }
 
 class AuthInitial extends AuthState {}

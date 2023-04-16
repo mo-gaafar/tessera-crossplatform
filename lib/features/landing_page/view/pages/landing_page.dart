@@ -1,12 +1,15 @@
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'dart:math';
 
 import 'package:tessera/features/landing_page/view/widgets/events_section.dart';
+import 'package:tessera/features/landing_page/view/widgets/no_events_found.dart';
+import 'package:tessera/features/landing_page/view/widgets/sliver_loading.dart';
 
 class LandingPage extends StatefulWidget {
   LandingPage({super.key});
@@ -101,21 +104,26 @@ class _LandingPageState extends State<LandingPage> {
             listenWhen: (previous, current) => previous is EventsFilterInitial,
             buildWhen: (previous, current) => current is NearbyEventsLoaded,
             listener: (context, state) async {
-              var location =
-                  context.select((AuthCubit auth) => auth.currentUser.location);
+              var location = context.read<AuthCubit>().currentUser.location;
 
-              await context.select(
-                (EventsFilterCubit event) => event.initNearbyEvents('OR', 'US'),
-              );
+              await context
+                  .read<EventsFilterCubit>()
+                  .initNearbyEvents(location!['area'], location['country']);
             },
             builder: (context, state) {
               var location =
                   context.select((AuthCubit auth) => auth.currentUser.location);
 
-              return EventsSection(
-                title: 'Events Near ',
-                eventList:
-                    state is NearbyEventsLoaded ? state.nearbyEvents : [],
+              return MultiSliver(
+                children: [
+                  EventsSection(
+                    title: 'Events Near ${location!['area']}',
+                    eventList:
+                        state is NearbyEventsLoaded ? state.nearbyEvents : [],
+                  ),
+                  if (state is NearbyEventsLoaded && state.nearbyEvents.isEmpty)
+                    const NoEventsFound(description: 'nearby'),
+                ],
               );
             },
           ),
@@ -123,31 +131,21 @@ class _LandingPageState extends State<LandingPage> {
           // Events We Think You'll Love
           BlocBuilder<EventsFilterCubit, EventsFilterState>(
             builder: (context, state) {
-              return EventsSection(
-                  title: 'Events We Think You\'ll Love!',
-                  eventList:
-                      state is EventsFiltered ? state.filteredEvents : [],
-                  radius: 0,
-                  hasFilters: true);
+              return MultiSliver(
+                children: [
+                  EventsSection(
+                      title: 'Events We Think You\'ll Love!',
+                      eventList:
+                          state is EventsFiltered ? state.filteredEvents : [],
+                      radius: 0,
+                      hasFilters: true),
+                  if (state is EventsFiltered && state.filteredEvents.isEmpty)
+                    const NoEventsFound(),
+                ],
+              );
             },
           ),
-
-          // Loading indicator
-          SliverToBoxAdapter(
-            child: BlocBuilder<EventsFilterCubit, EventsFilterState>(
-              builder: (context, state) {
-                return state is EventsLoading
-                    ? Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.only(top: 20),
-                        width: double.infinity,
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: const CircularProgressIndicator.adaptive(),
-                      )
-                    : const SizedBox();
-              },
-            ),
-          ),
+          const SliverLoading(),
 
           // Fill remaining space
           SliverFillRemaining(

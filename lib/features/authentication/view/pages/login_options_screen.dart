@@ -82,19 +82,20 @@ class LoginOptionsScreen extends StatelessWidget {
                       const SizedBox(
                         height: 15.0,
                       ),
-                      ContinueButton(
-                        image: 'assets/images/Google.png',
-                        buttonText: 'Continue with Google',
-                        onTap: () async {
-                          await context
-                              .read<AuthCubit>()
-                              .signIn(GoogleAuthService());
-
-                          if (context.read<AuthCubit>().state is SignedIn) {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/third');
-                          }
+                      BlocListener<AuthCubit, AuthState>(
+                        listenWhen: (previous, current) => current is SignedIn,
+                        listener: (context, state) {
+                          Navigator.of(context).pushReplacementNamed('/third');
                         },
+                        child: ContinueButton(
+                          image: 'assets/images/Google.png',
+                          buttonText: 'Continue with Google',
+                          onTap: () async {
+                            await context
+                                .read<AuthCubit>()
+                                .signIn(GoogleAuthService());
+                          },
+                        ),
                       ),
                     ],
                   ),

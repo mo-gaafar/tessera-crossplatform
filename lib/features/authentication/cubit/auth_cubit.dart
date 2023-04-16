@@ -65,8 +65,12 @@ class AuthCubit extends Cubit<AuthState> {
         (user) async {
           // Signed in successfully
           currentUser = user;
-          emit(SignedIn());
+
+          // Get user's location
           currentUser.location = await LocationService.getUserAddress();
+
+          emit(SignedIn());
+
           _authService = authService;
 
           // Persist data to local storage

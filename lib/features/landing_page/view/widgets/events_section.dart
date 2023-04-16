@@ -60,24 +60,9 @@ class EventsSection extends StatelessWidget {
                   ),
                 ),
               ),
-
-              SliverToBoxAdapter(
-                child: context.read<EventsFilterCubit>().state
-                            is NearbyEventsLoaded &&
-                        eventList.isEmpty
-                    ? const NoEventsFound(
-                        // description: 'nearby',
-                        )
-                    : const SizedBox(),
-              ),
-
-              SliverToBoxAdapter(
-                child:
-                    context.read<EventsFilterCubit>().state is EventsFiltered &&
-                            eventList.isEmpty
-                        ? const NoEventsFound()
-                        : const SizedBox(),
-              ),
+              // if (context.read<EventsFilterCubit>().state is EventsLoading)
+              //   const SliverToBoxAdapter(
+              //       child: Center(child: CircularProgressIndicator.adaptive())),
 
               // Actual events list
               SliverList(

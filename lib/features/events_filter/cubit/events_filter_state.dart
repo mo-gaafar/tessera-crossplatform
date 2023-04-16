@@ -10,6 +10,8 @@ class ChipTapped extends EventsFilterState {}
 
 class EventsLoading extends EventsFilterState {}
 
+class EventsLoaded extends EventsFilterState {}
+
 class FilterCriteriaSelected extends EventsFilterState {
   const FilterCriteriaSelected(this.filterCriteria);
 
