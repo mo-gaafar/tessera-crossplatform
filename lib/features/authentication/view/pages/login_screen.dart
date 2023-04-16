@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/constants/constants.dart';
 import 'package:tessera/core/services/authentication/email_authentication.dart';
+import 'package:tessera/core/services/location/location_service.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
@@ -96,6 +97,7 @@ class LogIn extends StatelessWidget {
                                           .currentUser
                                           .email,
                                       password: password),
+                                  LocationService(),
                                 );
 
                             if (context.read<AuthCubit>().state is SignedIn) {

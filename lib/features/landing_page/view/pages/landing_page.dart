@@ -29,10 +29,6 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  _refresh() {
-    setState(() {});
-  }
-
   // final userLocation = 'New York, ;
   @override
   Widget build(BuildContext context) {
@@ -103,9 +99,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
           context.select((EventsFilterCubit events) => events.state)
                   is EventsError
-              ? NetworkErrorSection(
-                  refresh: _refresh,
-                )
+              ? const NetworkErrorSection()
               : const LandingPageSections()
         ],
       ),

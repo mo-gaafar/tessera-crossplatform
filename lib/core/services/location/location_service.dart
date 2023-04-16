@@ -31,7 +31,7 @@ class LocationService {
     return true;
   }
 
-  static Future getUserAddress() async {
+  Future<Map<String, String>> getUserAddress() async {
     var latlong = await getCurrentLocation();
     final Map<String, String> address =
         await getCurrentAddress(latlong.latitude, latlong.longitude);

@@ -1,18 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 import 'package:tessera/constants/app_colors.dart';
-import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 
 /// Displays a network error message when a connection error occurs.
 class NetworkErrorSection extends StatelessWidget {
-  const NetworkErrorSection({super.key, required this.refresh});
-
-  final Function refresh;
+  const NetworkErrorSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +53,6 @@ class NetworkErrorSection extends StatelessWidget {
                   onPressed: () async {
                     context.read<EventsFilterCubit>().attempRefresh();
                     await context.read<EventsFilterCubit>().initCriteria();
-                    // refresh;
                   },
                 ),
               ],

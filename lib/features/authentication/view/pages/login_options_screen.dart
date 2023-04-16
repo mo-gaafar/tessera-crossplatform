@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/core/services/location/location_service.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/view/widgets/reusable_button.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
@@ -70,9 +71,8 @@ class LoginOptionsScreen extends StatelessWidget {
                           image: 'assets/images/facebook.png',
                           buttonText: 'Continue with Facebook',
                           onTap: () async {
-                            await context
-                                .read<AuthCubit>()
-                                .signIn(FacebookAuthService());
+                            await context.read<AuthCubit>().signIn(
+                                FacebookAuthService(), LocationService());
 
                             if (context.read<AuthCubit>().state is SignedIn) {
                               Navigator.of(context)
@@ -93,7 +93,7 @@ class LoginOptionsScreen extends StatelessWidget {
                           onTap: () async {
                             await context
                                 .read<AuthCubit>()
-                                .signIn(GoogleAuthService());
+                                .signIn(GoogleAuthService(), LocationService());
                           },
                         ),
                       ),

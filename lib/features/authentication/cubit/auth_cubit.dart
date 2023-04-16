@@ -46,7 +46,8 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// Calls the abstracted [AuthService.signIn()] method of the provided [authService] to handle the sign in process.
   /// If the sign in is successful, the user's data is stored in [currentUser] and [SignedIn] is emitted.
-  Future<void> signIn(AuthService authService) async {
+  Future<void> signIn(
+      AuthService authService, LocationService locationService) async {
     emit(Loading());
 
     try {
@@ -67,7 +68,7 @@ class AuthCubit extends Cubit<AuthState> {
           currentUser = user;
 
           // Get user's location
-          currentUser.location = await LocationService.getUserAddress();
+          currentUser.location = await locationService.getUserAddress();
 
           emit(SignedIn());
 
