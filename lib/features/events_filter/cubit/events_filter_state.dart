@@ -1,7 +1,10 @@
 part of 'events_filter_cubit.dart';
 
-abstract class EventsFilterState {
+abstract class EventsFilterState extends Equatable {
   const EventsFilterState();
+
+  @override
+  List<Object> get props => [];
 }
 
 class EventsFilterInitial extends EventsFilterState {}
