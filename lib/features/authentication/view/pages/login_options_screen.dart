@@ -39,15 +39,14 @@ class LoginOptionsScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     const Text(
                       'Let\'s get started!',
-                      style: TextStyle(
-                          color: AppColors.textOnLight,
-                          fontSize: 40.0,
-                          fontFamily: 'NeuePlak'),
+                      style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
                     ),
-                    const Text(
+                    Text(
                       'Sign up or log in to see what\'s happening near you.',
                       style: TextStyle(
-                          color: AppColors.secondaryTextOnLight,
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSecondaryContainer,
                           fontSize: 20.0,
                           fontFamily: 'NeuePlak'),
                       textAlign: TextAlign.left,

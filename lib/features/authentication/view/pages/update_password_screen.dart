@@ -16,18 +16,21 @@ class UpdatePassword extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Update your password",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
       ),
       body: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(8.0),
-            color: Colors.yellow,
+            color: Colors.red.shade900,
             width: double.infinity,
             child: const Text(
               '🕒  For your security, this link expires in 2 hours.',
               textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
           const Spacer(
@@ -48,7 +51,6 @@ class UpdatePassword extends StatelessWidget {
               'Check your email to update your password.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: AppColors.secondaryTextOnLight,
                   fontSize: 20.0,
                   fontFamily: 'NeuePlak',
                   fontWeight: FontWeight.bold),
@@ -59,8 +61,8 @@ class UpdatePassword extends StatelessWidget {
             child: Text(
               'We sent a link to ${context.read<AuthCubit>().currentUser.email} to update your password.',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: AppColors.secondaryTextOnLight,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
                   fontSize: 20.0,
                   fontFamily: 'NeuePlak'),
             ),

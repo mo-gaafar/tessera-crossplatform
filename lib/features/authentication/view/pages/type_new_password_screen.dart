@@ -21,7 +21,7 @@ class TypeNewPassword extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Update your password",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
       ),
       body: Container(

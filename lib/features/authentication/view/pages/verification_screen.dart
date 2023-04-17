@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
@@ -36,7 +35,6 @@ class VerificationScreen extends StatelessWidget {
               'Check your email to verify your account.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: AppColors.secondaryTextOnLight,
                   fontSize: 20.0,
                   fontFamily: 'NeuePlak',
                   fontWeight: FontWeight.bold),
@@ -48,8 +46,8 @@ class VerificationScreen extends StatelessWidget {
             child: Text(
               'We sent a link to ${context.read<AuthCubit>().currentUser.email} to verify your account.',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: AppColors.secondaryTextOnLight,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
                   fontSize: 20.0,
                   fontFamily: 'NeuePlak'),
             ),

@@ -24,7 +24,7 @@ class SignUp extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Sign up",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
       ),
       body: Padding(

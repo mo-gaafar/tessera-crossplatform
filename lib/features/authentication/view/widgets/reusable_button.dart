@@ -50,9 +50,9 @@ class ContinueButton extends StatelessWidget {
             ),
             Text(
               buttonText,
-              style: const TextStyle(
+              style: TextStyle(
                   fontFamily: 'NeuePlak',
-                  color: AppColors.secondaryTextOnLight,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 17),
             )
           ],
