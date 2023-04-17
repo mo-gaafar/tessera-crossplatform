@@ -1,5 +1,5 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:google_geocoding_api/google_geocoding_api.dart';
+import 'package:tessera/core/services/networking/networking.dart';
 
 /// A service class that handles location-related tasks.
 ///
@@ -65,22 +65,34 @@ class LocationService {
       'country': '',
     };
 
-    var location =
-        await GoogleGeocodingApi('AIzaSyC-V5bPta57l-zo8nzZ9MIxxGqvONc74XI')
-            .reverse('$latitude,$longitude');
+    // Geocode latlong using Google Geocoding API
+    var location = await googleGeocode(latitude, longitude);
 
-    var locationComponents = location.results.first.addressComponents.iterator;
+    // Extract address components
+    List locationComponents = location!['results'][0]['address_components'];
 
-    while (locationComponents.moveNext()) {
-      if (locationComponents.current.types
-          .contains('administrative_area_level_1')) {
-        address['area'] = locationComponents.current.longName;
-      }
-      if (locationComponents.current.types.contains('country')) {
-        address['country'] = locationComponents.current.longName;
-      }
-    }
+    // Extract area and country from address components
+    Map administrativeArea = locationComponents.firstWhere(
+        (element) => element['types'].contains('administrative_area_level_1'));
+
+    Map country = locationComponents
+        .firstWhere((element) => element['types'].contains('country'));
+
+    // Add area and country to address map
+    address['area'] = administrativeArea['long_name'];
+    address['country'] = country['long_name'];
 
     return address;
+  }
+
+  /// Calls the Google Geocoding API to geocode latitude and longitude.
+  static Future<Map?> googleGeocode(double latitude, double longitude) async {
+    try {
+      final response = await NetworkService.getGetApiResponse(
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyC-V5bPta57l-zo8nzZ9MIxxGqvONc74XI');
+      return response;
+    } catch (e) {
+      return null;
+    }
   }
 }
