@@ -87,10 +87,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
 
   /// Edits displayed chips according to the selection.
   /// Calls [getFilteredEvents()] to get the filtered events based on the seleected chips.
-  void editSelection() {
+  void editSelection() async {
     editChips();
     // emit(EventsLoading());
-    getFilteredEvents();
+    await getFilteredEvents();
   }
 
   /// Responsible for figuring out which filter chips to display after a chip is
@@ -127,7 +127,7 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
 
   /// Gets the filtered events from API using the selected queries.
   /// Emits the events through a [EventsFiltered] event.
-  void getFilteredEvents() async {
+  Future<void> getFilteredEvents() async {
     var queries = prepareQueries();
 
     Future.delayed(
