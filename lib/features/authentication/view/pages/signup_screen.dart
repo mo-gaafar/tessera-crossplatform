@@ -33,101 +33,109 @@ class SignUp extends StatelessWidget {
           child: Form(
             key: formkey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Email',
-                      style: TextStyle(color: Colors.grey, fontSize: 20),
-                    ),
-                    const SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      context.read<AuthCubit>().currentUser.email,
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                      height: 2,
-                      thickness: 1,
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Confirm Email",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    hintText: 'Confirm Email',
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Email',
+                            style: TextStyle(color: Colors.grey, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            context.read<AuthCubit>().currentUser.email,
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          const SizedBox(
+                            height: 4,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            height: 2,
+                            thickness: 1,
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Confirm Email",
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          hintText: 'Confirm Email',
+                        ),
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return 'Please re enter your email to confirm it';
+                          }
+                          if (value !=
+                              context.read<AuthCubit>().currentUser.email) {
+                            return 'Email must be the same';
+                          }
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: "First Name",
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                hintText: 'Enter First Name',
+                              ),
+                              validator: (value) {
+                                _firstName = value!;
+                                if (_firstName.trim().isEmpty) {
+                                  return 'First name is required';
+                                }
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                labelText: "Surname",
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                hintText: 'Enter Surname',
+                              ),
+                              validator: (value) {
+                                _lastName = value!;
+                                if (_lastName.trim().isEmpty) {
+                                  return 'Surname is required';
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: "Password",
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          hintText: 'Password',
+                          suffixIcon: Icon(Icons.visibility),
+                        ),
+                        validator: (value) {
+                          _password = value!;
+                          return formValidator.passowrdValidty(_password);
+                        },
+                      ),
+                    ],
                   ),
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'please re enter your email to confirm it';
-                    }
-                    if (value != context.read<AuthCubit>().currentUser.email) {
-                      return 'email must be the same';
-                    }
-                  },
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "First Name",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          hintText: 'Enter First Name',
-                        ),
-                        validator: (value) {
-                          _firstName = value!;
-                          if (_firstName.trim().isEmpty) {
-                            return 'First name is required';
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Surname",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          hintText: 'Enter Surname',
-                        ),
-                        validator: (value) {
-                          _lastName = value!;
-                          if (_lastName.trim().isEmpty) {
-                            return 'surname is required';
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: "Password",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      hintText: 'Password',
-                      helperText: 'Password must have at least 8 characters.'),
-                  validator: (value) {
-                    _password = value!;
-                    return formValidator.passowrdValidty(_password);
-                  },
                 ),
                 const Spacer(),
                 Container(

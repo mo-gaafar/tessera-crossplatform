@@ -12,6 +12,9 @@ class FormValidator {
     if (password.length < 8) {
       return 'Password must be 8 characters at least.';
     }
+    if (password.contains(' ')) {
+      return 'Password must not have any space character.';
+    }
     if (lowerCaseRegExp.hasMatch(password) == false) {
       return 'Must contain minimum of 1 lowecase character.';
     } else if (upperCaseRegExp.hasMatch(password) == false) {
