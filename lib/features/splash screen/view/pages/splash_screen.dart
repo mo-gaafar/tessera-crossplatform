@@ -19,7 +19,7 @@ class SplashScreen extends StatelessWidget {
         // nextRoute: '/loginOptions',
         nextScreen: const SplashScreen2(),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white);
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor);
   }
 }
 
@@ -68,6 +68,6 @@ class SplashScreen2 extends StatelessWidget {
           ],
         ),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white);
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor);
   }
 }

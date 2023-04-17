@@ -48,18 +48,18 @@ class _LandingPageState extends State<LandingPage> {
                     }
                   },
                   icon: const Icon(Icons.logout)),
-              AnimatedIconButton(
-                icons: [
-                  AnimatedIconItem(
-                      icon: const Icon(Icons.light_mode, color: Colors.black),
-                      onPressed: () =>
-                          context.read<ThemeCubit>().toggleTheme()),
-                  AnimatedIconItem(
-                      icon: const Icon(Icons.dark_mode, color: Colors.white),
-                      onPressed: () =>
-                          context.read<ThemeCubit>().toggleTheme()),
-                ],
-              )
+              // AnimatedIconButton(
+              //   icons: [
+              //     AnimatedIconItem(
+              //         icon: const Icon(Icons.light_mode, color: Colors.black),
+              //         onPressed: () =>
+              //             context.read<ThemeCubit>().toggleTheme()),
+              //     AnimatedIconItem(
+              //         icon: const Icon(Icons.dark_mode, color: Colors.white),
+              //         onPressed: () =>
+              //             context.read<ThemeCubit>().toggleTheme()),
+              //   ],
+              // )
             ],
             elevation: 0,
             pinned: true,
