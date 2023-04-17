@@ -42,7 +42,7 @@ class FilterCriteria {
     };
   }
 
-  /// Creates a [FilterCriteria] object from a list of [String]s.
+  /// Named constructor that creates a [FilterCriteria] object from a list of [String]s.
   FilterCriteria.fromList(List list, String inputType) {
     filterChips = [];
     type = inputType;
