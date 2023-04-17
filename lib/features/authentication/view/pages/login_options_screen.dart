@@ -17,94 +17,93 @@ class LoginOptionsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppScaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Hero(
-                        tag: 'logo',
-                        child: Image.asset(
-                          'assets/images/AppIconMed.png',
-                          height: 120,
-                        ),
+    return AppScaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: 'logo',
+                      child: Image.asset(
+                        'assets/images/AppIconMed.png',
+                        height: 120,
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Let\'s get started!',
-                        style: TextStyle(
-                            color: AppColors.textOnLight,
-                            fontSize: 40.0,
-                            fontFamily: 'NeuePlak'),
-                      ),
-                      const Text(
-                        'Sign up or log in to see what\'s happening near you.',
-                        style: TextStyle(
-                            color: AppColors.secondaryTextOnLight,
-                            fontSize: 20.0,
-                            fontFamily: 'NeuePlak'),
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      EmailButton(
-                        colourBackground: AppColors.primary,
-                        buttonText: 'Continue with Email Address',
-                        colourText: Colors.white,
-                        onTap: () =>
-                            Navigator.of(context).pushNamed('/login_signup'),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      ContinueButton(
-                          image: 'assets/images/facebook.png',
-                          buttonText: 'Continue with Facebook',
-                          onTap: () async {
-                            await context.read<AuthCubit>().signIn(
-                                FacebookAuthService(), LocationService());
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Let\'s get started!',
+                      style: TextStyle(
+                          color: AppColors.textOnLight,
+                          fontSize: 40.0,
+                          fontFamily: 'NeuePlak'),
+                    ),
+                    const Text(
+                      'Sign up or log in to see what\'s happening near you.',
+                      style: TextStyle(
+                          color: AppColors.secondaryTextOnLight,
+                          fontSize: 20.0,
+                          fontFamily: 'NeuePlak'),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    EmailButton(
+                      colourBackground: AppColors.primary,
+                      buttonText: 'Continue with Email Address',
+                      colourText: Colors.white,
+                      onTap: () =>
+                          Navigator.of(context).pushNamed('/login_signup'),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ContinueButton(
+                        image: 'assets/images/facebook.png',
+                        buttonText: 'Continue with Facebook',
+                        onTap: () async {
+                          await context
+                              .read<AuthCubit>()
+                              .signIn(FacebookAuthService(), LocationService());
 
-                            if (context.read<AuthCubit>().state is SignedIn) {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/third');
-                            }
-                          }),
-                      const SizedBox(
-                        height: 15.0,
-                      ),
-                      BlocListener<AuthCubit, AuthState>(
-                        listenWhen: (previous, current) => current is SignedIn,
-                        listener: (context, state) {
-                          Navigator.of(context).pushReplacementNamed('/third');
+                          if (context.read<AuthCubit>().state is SignedIn) {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/third');
+                          }
+                        }),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    BlocListener<AuthCubit, AuthState>(
+                      listenWhen: (previous, current) => current is SignedIn,
+                      listener: (context, state) {
+                        Navigator.of(context).pushReplacementNamed('/third');
+                      },
+                      child: ContinueButton(
+                        image: 'assets/images/Google.png',
+                        buttonText: 'Continue with Google',
+                        onTap: () async {
+                          await context
+                              .read<AuthCubit>()
+                              .signIn(GoogleAuthService(), LocationService());
                         },
-                        child: ContinueButton(
-                          image: 'assets/images/Google.png',
-                          buttonText: 'Continue with Google',
-                          onTap: () async {
-                            await context
-                                .read<AuthCubit>()
-                                .signIn(GoogleAuthService(), LocationService());
-                          },
-                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-              if (context.watch<AuthCubit>().state is Loading)
-                const CircularProgressIndicator.adaptive(),
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            if (context.watch<AuthCubit>().state is Loading)
+              const CircularProgressIndicator.adaptive(),
+          ],
         ),
       ),
     );
