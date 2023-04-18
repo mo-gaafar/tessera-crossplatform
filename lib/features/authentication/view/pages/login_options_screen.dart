@@ -27,29 +27,41 @@ class LoginOptionsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Hero(
                       tag: 'logo',
-                      child: Image.asset(
-                        'assets/images/AppIconMed.png',
-                        height: 120,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 20, 5, 40),
+                        child: Image.asset(
+                          'assets/images/LogoFullTextLarge.png',
+                          // height: 120,
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Let\'s get started!',
-                      style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
+                    // const SizedBox(height: 30),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 5),
+                      child: Text(
+                        'Let\'s get started!',
+                        style: TextStyle(
+                            fontSize: 35,
+                            fontFamily: 'NeuePlak',
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    Text(
-                      'Sign up or log in to see what\'s happening near you.',
-                      style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondaryContainer,
-                          fontSize: 20.0,
-                          fontFamily: 'NeuePlak'),
-                      textAlign: TextAlign.left,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        'Sign up or log in to see what\'s happening near you.',
+                        style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontSize: 18,
+                            fontFamily: 'NeuePlak'),
+                        textAlign: TextAlign.left,
+                      ),
                     ),
                   ],
                 ),

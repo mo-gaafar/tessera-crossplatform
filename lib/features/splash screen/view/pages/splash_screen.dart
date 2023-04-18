@@ -3,6 +3,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/location/location_service.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
@@ -57,12 +58,10 @@ class SplashScreen2 extends StatelessWidget {
             const Text(
               'A TICKET TO YOUR ADVENTURE',
               style: TextStyle(
-                  fontSize: 30.0,
-                  color: Color.fromARGB(255, 244, 84, 52),
-                  fontWeight: FontWeight.normal,
+                  color: AppColors.primary,
+                  fontSize: 35,
                   fontFamily: 'NeuePlak',
-                  letterSpacing: 2,
-                  wordSpacing: 4.0),
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],

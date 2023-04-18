@@ -42,8 +42,8 @@ class ContinueButton extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage: AssetImage(image),
-              radius: 10,
-              backgroundColor: Colors.white,
+              radius: 15,
+              backgroundColor: Colors.transparent,
             ),
             const SizedBox(
               width: 10,

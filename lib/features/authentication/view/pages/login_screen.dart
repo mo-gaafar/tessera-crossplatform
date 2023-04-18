@@ -25,7 +25,10 @@ class LogIn extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Log In",
-          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
+          style: TextStyle(
+              fontFamily: 'NeuePlak',
+              fontSize: 25,
+              fontWeight: FontWeight.bold),
         ),
       ),
       body: Center(

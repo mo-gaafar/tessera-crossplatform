@@ -37,6 +37,7 @@ class _LandingPageState extends State<LandingPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             actions: [
               IconButton(
                   onPressed: () async {
