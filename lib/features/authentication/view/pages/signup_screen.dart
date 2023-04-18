@@ -121,19 +121,51 @@ class SignUp extends StatelessWidget {
                         ],
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: "Password",
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey),
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                            hintText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: (context
+                                          .read<AuthCubit>()
+                                          .currentUser
+                                          .hidePassword ==
+                                      true)
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off),
+                              onPressed: () {
+                                if (context
+                                        .read<AuthCubit>()
+                                        .currentUser
+                                        .hidePassword ==
+                                    true) {
+                                  context
+                                      .read<AuthCubit>()
+                                      .currentUser
+                                      .hidePassword = false;
+                                } else {
+                                  context
+                                      .read<AuthCubit>()
+                                      .currentUser
+                                      .hidePassword = false;
+                                }
+                                print(context
+                                    .read<AuthCubit>()
+                                    .currentUser
+                                    .hidePassword);
+                              },
+                            ),
                           ),
-                          hintText: 'Password',
-                          suffixIcon: Icon(Icons.visibility),
-                        ),
-                        validator: (value) {
-                          _password = value!;
-                          return formValidator.passowrdValidty(_password);
-                        },
-                      ),
+                          validator: (value) {
+                            _password = value!;
+                            return formValidator.passowrdValidty(_password);
+                          },
+                          obscureText: context
+                              .read<AuthCubit>()
+                              .currentUser
+                              .hidePassword),
                     ],
                   ),
                 ),
