@@ -40,13 +40,13 @@ class EventsSection extends StatelessWidget {
               // Header
               SliverPinnedHeader(
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 0),
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: Text(
                           title,
                           style: const TextStyle(
