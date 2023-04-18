@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// This is done by checking if there is existing user data stored in the app's [SharedPreferences].
   /// If there is, the user is signed in automatically. Their data is stored back into [currentUser] and [SignedIn] is emitted.
-  Future<void> checkIfSignedIn() async {
+  Future<void> checkIfSignedIn(LocationService locationService) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userData = prefs.getString('userData');
     var authService = prefs.getString('authService');
@@ -34,6 +34,8 @@ class AuthCubit extends Cubit<AuthState> {
     if (userData != null && authService != null) {
       currentUser = UserModel.fromJson(userData);
       _authService = AuthService.fromString(authService);
+
+      currentUser.location = await locationService.getUserAddress();
 
       emit(SignedIn());
     }

@@ -113,14 +113,22 @@ flutter:
   fonts:
     - family: NeuePlak
       fonts:
-        - asset: assets/fonts/NeuePlak-Black.ttf
-        - asset: assets/fonts/NeuePlak-Bold.ttf
-        - asset: assets/fonts/NeuePlak-ExtraBlack.ttf
-        - asset: assets/fonts/NeuePlak-Light.ttf
-        - asset: assets/fonts/NeuePlak-Regular.ttf
-        - asset: assets/fonts/NeuePlak-SemiBold.ttf
         - asset: assets/fonts/NeuePlak-Thin.ttf
+          weight: 100
         - asset: assets/fonts/NeuePlak-UltraLight.ttf
+          weight: 200
+        - asset: assets/fonts/NeuePlak-Light.ttf
+          weight: 300
+        - asset: assets/fonts/NeuePlak-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/NeuePlak-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/NeuePlak-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/NeuePlak-Black.ttf
+          weight: 800
+        - asset: assets/fonts/NeuePlak-ExtraBlack.ttf
+          weight: 900
 
     - family: NeuePlak-Extended
       fonts:

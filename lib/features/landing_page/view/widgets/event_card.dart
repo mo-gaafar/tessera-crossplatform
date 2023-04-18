@@ -100,7 +100,7 @@ class EventCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Text(
-                '${event.date.day.toString()} ${DateFormat('MMM').format(event.date).toUpperCase()}',
+                '${event.date.day.toString()}  ${DateFormat('MMM').format(event.date).toUpperCase()}',
                 style: const TextStyle(
                   fontSize: 10,
                   color: Colors.white,

@@ -32,7 +32,7 @@ class SplashScreen2 extends StatelessWidget {
         screenRouteFunction: () async {
           await LocationService.handleLocationPermission();
 
-          await context.read<AuthCubit>().checkIfSignedIn();
+          await context.read<AuthCubit>().checkIfSignedIn(LocationService());
           if (context.read<AuthCubit>().state is SignedIn) {
             return '/third';
           } else {

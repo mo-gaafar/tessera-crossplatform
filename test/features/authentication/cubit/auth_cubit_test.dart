@@ -45,7 +45,7 @@ void main() {
       "should still return AuthInitial if no user is signed in",
       () async {
         // Act
-        await authCubit.checkIfSignedIn();
+        await authCubit.checkIfSignedIn(locationService);
         // Assert
         expect(authCubit.state, AuthInitial());
       },
@@ -57,7 +57,7 @@ void main() {
         // Arrange
         await authCubit.signIn(authService, locationService);
         // Act
-        await authCubit.checkIfSignedIn();
+        await authCubit.checkIfSignedIn(locationService);
         // Assert
         expect(authCubit.state, SignedIn());
       },
