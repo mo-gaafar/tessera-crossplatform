@@ -1,11 +1,11 @@
+// ignore: depend_on_referenced_packages
+import 'dart:convert';
+import 'package:dartz/dartz.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/events/data/event_repository.dart';
 import 'package:tessera/features/events/data/event_data.dart';
+import 'package:tessera/features/events/data/booking_data.dart';
 part 'event_book_state.dart';
 
 class EventBookCubit extends Cubit<EventBookState> {
@@ -23,5 +23,19 @@ class EventBookCubit extends Cubit<EventBookState> {
     );
     return event;
   }
-
+  Future<bool> postBookingData(var data) async {
+    // Request login from server.
+    var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
+    print(response);
+    print('da5al checking ');
+    if (response['success'] == true) {
+      emit(
+      EventSuccessfullyBooked(),
+    );
+      
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

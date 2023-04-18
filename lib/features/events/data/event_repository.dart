@@ -14,55 +14,18 @@ class EventRepository {
     }
   }
 
-  static Future<EventState> checkIfEventVerified(var data) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/retrieve/:eventID',
-        data);
-    if (responseBody['basicInfo']['isVerified'] == true) {
-      return EventState.verified;
-    } else {
-      return EventState.notVerified;
-    }
-  }
-
-  static Future<EventState> checkIfIsEventPublic(var data) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/retrieve/:eventID',
-        data);
-    if (responseBody['basicInfo']['isPublic'] == true) {
-      return EventState.public;
-    } else {
-      return EventState.notPublic;
-    }
-  }
-
-  /*static Future<EventState> checkIfEventFull(var data) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/retrieve/:eventID', data);
-    if (responseBody['basicInfo']['ticketTiers']['quantitySold'] ==responseBody['basicInfo']['ticketTiers']['capacity'] ) {
-      return EventState.fullCapacity;
-    } else {
-      return EventState.notFullCapacity;
-    }
-  }*/
-
-  static Future<EventState> checkIfEventEnded(var data) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/retrieve/:eventID',
-        data);
-    final now = DateTime.now();
-    final endSellingUtc =
-        DateTime.parse(responseBody['basicInfo']['endSelling']['utc']);
-    if (now.isAtSameMomentAs(endSellingUtc)) {
-      return EventState.ended;
-    } else {
-      return EventState.available;
-    }
-  }
-
   static Future eventBasicInfo() async {
     final responseBody = await NetworkService.getGetApiResponse(
-        'https://www.tessera.social/api/attendee/event/643aa02d4d2e42199562be5f');
+        'https://www.tessera.social/api/attendee/event/643ad9af53ce2a393ad6a23e');
+    print(responseBody);
+    return responseBody;
+  }
+
+  static Future bookingTicketInfo(var data) async {
+    final responseBody = await NetworkService.getPostApiResponse(
+        'https://www.tessera.social/api/attendee/ticket/643ad9af53ce2a393ad6a23e/book',
+        data);
+    print('respose');
     print(responseBody);
     return responseBody;
   }
