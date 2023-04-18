@@ -70,16 +70,22 @@ class AuthCubit extends Cubit<AuthState> {
           currentUser = user;
 
           // Get user's location
-          currentUser.location = await locationService.getUserAddress();
+          if (await LocationService.handleLocationPermission()) {
+            currentUser.location = await locationService.getUserAddress();
 
-          emit(SignedIn());
+            emit(SignedIn());
 
-          _authService = authService;
+            _authService = authService;
 
-          // Persist data to local storage
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('userData', user.toJson());
-          prefs.setString('authService', _authService.toString());
+            // Persist data to local storage
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('userData', user.toJson());
+            prefs.setString('authService', _authService.toString());
+          } else {
+            emit(const AuthError(
+                message:
+                    'Location permission denied. Please allow location access to continue.'));
+          }
         },
       );
     } catch (e) {

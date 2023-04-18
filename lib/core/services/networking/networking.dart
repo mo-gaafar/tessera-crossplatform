@@ -20,7 +20,6 @@ class NetworkService {
     try {
       final response = await http.get(
         Uri.parse(url),
-        headers: _headers,
       );
       final responseJson = returnResponse(response);
       return responseJson;

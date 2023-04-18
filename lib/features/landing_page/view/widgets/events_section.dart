@@ -49,7 +49,8 @@ class EventsSection extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 0),
                         child: Text(
                           title,
-                          style: const TextStyle(fontSize: 20),
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                       hasFilters ? const EventFilters() : const SizedBox(),
