@@ -19,100 +19,102 @@ class LoginSignup extends StatelessWidget {
   LoginSignup({super.key});
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppScaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Log In or Sign Up",
-          ),
+    return AppScaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Log In or Sign Up",
+          style: TextStyle(
+              fontFamily: 'NeuePlak',
+              fontSize: 25,
+              fontWeight: FontWeight.bold),
         ),
-        body: Form(
-          key: formkey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(kPagePadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Email',
-                      style: TextStyle(fontSize: 20),
+      ),
+      body: Form(
+        key: formkey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(kPagePadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Email',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      enabledBorder: UnderlineInputBorder(),
+                      hintText: 'Enter email address',
                     ),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(),
-                        hintText: 'Enter email address',
-                      ),
-                      validator: (value) {
-                        inputEmail = value!;
-                        if (inputEmail.trim().isEmpty) {
-                          return 'Email is required.';
-                        }
-                        if (!EmailValidator.validate(inputEmail)) {
-                          return 'This is not a valid email.';
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                    validator: (value) {
+                      inputEmail = value!;
+                      if (inputEmail.trim().isEmpty) {
+                        return 'Email is required.';
+                      }
+                      if (!EmailValidator.validate(inputEmail)) {
+                        return 'This is not a valid email.';
+                      }
+                    },
+                  ),
+                ],
               ),
-              const Spacer(),
-              Container(
-                padding: EdgeInsets.all(kPagePadding),
-                // ignore: prefer_const_constructors
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey.shade300,
-                            child: Transform.rotate(
-                              angle: 90 * pi / 180,
-                              child: const Icon(
-                                Icons.confirmation_num_outlined,
-                                color: Colors.black,
-                              ),
+            ),
+            const Spacer(),
+            Container(
+              padding: EdgeInsets.all(kPagePadding),
+              // ignore: prefer_const_constructors
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey.shade300,
+                          child: Transform.rotate(
+                            angle: 90 * pi / 180,
+                            child: const Icon(
+                              Icons.confirmation_num_outlined,
+                              color: Colors.black,
                             ),
                           ),
                         ),
-                        const Expanded(
-                          child: Text(
-                              "Sign in with the same email addrerss you used to get your tickets."),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    EmailButton(
-                      buttonText: 'Next',
-                      colourBackground: AppColors.primary,
-                      colourText: Colors.white,
-                      onTap: () async {
-                        if (formkey.currentState!.validate()) {
-                          final userStatus = await context
-                              .read<AuthCubit>()
-                              .checkIfUserExists(inputEmail);
-                          if (userStatus == UserState.login) {
-                            Navigator.pushNamed(context, '/login');
-                          } else if (userStatus == UserState.signup) {
-                            Navigator.pushNamed(context, '/signup');
-                          }
+                      ),
+                      const Expanded(
+                        child: Text(
+                            "Sign in with the same email addrerss you used to get your tickets."),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  EmailButton(
+                    buttonText: 'Next',
+                    colourBackground: AppColors.primary,
+                    colourText: Colors.white,
+                    onTap: () async {
+                      if (formkey.currentState!.validate()) {
+                        final userStatus = await context
+                            .read<AuthCubit>()
+                            .checkIfUserExists(inputEmail);
+                        if (userStatus == UserState.login) {
+                          Navigator.pushNamed(context, '/login');
+                        } else if (userStatus == UserState.signup) {
+                          Navigator.pushNamed(context, '/signup');
                         }
-                      },
-                    ),
-                  ],
-                ),
+                      }
+                    },
+                  ),
+                ],
               ),
-              //
-            ],
-          ),
+            ),
+            //
+          ],
         ),
       ),
     );

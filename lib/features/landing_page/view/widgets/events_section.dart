@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
-import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+/// A section of the landing page containing a header and a list of events.
 class EventsSection extends StatelessWidget {
   const EventsSection({
     super.key,
     required this.title,
+    required this.eventList,
     this.radius = 20,
     this.hasFilters = false,
   });
 
   final String title;
+  final List eventList;
   final double radius;
   final bool hasFilters;
 
   @override
   Widget build(BuildContext context) {
+    // print(context.watch<EventsFilterCubit>().state);
     return SliverStack(
       children: [
         SliverPositioned.fill(
@@ -38,16 +40,17 @@ class EventsSection extends StatelessWidget {
               // Header
               SliverPinnedHeader(
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   color: Theme.of(context).scaffoldBackgroundColor,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 0),
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                         child: Text(
                           title,
-                          style: const TextStyle(fontSize: 20),
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
                       hasFilters ? const EventFilters() : const SizedBox(),
@@ -61,19 +64,9 @@ class EventsSection extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) => Padding(
                     padding: const EdgeInsets.only(bottom: 10),
-                    child: EventCard(
-                        eventTitle: 'The Weeknd Tour',
-                        eventImage:
-                            Image.asset('assets/images/placeholder.jpg'),
-                        eventDate: '12/12/2021',
-                        eventLocation: 'Koshk Omar Cultural Center'),
+                    child: eventList[index],
                   ),
-                  childCount: 10,
-                ),
-              ),
-              const SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 20,
+                  childCount: eventList.length,
                 ),
               ),
             ],

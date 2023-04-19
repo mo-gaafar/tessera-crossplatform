@@ -24,11 +24,12 @@ class AppTheme {
           contentTextStyle: const TextStyle(color: Colors.white),
         ),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
-          // color: AppColors.prima,
+          foregroundColor: Colors.black,
+          color: Colors.white,
           elevation: 0,
           toolbarHeight: 65,
           titleTextStyle: const TextStyle(
-            color: Colors.white,
+            color: AppColors.primary,
             fontSize: 25,
             fontFamily: 'NeuePlak',
           ),
@@ -43,6 +44,13 @@ class AppTheme {
       secondary: AppColors.secondary,
       onSecondaryContainer: const Color(0xfff2f2f2),
       onTertiaryContainer: Colors.grey,
+    ),
+    appBarTheme: lightTheme.appBarTheme.copyWith(
+      foregroundColor: Colors.white,
+      color: Colors.black,
+      titleTextStyle: const TextStyle(
+        color: AppColors.primary,
+      ),
     ),
     textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'NeuePlak'),
     cardColor: Colors.grey.shade900,

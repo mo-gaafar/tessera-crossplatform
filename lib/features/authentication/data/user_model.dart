@@ -10,6 +10,8 @@ class UserModel {
   String? accessToken;
   String? photoUrl;
   String? password;
+  Map? location;
+  bool hidePassword=false;
 
   /// Creates a [UserModel] from given user data.
   ///
@@ -21,6 +23,7 @@ class UserModel {
     this.accessToken,
     this.photoUrl,
     this.password,
+    this.location,
   });
 
   /// Returns a [Map] representation of the [UserModel].
@@ -32,6 +35,7 @@ class UserModel {
       'accessToken': accessToken,
       'photoUrl': photoUrl,
       'password': password,
+      'location': location,
     };
   }
 
@@ -46,6 +50,7 @@ class UserModel {
           map['accessToken'] != null ? map['accessToken'] as String : null,
       photoUrl: map['photoUrl'] != null ? map['photoUrl'] as String : null,
       password: map['password'] != null ? map['password'] as String : null,
+      location: map['location'] != null ? map['location'] as Map : null,
     );
   }
 
@@ -82,7 +87,7 @@ class UserModel {
   /// Returns a [String] representation of the [UserModel].
   @override
   String toString() {
-    return 'UserModel(username: $username, email: $email, accessToken: $accessToken, photoUrl: $photoUrl, password: $password)';
+    return 'UserModel(username: $username, email: $email, accessToken: $accessToken, photoUrl: $photoUrl, password: $password, location: $location)';
   }
 
   /// Encodes the [UserModel] to JSON.
