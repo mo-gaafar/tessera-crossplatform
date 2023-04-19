@@ -70,11 +70,14 @@ class _LandingPageState extends State<LandingPage> {
                   child: SizedBox(
                     height: 200,
                     child: LayoutBuilder(builder: (context, constraints) {
-                      return Image.asset(
-                        'assets/images/LogoFullTextLarge.png',
-                        color:
-                            constraints.maxHeight > 100 ? Colors.white : null,
-                        width: 150,
+                      return Hero(
+                        tag: 'logo',
+                        child: Image.asset(
+                          'assets/images/LogoFullTextLarge.png',
+                          color:
+                              constraints.maxHeight > 100 ? Colors.white : null,
+                          width: 150,
+                        ),
                       );
                     }),
                   ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/constants/enums.dart';
+import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filters.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+
+import 'no_events_found.dart';
 
 /// A section of the landing page containing a header and a list of events.
 class EventsSection extends StatelessWidget {
@@ -10,12 +15,15 @@ class EventsSection extends StatelessWidget {
     required this.eventList,
     this.radius = 20,
     this.hasFilters = false,
+    this.section = LandingPageSection.eventsYoullLove,
   });
 
   final String title;
   final List eventList;
   final double radius;
   final bool hasFilters;
+
+  final LandingPageSection section;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +66,10 @@ class EventsSection extends StatelessWidget {
                   ),
                 ),
               ),
-
+              if (context.select((EventsFilterCubit events) =>
+                      events.nearbyEvents.isEmpty) &&
+                  section == LandingPageSection.eventsNearYou)
+                const NoEventsFound(description: 'nearby'),
               // Actual events list
               SliverList(
                 delegate: SliverChildBuilderDelegate(

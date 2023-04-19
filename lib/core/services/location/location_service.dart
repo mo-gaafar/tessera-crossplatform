@@ -89,7 +89,7 @@ class LocationService {
   static Future<Map?> googleGeocode(double latitude, double longitude) async {
     try {
       final response = await NetworkService.getGetApiResponse(
-          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyC-V5bPta57l-zo8nzZ9MIxxGqvONc74XI');
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&language=en&key=AIzaSyC-V5bPta57l-zo8nzZ9MIxxGqvONc74XI');
       return response;
     } catch (e) {
       return null;
