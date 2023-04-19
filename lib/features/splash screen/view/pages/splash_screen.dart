@@ -56,7 +56,7 @@ class SplashScreen2 extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'A TICKET TO YOUR ADVENTURE',
+              'A ticket to your adventure',
               style: TextStyle(
                   color: AppColors.primary,
                   fontSize: 35,

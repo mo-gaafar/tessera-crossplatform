@@ -34,10 +34,11 @@ class LandingPageSections extends StatelessWidget {
               children: [
                 EventsSection(
                   title: 'Events Near ${location!['area']}',
-                  eventList:
-                      state is NearbyEventsLoaded ? state.nearbyEvents : [],
+                  eventList: context.select(
+                      (EventsFilterCubit events) => events.nearbyEvents),
                 ),
-                if (state is NearbyEventsLoaded && state.nearbyEvents.isEmpty)
+                if (context.select(
+                    (EventsFilterCubit events) => events.nearbyEvents.isEmpty))
                   const NoEventsFound(description: 'nearby'),
               ],
             );

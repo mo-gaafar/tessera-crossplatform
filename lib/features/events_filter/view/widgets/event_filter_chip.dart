@@ -39,7 +39,7 @@ class _EventFilterChipState extends State<EventFilterChip> {
         checkmarkColor: Colors.white.withOpacity(0.7),
         onSelected: (value) {
           setState(() => widget.isSelected = !widget.isSelected);
-          context.read<EventsFilterCubit>().onSelectionChanged();
+          context.read<EventsFilterCubit>().editSelection();
         },
       ),
     );

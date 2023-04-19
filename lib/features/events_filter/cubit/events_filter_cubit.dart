@@ -21,6 +21,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
   /// This object is altered every time a filter chip is selected or deselected.
   late List<FilterCriteria> criteria = [];
 
+  late List<EventFilterChip> filterChips = [];
+
+  late List<EventCard> nearbyEvents = [];
+
   /// Initializes the [criteria] list to be displayed as filter chips.
   Future<void> initCriteria() async {
     var online = FilterCriteria.fromList(['Online'], 'online');
@@ -69,14 +73,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
         // Generate a list of [EventCard]s from the filtered events.
         final List<EventCard> eventCards = generateEventCards(filteredEvents);
 
+        nearbyEvents = eventCards;
         emit(NearbyEventsLoaded(eventCards));
       },
     );
-  }
-
-  /// Emits a [SelectionChanged] event when a filter chip is selected.
-  void onSelectionChanged() {
-    emit(ChipTapped());
   }
 
   /// Emits a [Refresh] event when the user attempts to refresh events after
@@ -122,6 +122,7 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
       },
     );
 
+    filterChips = chips;
     emit(FilterCriteriaSelected(chips));
   }
 

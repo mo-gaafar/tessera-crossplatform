@@ -55,6 +55,7 @@ dependencies:
   geolocator: ^9.0.2
   font_awesome_flutter: ^10.4.0
   circular_countdown_timer: ^0.2.3
+  shrink_sidemenu: ^2.0.0+2-null-safety
   # flutter_launcher_icons: ^0.13.0
 
 dev_dependencies:

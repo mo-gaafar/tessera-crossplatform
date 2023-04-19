@@ -21,27 +21,20 @@ class _EventFiltersState extends State<EventFilters> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EventsFilterCubit, EventsFilterState>(
-      listenWhen: (previous, current) => current is ChipTapped,
-      buildWhen: (previous, current) => current is FilterCriteriaSelected,
-      listener: (context, state) {
-        context.read<EventsFilterCubit>().editSelection();
-      },
-      builder: (context, state) {
-        if (_scrollController.hasClients) {
-          _scrollController.animateTo(0,
-              duration: const Duration(milliseconds: 700), curve: Curves.ease);
-        }
-        return SizedBox(
-          height: 40,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            controller: _scrollController,
-            children:
-                state is FilterCriteriaSelected ? state.filterCriteria : [],
-          ),
-        );
-      },
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(0,
+          duration: const Duration(milliseconds: 700), curve: Curves.ease);
+    }
+
+    return SizedBox(
+      height: 40,
+      child: ListView(
+        key: const PageStorageKey('filterChips'),
+        scrollDirection: Axis.horizontal,
+        controller: _scrollController,
+        children:
+            context.select((EventsFilterCubit events) => events.filterChips),
+      ),
     );
   }
 
