@@ -46,18 +46,20 @@ class CustomSideMenuComponents extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed('/loginOptions');
               }
             },
-            leading: const Icon(
+            leading: Icon(
               Icons.logout_rounded,
               size: 20.0,
+              color: Theme.of(context).iconTheme.color,
             ),
             title: const Text('Logout'),
             dense: true,
           ),
           ListTile(
             onTap: () {},
-            leading: const Icon(
+            leading: Icon(
               Icons.admin_panel_settings_outlined,
               size: 20.0,
+              color: Theme.of(context).iconTheme.color,
             ),
             title: const Text('Organize'),
             dense: true,
