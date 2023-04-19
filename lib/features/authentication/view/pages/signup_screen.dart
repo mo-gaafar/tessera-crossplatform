@@ -7,29 +7,30 @@ import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
+import 'package:tessera/features/authentication/view/widgets/password_form_field.dart';
 
 /// Sign up page requesting the user's first name, last name, and password.
 class SignUp extends StatelessWidget {
   final formkey = GlobalKey<FormState>();
   String _firstName = '';
   String _lastName = '';
-  String _password = '';
   FormValidator formValidator = FormValidator();
 
   SignUp({super.key});
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;
-    return AppScaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Sign up",
-          style: TextStyle(
-              fontFamily: 'NeuePlak',
-              fontSize: 25,
-              fontWeight: FontWeight.bold),
+    return SafeArea(
+      child: AppScaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Sign up",
+            style: TextStyle(
+                fontFamily: 'NeuePlak',
+                fontSize: 25,
+                fontWeight: FontWeight.bold),
+          ),
         ),
-
         body: Padding(
           padding: EdgeInsets.all(kPagePadding),
           child: Form(
@@ -122,52 +123,7 @@ class SignUp extends StatelessWidget {
                           ),
                         ],
                       ),
-                      TextFormField(
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.grey),
-                            ),
-                            hintText: 'Password',
-                            suffixIcon: IconButton(
-                              icon: (context
-                                          .read<AuthCubit>()
-                                          .currentUser
-                                          .hidePassword ==
-                                      true)
-                                  ? Icon(Icons.visibility)
-                                  : Icon(Icons.visibility_off),
-                              onPressed: () {
-                                if (context
-                                        .read<AuthCubit>()
-                                        .currentUser
-                                        .hidePassword ==
-                                    true) {
-                                  context
-                                      .read<AuthCubit>()
-                                      .currentUser
-                                      .hidePassword = false;
-                                } else {
-                                  context
-                                      .read<AuthCubit>()
-                                      .currentUser
-                                      .hidePassword = false;
-                                }
-                                print(context
-                                    .read<AuthCubit>()
-                                    .currentUser
-                                    .hidePassword);
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            _password = value!;
-                            return formValidator.passowrdValidty(_password);
-                          },
-                          obscureText: context
-                              .read<AuthCubit>()
-                              .currentUser
-                              .hidePassword),
+                      PasswordFormField(formValidator: formValidator),
                     ],
                   ),
                 ),
@@ -182,19 +138,20 @@ class SignUp extends StatelessWidget {
                     onTap: () async {
                       if (formkey.currentState!.validate()) {
                         // Attempt email sign up
+                        String tempVarPassword=context.read<AuthCubit>().currentUser.password!;
                         await context
                             .read<AuthCubit>()
-                            .emailSignUp(_firstName, _lastName, _password);
+                            .emailSignUp(_firstName, _lastName, tempVarPassword);
 
-
-                      if (context.read<AuthCubit>().state is EmailSignedUp) {
-                        Navigator.pushNamed(context, '/verification');
+                        if (context.read<AuthCubit>().state is EmailSignedUp) {
+                          Navigator.pushNamed(context, '/verification');
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

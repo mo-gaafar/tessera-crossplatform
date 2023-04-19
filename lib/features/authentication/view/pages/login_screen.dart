@@ -10,6 +10,7 @@ import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
+import 'package:tessera/features/authentication/view/widgets/password_form_field.dart';
 
 /// Login page requesting the user's password.
 class LogIn extends StatelessWidget {
@@ -69,17 +70,7 @@ class LogIn extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: kPagePadding),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.cyan),
-                        ),
-                        labelText: 'Password*',
-                        labelStyle: TextStyle(fontSize: 18),
-                        hintText: 'Enter password',
-                      ),
-                      onChanged: (value) => password = value,
-                    ),
+                    child: PasswordFormField(formValidator: formValidator),
                   ),
                   Container(
                     width: double.infinity,
