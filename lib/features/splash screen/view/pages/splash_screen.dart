@@ -3,6 +3,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/location/location_service.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 
@@ -19,7 +20,7 @@ class SplashScreen extends StatelessWidget {
         // nextRoute: '/loginOptions',
         nextScreen: const SplashScreen2(),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white);
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor);
   }
 }
 
@@ -32,7 +33,7 @@ class SplashScreen2 extends StatelessWidget {
         screenRouteFunction: () async {
           await LocationService.handleLocationPermission();
 
-          await context.read<AuthCubit>().checkIfSignedIn();
+          await context.read<AuthCubit>().checkIfSignedIn(LocationService());
           if (context.read<AuthCubit>().state is SignedIn) {
             return '/third';
           } else {
@@ -55,19 +56,17 @@ class SplashScreen2 extends StatelessWidget {
               height: 20,
             ),
             const Text(
-              'A TICKET TO YOUR ADVENTURE',
+              'A ticket to your adventure',
               style: TextStyle(
-                  fontSize: 30.0,
-                  color: Color.fromARGB(255, 244, 84, 52),
-                  fontWeight: FontWeight.normal,
+                  color: AppColors.primary,
+                  fontSize: 35,
                   fontFamily: 'NeuePlak',
-                  letterSpacing: 2,
-                  wordSpacing: 4.0),
+                  fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
           ],
         ),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.white);
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor);
   }
 }

@@ -16,7 +16,7 @@
 
 
    <application
-        android:label="tessera"
+        android:label="Tessera"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -63,5 +63,4 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/> 
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

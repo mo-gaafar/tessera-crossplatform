@@ -1,7 +1,10 @@
 part of 'events_filter_cubit.dart';
 
-abstract class EventsFilterState {
+abstract class EventsFilterState extends Equatable {
   const EventsFilterState();
+
+  @override
+  List<Object> get props => [];
 }
 
 class EventsFilterInitial extends EventsFilterState {}
@@ -9,6 +12,16 @@ class EventsFilterInitial extends EventsFilterState {}
 class ChipTapped extends EventsFilterState {}
 
 class EventsLoading extends EventsFilterState {}
+
+class EventsLoaded extends EventsFilterState {}
+
+class EventsError extends EventsFilterState {
+  const EventsError(this.message);
+
+  final String message;
+}
+
+class Refresh extends EventsFilterState {}
 
 class FilterCriteriaSelected extends EventsFilterState {
   const FilterCriteriaSelected(this.filterCriteria);

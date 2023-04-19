@@ -20,14 +20,16 @@ class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double kPagePadding = 20;
-    return SafeArea(
-      child: AppScaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Sign up",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+    return AppScaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Sign up",
+          style: TextStyle(
+              fontFamily: 'NeuePlak',
+              fontSize: 25,
+              fontWeight: FontWeight.bold),
         ),
+
         body: Padding(
           padding: EdgeInsets.all(kPagePadding),
           child: Form(
@@ -184,15 +186,15 @@ class SignUp extends StatelessWidget {
                             .read<AuthCubit>()
                             .emailSignUp(_firstName, _lastName, _password);
 
-                        if (context.read<AuthCubit>().state is EmailSignedUp) {
-                          Navigator.pushNamed(context, '/verification');
-                        }
+
+                      if (context.read<AuthCubit>().state is EmailSignedUp) {
+                        Navigator.pushNamed(context, '/verification');
                       }
-                    },
-                  ),
+                    }
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

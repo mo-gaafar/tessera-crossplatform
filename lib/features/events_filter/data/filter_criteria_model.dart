@@ -6,8 +6,12 @@ class FilterCriteria {
   /// Creates a [FilterCriteria] object from a list of [EventFilterChip]s.
   FilterCriteria({required this.filterChips, required this.type});
 
+  /// The type of filter criterion represented by the [EventFilterChip]s.
+  ///
+  /// Examples include 'category', 'online', 'free', 'futureDate'.
   late String type;
 
+  /// The list of [EventFilterChip]s representing the filter criterion.
   late List<EventFilterChip> filterChips;
 
   /// Returns the selected [EventFilterChip] from the list of [EventFilterChip]s.
@@ -38,7 +42,7 @@ class FilterCriteria {
     };
   }
 
-  /// Creates a [FilterCriteria] object from a list of [String]s.
+  /// Named constructor that creates a [FilterCriteria] object from a list of [String]s.
   FilterCriteria.fromList(List list, String inputType) {
     filterChips = [];
     type = inputType;

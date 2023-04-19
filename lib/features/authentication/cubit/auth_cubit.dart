@@ -26,7 +26,7 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// This is done by checking if there is existing user data stored in the app's [SharedPreferences].
   /// If there is, the user is signed in automatically. Their data is stored back into [currentUser] and [SignedIn] is emitted.
-  Future<void> checkIfSignedIn() async {
+  Future<void> checkIfSignedIn(LocationService locationService) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userData = prefs.getString('userData');
     var authService = prefs.getString('authService');
@@ -34,6 +34,8 @@ class AuthCubit extends Cubit<AuthState> {
     if (userData != null && authService != null) {
       currentUser = UserModel.fromJson(userData);
       _authService = AuthService.fromString(authService);
+
+      currentUser.location = await locationService.getUserAddress();
 
       emit(SignedIn());
     }
@@ -46,7 +48,8 @@ class AuthCubit extends Cubit<AuthState> {
   ///
   /// Calls the abstracted [AuthService.signIn()] method of the provided [authService] to handle the sign in process.
   /// If the sign in is successful, the user's data is stored in [currentUser] and [SignedIn] is emitted.
-  Future<void> signIn(AuthService authService) async {
+  Future<void> signIn(
+      AuthService authService, LocationService locationService) async {
     emit(Loading());
 
     try {
@@ -65,14 +68,24 @@ class AuthCubit extends Cubit<AuthState> {
         (user) async {
           // Signed in successfully
           currentUser = user;
-          emit(SignedIn());
-          currentUser.location = await LocationService.getUserAddress();
-          _authService = authService;
 
-          // Persist data to local storage
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('userData', user.toJson());
-          prefs.setString('authService', _authService.toString());
+          // Get user's location
+          if (await LocationService.handleLocationPermission()) {
+            currentUser.location = await locationService.getUserAddress();
+
+            emit(SignedIn());
+
+            _authService = authService;
+
+            // Persist data to local storage
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('userData', user.toJson());
+            prefs.setString('authService', _authService.toString());
+          } else {
+            emit(const AuthError(
+                message:
+                    'Location permission denied. Please allow location access to continue.'));
+          }
         },
       );
     } catch (e) {

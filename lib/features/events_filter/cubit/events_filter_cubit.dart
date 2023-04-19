@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:tessera/features/events_filter/data/filter_criteria_model.dart';
 import 'package:tessera/features/events_filter/data/filter_repository.dart';
 import 'package:tessera/features/events_filter/view/widgets/event_filter_chip.dart';
-import 'package:tessera/features/landing_page/view/data/event_card_model.dart';
+import 'package:tessera/features/landing_page/data/event_card_model.dart';
 import 'package:tessera/features/landing_page/view/widgets/event_card.dart';
 
 part 'events_filter_state.dart';
@@ -20,6 +21,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
   /// This object is altered every time a filter chip is selected or deselected.
   late List<FilterCriteria> criteria = [];
 
+  late List<EventFilterChip> filterChips = [];
+
+  late List<EventCard> nearbyEvents = [];
+
   /// Initializes the [criteria] list to be displayed as filter chips.
   Future<void> initCriteria() async {
     var online = FilterCriteria.fromList(['Online'], 'online');
@@ -28,49 +33,64 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     // Gets all categories present in the database.
     var allEvents = await FilterRepository.getFilteredEvents(
         FilterRepository.filterQueriesMap());
-    var categories = FilterCriteria.fromList(
-      allEvents['categoriesRetreived'],
-      'category',
+
+    allEvents.fold(
+      (error) => emit(EventsError(error)),
+      (allEvents) {
+        var categories = FilterCriteria.fromList(
+          allEvents['categoriesRetreived'],
+          'category',
+        );
+
+        var dateList =
+            FilterCriteria.fromList(FilterRepository.dates, 'futureDate');
+
+        criteria = [online, free, dateList, categories];
+        editSelection();
+      },
     );
-
-    var dateList =
-        FilterCriteria.fromList(FilterRepository.dates, 'futureDate');
-
-    criteria = [online, free, dateList, categories];
-    editSelection();
   }
 
   /// Initializes nearby events according to user location passed in.
+  ///
+  /// Emits a [NearbyEventsLoaded] event with the list of [EventCard]s.
   Future<void> initNearbyEvents(String area, String country) async {
     var queries = FilterRepository.filterQueriesMap();
 
     queries['area'] = area;
     queries['country'] = country;
 
+    emit(EventsLoading());
+
     // Call API request to get filtered events by [queries].
     final response = await FilterRepository.getFilteredEvents(queries);
 
-    if (response['success'] == 'true') {
-      List filteredEvents = response['filteredEvents'];
+    response.fold(
+      (error) => emit(EventsError(error)),
+      (response) {
+        List filteredEvents = response['filteredEvents'];
 
-      // Generate a list of [EventCard]s from the filtered events.
-      final List<EventCard> eventCards = generateEventCards(filteredEvents);
+        // Generate a list of [EventCard]s from the filtered events.
+        final List<EventCard> eventCards = generateEventCards(filteredEvents);
 
-      emit(NearbyEventsLoaded(eventCards));
-    }
+        nearbyEvents = eventCards;
+        emit(NearbyEventsLoaded(eventCards));
+      },
+    );
   }
 
-  /// Emits a [SelectionChanged] event when a filter chip is selected.
-  void onSelectionChanged() {
-    emit(ChipTapped());
+  /// Emits a [Refresh] event when the user attempts to refresh events after
+  /// network error.
+  void attempRefresh() {
+    emit(Refresh());
   }
 
   /// Edits displayed chips according to the selection.
   /// Calls [getFilteredEvents()] to get the filtered events based on the seleected chips.
-  void editSelection() {
+  void editSelection() async {
     editChips();
-    emit(EventsLoading());
-    getFilteredEvents();
+    // emit(EventsLoading());
+    await getFilteredEvents();
   }
 
   /// Responsible for figuring out which filter chips to display after a chip is
@@ -102,25 +122,32 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
       },
     );
 
+    filterChips = chips;
     emit(FilterCriteriaSelected(chips));
   }
 
   /// Gets the filtered events from API using the selected queries.
   /// Emits the events through a [EventsFiltered] event.
-  void getFilteredEvents() async {
+  Future<void> getFilteredEvents() async {
     var queries = prepareQueries();
+
+    Future.delayed(
+        const Duration(milliseconds: 100), () => emit(EventsLoading()));
 
     // Call API request to get filtered events by [queries].
     final response = await FilterRepository.getFilteredEvents(queries);
 
-    if (response['success'] == 'true') {
-      List filteredEvents = response['filteredEvents'];
+    response.fold(
+      (error) => emit(EventsError(error)),
+      (response) {
+        List filteredEvents = response['filteredEvents'];
 
-      // Generate a list of [EventCard]s from the filtered events.
-      final List<EventCard> eventCards = generateEventCards(filteredEvents);
+        // Generate a list of [EventCard]s from the filtered events.
+        final List<EventCard> eventCards = generateEventCards(filteredEvents);
 
-      emit(EventsFiltered(eventCards));
-    }
+        emit(EventsFiltered(eventCards));
+      },
+    );
   }
 
   /// Prepare queries map to be passed to [FilterRepository.getFilteredEvents()]
@@ -140,6 +167,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
     return queries;
   }
 
+  /// Generates a list of [EventCard]s from the filtered events.
+  ///
+  /// Each event returned from the API is converted to an [EventCardModel] object,
+  /// and then passed to the [EventCard] widget.
   List<EventCard> generateEventCards(List filteredEvents) {
     return List.generate(
       filteredEvents.length,
@@ -150,8 +181,12 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
           date: DateTime.parse(
                   filteredEvents[index]['basicInfo']['startDateTime'])
               .toLocal(),
-          location: filteredEvents[index]['basicInfo']['location']['venueName'],
+          location: filteredEvents[index]['basicInfo']['location']
+                  ['venueName'] ??
+              'Online',
           image: Image.network(filteredEvents[index]['basicInfo']['eventImage'],
+              errorBuilder: (context, error, stackTrace) =>
+                  Image.asset('assets/images/placeholder.jpg'),
               fit: BoxFit.cover),
         ),
       ),

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 
+/// A single filter chip representing a filter criterion. For example, an
+/// [EventFilterChip] with the label 'Online'.
 class EventFilterChip extends StatefulWidget {
   EventFilterChip({super.key, required this.label, this.isSelected = false});
 
@@ -37,7 +39,7 @@ class _EventFilterChipState extends State<EventFilterChip> {
         checkmarkColor: Colors.white.withOpacity(0.7),
         onSelected: (value) {
           setState(() => widget.isSelected = !widget.isSelected);
-          context.read<EventsFilterCubit>().onSelectionChanged();
+          context.read<EventsFilterCubit>().editSelection();
         },
       ),
     );
