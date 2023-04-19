@@ -1,19 +1,22 @@
 import 'dart:convert';
 
+/// Model class representing the events's data.
 class EventModel {
   final String success;
   final List<dynamic> filteredEvents;
   final List<dynamic> tierCapacityFull;
   final bool isEventCapacityFull;
   final bool isEventFree;
-
+  /// Creates a [EventModel] from given user data.
+  /// 
+  /// Requires [filteredEvents] , [tierCapacityFull] , [isEventCapacityFull] and [isEventFree]
   EventModel(
       {required this.success,
       required this.filteredEvents,
       required this.tierCapacityFull,
       required this.isEventCapacityFull,
       required this.isEventFree});
-
+  /// Creates a [EventModel] from a [Map].
   factory EventModel.fromMap(Map<String, dynamic> map){
       return EventModel(success :map['success'] as String,
         filteredEvents :map['filteredEvents'] as List<dynamic>,
@@ -21,7 +24,7 @@ class EventModel {
         isEventCapacityFull :map['isEventCapacityFull'] as bool,
         isEventFree :map['isEventFree'] as bool );
   }
-
+   /// Returns a [Map] representation of the [EventModel].
   Map<String, dynamic> toMap() => {
         'success': success,
         'filteredEvents': filteredEvents,
@@ -30,10 +33,10 @@ class EventModel {
         'isEventFree': isEventFree
       };
 
-   /// Encodes the [UserModel] to JSON.
+   /// Encodes the [EventModel] to JSON.
   String toJson() => json.encode(toMap());
 
-  /// Decodes the [UserModel] from JSON.
+  /// Decodes the [EventModel] from JSON.
   factory EventModel.fromJson(String source) =>
       EventModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -9,6 +9,9 @@ import 'package:tessera/features/events/cubit/event_book_cubit.dart';
 import 'package:provider/provider.dart';
 import 'package:tessera/features/events/data/event_data.dart';
 
+/// A screen that shows the description of the event
+
+
 class SeeMore extends StatelessWidget {
   const SeeMore({super.key, required this.title, required this.date, required this.time, required this.details});
   final String title;
@@ -19,11 +22,17 @@ class SeeMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.close)),
+              title: Text(
+          title, //APP BAR EVENT NAME
+          style: TextStyle(
+              fontFamily: 'NeuePlak', color: AppColors.lightBackground, fontSize: 25),
+        ),
+        //backgroundColor: AppColors.primary,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context); //back to landing page
+            },
+            icon: Icon(Icons.close,color:AppColors.secondaryTextOnLight ,)),
                   elevation: 3,
                   backgroundColor: AppColors.primary,
                 ),
@@ -33,14 +42,7 @@ class SeeMore extends StatelessWidget {
           child: Column(
             children: [
               //event name
-              Text(
-                    title,
-                    style: TextStyle(
-                        fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 25),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
+              
                   //timeText+ ', '+dateText
               Text(
                 date+ ', '+time,
@@ -48,7 +50,7 @@ class SeeMore extends StatelessWidget {
                     fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 20),
               ),
               SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   //seemore text
               Text(

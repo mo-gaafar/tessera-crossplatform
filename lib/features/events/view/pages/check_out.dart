@@ -1,26 +1,31 @@
+// ignore_for_file: must_be_immutable
+import 'dart:convert';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/events/cubit/event_book_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tessera/features/events/view/widgets/email_button.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/events/data/booking_data.dart';
+
+/// A screen in which the user entres the data to check out
 
 class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
-  final int _duration = 10; //1800;
-  final String ticketTier;
-  final String feesText; //money or free
+  final int _duration = 60; //1800;
+  final List ticketTier;
+  final bool charge;
+  late String feesText; //money or free
+  String inputEmailCheckOut = '';
+  FormValidator formValidator = FormValidator();
+  String firstCheckOut = '';
+  String lastCheckOut = '';
 
-  CheckOut({Key? key, required this.feesText, required this.ticketTier}) : super(key: key);
-
-  bool view() {
-    if (ticketTier == 'Free') {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  CheckOut({Key? key, required this.charge, required this.ticketTier})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +36,14 @@ class CheckOut extends StatelessWidget {
               Navigator.pop(context);
             },
             icon: Icon(Icons.close)),
-        elevation: 3,
+        elevation: 0,
+        backgroundColor: AppColors.primary,
         title: Text(
-          'Check out',
+          'Check Out Information',
           style: TextStyle(
               fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
         ),
-        backgroundColor: AppColors.primary,
+        //backgroundColor: AppColors.primary,
       ),
       bottomNavigationBar: BottomAppBar(
           child: Padding(
@@ -69,9 +75,37 @@ class CheckOut extends StatelessWidget {
                   buttonText: 'CheckOut',
                   colourBackground: AppColors.primary,
                   colourText: Colors.white,
-                  onTap: () {
+                  onTap: () async {
                     if (formKey.currentState!.validate()) {
-                      Navigator.pushNamed(context, '/third');
+                      ContactInformation info = ContactInformation(
+                          firstName: firstCheckOut,
+                          lastName: lastCheckOut,
+                          email: inputEmailCheckOut);
+
+                      BookingModel book = BookingModel(
+                          contactInformation: info.toMap(),
+                          ticketTierSelected: ticketTier);
+                      // ignore: avoid_print
+                      print(jsonEncode(book.toMap()));
+                      bool output = await context
+                          .read<EventBookCubit>()
+                          .postBookingData(book.toMap());
+                      if (output == true) {
+                        Navigator.pushNamed(context, '/third');
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Successfully booked'),
+                          shape: StadiumBorder(),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Error in booking'),
+                          shape: StadiumBorder(),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+                      }
                     }
                   },
                 )),
@@ -86,6 +120,7 @@ class CheckOut extends StatelessWidget {
               key: formKey,
               child: Column(
                 children: [
+                  
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.primary, width: 2),
@@ -95,7 +130,7 @@ class CheckOut extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         textAlign: TextAlign.center,
-                        feesText + ' is the final price',
+                        'Your Chosen tickets are' + ticketTier.toString(),
                         style: TextStyle(
                             fontFamily: 'NeuePlak',
                             color: AppColors.textOnLight,
@@ -106,6 +141,12 @@ class CheckOut extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
+                  Text(
+          'Billing Basic Information', //APP BAR EVENT NAME
+          style: TextStyle(
+              fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 29),
+        ),
+        
                   Row(
                     children: [
                       Expanded(
@@ -113,12 +154,15 @@ class CheckOut extends StatelessWidget {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter your first name',
+                            helperText: 'Required'
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                            firstCheckOut = value!;
+                            if (firstCheckOut == null ||
+                                firstCheckOut.isEmpty) {
+                              return 'Please enter your first name';
                             }
-                            return null;
+                            return formValidator.nameValidty(firstCheckOut);
                           },
                         ),
                       ),
@@ -130,12 +174,14 @@ class CheckOut extends StatelessWidget {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter your last name',
+                            helperText: 'Required'
                           ),
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                            lastCheckOut = value!;
+                            if (lastCheckOut == null || lastCheckOut.isEmpty) {
+                              return 'Please enter your last name';
                             }
-                            return null;
+                            return formValidator.nameValidty(lastCheckOut);
                           },
                         ),
                       )
@@ -148,10 +194,16 @@ class CheckOut extends StatelessWidget {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter your Email address',
+                      helperText: 'Required'
                     ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
+                      inputEmailCheckOut = value!;
+                      if (inputEmailCheckOut == null ||
+                          inputEmailCheckOut.trim().isEmpty) {
+                        return 'Email is required.';
+                      }
+                      if (!EmailValidator.validate(inputEmailCheckOut)) {
+                        return 'This is not a valid email.';
                       }
                       return null;
                     },
@@ -159,23 +211,8 @@ class CheckOut extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your city/state/country',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
                   Visibility(
-                    visible: view(),
+                    visible: charge,
                     child: Column(
                       children: [
                         Text(
@@ -195,9 +232,9 @@ class CheckOut extends StatelessWidget {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter your card number';
                             }
-                            return null;
+                            return formValidator.cardValidty(value);
                           },
                         ),
                         SizedBox(
@@ -213,9 +250,9 @@ class CheckOut extends StatelessWidget {
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
+                                    return 'Please enter your Expiration date';
                                   }
-                                  return null;
+                                  return formValidator.expirationValidty(value);
                                 },
                               ),
                             ),
@@ -230,9 +267,9 @@ class CheckOut extends StatelessWidget {
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter some text';
+                                    return 'Please enter your security code';
                                   }
-                                  return null;
+                                  return formValidator.securityValidty(value);
                                 },
                               ),
                             )
@@ -248,9 +285,9 @@ class CheckOut extends StatelessWidget {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter some text';
+                              return 'Please enter your zip code';
                             }
-                            return null;
+                            return formValidator.cardValidty(value);
                           },
                         ),
                       ],
