@@ -37,7 +37,8 @@ class SplashScreen2 extends StatelessWidget {
           if (context.read<AuthCubit>().state is SignedIn) {
             return '/third';
           } else {
-            return '/loginOptions';
+            //return '/loginOptions';
+            return '/creatorlanding';
           }
         },
         splashIconSize: 300,
