@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+import 'package:tessera/features/authentication/data/user_model.dart';
 
 class CustomSideMenuComponents extends StatelessWidget {
   const CustomSideMenuComponents({super.key});
 
+  final fontColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
+    final UserModel user = context.select((AuthCubit auth) => auth.currentUser);
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 50.0),
       child: Column(
@@ -15,76 +21,46 @@ class CustomSideMenuComponents extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 CircleAvatar(
-                  backgroundColor: Colors.white,
+                  backgroundImage: user.photoUrl != null
+                      ? NetworkImage(user.photoUrl!)
+                      : null,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   radius: 22.0,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Text(
-                  "Hello, John Doe",
-                  style: TextStyle(color: Colors.white),
+                  "Hello, ${user.username}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
               ],
             ),
           ),
           ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.home, size: 20.0, color: Colors.white),
-            title: const Text("Home"),
-            textColor: Colors.white,
+            onTap: () async {
+              await context.read<AuthCubit>().signOut();
+
+              if (context.read<AuthCubit>().state is SignedOut) {
+                Navigator.of(context).pushReplacementNamed('/loginOptions');
+              }
+            },
+            leading: const Icon(
+              Icons.logout_rounded,
+              size: 20.0,
+            ),
+            title: const Text('Logout'),
             dense: true,
           ),
           ListTile(
             onTap: () {},
-            leading: const Icon(Icons.verified_user,
-                size: 20.0, color: Colors.white),
-            title: const Text("Profile"),
-            textColor: Colors.white,
+            leading: const Icon(
+              Icons.admin_panel_settings_outlined,
+              size: 20.0,
+            ),
+            title: const Text('Organize'),
             dense: true,
-
-            // padding: EdgeInsets.zero,
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.monetization_on,
-                size: 20.0, color: Colors.white),
-            title: const Text("Wallet"),
-            textColor: Colors.white,
-            dense: true,
-
-            // padding: EdgeInsets.zero,
-          ),
-          ListTile(
-            onTap: () {},
-            leading: const Icon(Icons.shopping_cart,
-                size: 20.0, color: Colors.white),
-            title: const Text("Cart"),
-            textColor: Colors.white,
-            dense: true,
-
-            // padding: EdgeInsets.zero,
-          ),
-          ListTile(
-            onTap: () {},
-            leading:
-                const Icon(Icons.star_border, size: 20.0, color: Colors.white),
-            title: const Text("Favorites"),
-            textColor: Colors.white,
-            dense: true,
-
-            // padding: EdgeInsets.zero,
-          ),
-          ListTile(
-            onTap: () {},
-            leading:
-                const Icon(Icons.settings, size: 20.0, color: Colors.white),
-            title: const Text("Settings"),
-            textColor: Colors.white,
-            dense: true,
-
-            // padding: EdgeInsets.zero,
           ),
         ],
       ),

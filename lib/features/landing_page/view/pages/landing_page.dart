@@ -61,19 +61,6 @@ class _LandingPageState extends State<LandingPage> {
                 icon: const Icon(Icons.menu),
                 onPressed: () => toggleMenu(),
               ),
-              actions: [
-                IconButton(
-                  onPressed: () async {
-                    await context.read<AuthCubit>().signOut();
-
-                    if (context.read<AuthCubit>().state is SignedOut) {
-                      Navigator.of(context)
-                          .pushReplacementNamed('/loginOptions');
-                    }
-                  },
-                  icon: const Icon(Icons.logout),
-                ),
-              ],
               elevation: 0,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
