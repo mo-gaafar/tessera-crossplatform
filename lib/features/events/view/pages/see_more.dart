@@ -9,6 +9,9 @@ import 'package:tessera/features/events/cubit/event_book_cubit.dart';
 import 'package:provider/provider.dart';
 import 'package:tessera/features/events/data/event_data.dart';
 
+/// A screen that shows the description of the event
+
+
 class SeeMore extends StatelessWidget {
   const SeeMore({super.key, required this.title, required this.date, required this.time, required this.details});
   final String title;

@@ -11,6 +11,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/events/data/booking_data.dart';
 
+/// A screen in which the user entres the data to check out
+
 class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final int _duration = 60; //1800;

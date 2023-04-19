@@ -8,6 +8,9 @@ import 'package:tessera/features/events/view/pages/see_more.dart';
 import 'package:tessera/features/events/view/pages/check_out.dart';
 import 'package:tessera/features/events/data/booking_data.dart';
 
+///  A Screen that is directed to from landing page to show the details of the event
+
+
 List splitting(String data) {
   DateTime now = DateTime.parse(data);
   var formatter = DateFormat('EEEE, MMM d, yyyy');

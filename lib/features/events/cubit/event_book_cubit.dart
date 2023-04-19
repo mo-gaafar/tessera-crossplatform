@@ -8,26 +8,34 @@ import 'package:tessera/features/events/data/event_data.dart';
 import 'package:tessera/features/events/data/booking_data.dart';
 part 'event_book_state.dart';
 
+/// Cubit handling all Event and booking related events .
+///
+/// Makes use of [EventBookCubit] to make API calls to the backend server and retrieve and send data.
+
+
 class EventBookCubit extends Cubit<EventBookState> {
   EventBookCubit() : super(EventInitial());
+
+  /// Returns the[EventModel] basic info
   // basic info is added to the event model
   Future<EventModel> getEventData() async {
+  
     emit(EventLoading());
     var eventinfo = await EventRepository.eventBasicInfo();
-    print(eventinfo);
-    print('da5al cubit');
     EventModel event = EventModel.fromMap(eventinfo);
-    print(event);
+    
     emit(
       EventChosen(),
     );
     return event;
   }
+  ///Sends the [BookingModel] data to the backend.
+  ///
+  ///Returns  True if successfully booked and false otherwise
   Future<bool> postBookingData(var data) async {
-    // Request login from server.
+    
     var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
-    print(response);
-    print('da5al checking ');
+    
     if (response['success'] == true) {
       emit(
       EventSuccessfullyBooked(),
