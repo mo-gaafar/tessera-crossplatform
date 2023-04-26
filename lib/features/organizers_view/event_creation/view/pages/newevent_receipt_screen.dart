@@ -9,8 +9,6 @@ class NewEventReceipt extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.textOnLight,
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.visibility),

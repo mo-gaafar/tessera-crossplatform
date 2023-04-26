@@ -14,10 +14,7 @@ class NewEventtitle extends StatelessWidget {
             children: [
               const Text(
                 'Give your event a title.',
-                style: TextStyle(
-                    color: AppColors.textOnLight,
-                    fontSize: 40.0,
-                    fontFamily: 'NeuePlak'),
+                style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
               ),
               const TextField(
                 decoration: InputDecoration(

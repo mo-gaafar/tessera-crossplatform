@@ -32,10 +32,7 @@ class PickDateAndTime extends StatelessWidget {
         ),
         const Text(
           'Date   |   ',
-          style: TextStyle(
-              color: AppColors.textOnLight,
-              fontSize: 20.0,
-              fontFamily: 'NeuePlak'),
+          style: TextStyle(fontSize: 20.0, fontFamily: 'NeuePlak'),
           textAlign: TextAlign.left,
         ),
         Padding(
@@ -43,7 +40,6 @@ class PickDateAndTime extends StatelessWidget {
           child: IconButton(
             icon: Icon(
               Icons.timelapse_rounded,
-              color: Colors.grey,
             ),
             onPressed: () async {
               if (type == 'from') {
@@ -56,10 +52,7 @@ class PickDateAndTime extends StatelessWidget {
         ),
         const Text(
           'Day',
-          style: TextStyle(
-              color: AppColors.textOnLight,
-              fontSize: 20.0,
-              fontFamily: 'NeuePlak'),
+          style: TextStyle(fontSize: 20.0, fontFamily: 'NeuePlak'),
           textAlign: TextAlign.left,
         ),
       ],

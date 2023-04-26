@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
@@ -56,7 +57,11 @@ class CustomSideMenuComponents extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/creatorlanding');
+              context.read<AuthCubit>().userType == UserType.attendee
+                  ? Navigator.of(context)
+                      .pushReplacementNamed('/creatorlanding')
+                  : Navigator.of(context).pushReplacementNamed('/landingPage');
+              context.read<AuthCubit>().toggleUserType();
             },
             leading: Icon(
               Icons.admin_panel_settings_outlined,

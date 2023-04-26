@@ -20,6 +20,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   /// The current signed in user. Available throughout the app.
   late UserModel currentUser;
+
+  UserType userType = UserType.attendee;
+
   AuthCubit() : super(AuthInitial());
 
   /// Checks if there is a user already signed in.
@@ -208,5 +211,11 @@ class AuthCubit extends Cubit<AuthState> {
       emit(OperationSuccess());
     }
     emit(AuthError(message: response['message']));
+  }
+
+  void toggleUserType() {
+    userType == UserType.attendee
+        ? userType = UserType.organizer
+        : userType = UserType.attendee;
   }
 }

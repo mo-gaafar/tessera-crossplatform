@@ -11,9 +11,8 @@ class CreatorLandingPage extends StatelessWidget {
       child: CustomSideMenu(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            bottom: const TabBar(
-              tabs: [
+            bottom: TabBar(
+              tabs: const [
                 Tab(
                   text: 'Live',
                 ),
@@ -24,10 +23,16 @@ class CreatorLandingPage extends StatelessWidget {
                   text: 'Draft',
                 ),
               ],
-              labelColor: Colors.black,
-              dividerColor: Colors.black,
+              labelColor: Theme.of(context).textTheme.bodyLarge!.color,
+              dividerColor: Theme.of(context).textTheme.bodyLarge!.color,
             ),
-            title: const Text('Events'),
+            title: const Text(
+              'Events',
+              style: TextStyle(
+                  fontFamily: 'NeuePlak',
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+            ),
             actions: <Widget>[
               Center(
                 child: GestureDetector(

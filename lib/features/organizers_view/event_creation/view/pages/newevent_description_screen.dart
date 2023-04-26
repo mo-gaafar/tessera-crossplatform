@@ -11,31 +11,25 @@ class NewEventDescription extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            children: [
+            children: const [
               Divider(
                 color: Colors.green,
                 thickness: 3,
                 endIndent: 300,
               ),
-              const Text(
+              Text(
                 'Describe your event.',
-                style: TextStyle(
-                    color: AppColors.textOnLight,
-                    fontSize: 40.0,
-                    fontFamily: 'NeuePlak'),
+                style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: const Text(
+                padding: EdgeInsets.only(top: 50.0),
+                child: Text(
                   'Enter a brief summary of your event so guests know what to expect',
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 20.0,
-                      fontFamily: 'NeuePlak'),
+                  style: TextStyle(fontSize: 20.0, fontFamily: 'NeuePlak'),
                   textAlign: TextAlign.left,
                 ),
               ),
-              const TextField(),
+              TextField(),
             ],
           ),
         ),
