@@ -55,7 +55,9 @@ class CustomSideMenuComponents extends StatelessWidget {
             dense: true,
           ),
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed('/creatorlanding');
+            },
             leading: Icon(
               Icons.admin_panel_settings_outlined,
               size: 20.0,

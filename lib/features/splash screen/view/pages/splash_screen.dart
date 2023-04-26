@@ -35,7 +35,7 @@ class SplashScreen2 extends StatelessWidget {
 
           await context.read<AuthCubit>().checkIfSignedIn(LocationService());
           if (context.read<AuthCubit>().state is SignedIn) {
-            return '/third';
+            return '/landingPage';
           } else {
             return '/loginOptions';
           }

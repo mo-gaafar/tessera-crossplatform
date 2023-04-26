@@ -91,7 +91,7 @@ class CheckOut extends StatelessWidget {
                           .read<EventBookCubit>()
                           .postBookingData(book.toMap());
                       if (output == true) {
-                        Navigator.pushNamed(context, '/third');
+                        Navigator.pushNamed(context, '/landingPage');
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(seconds: 2),
                           content: Text('Successfully booked'),

@@ -10,6 +10,12 @@ import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
 import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/creator_landingPage_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_description_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_location_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_receipt_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_setdate_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_title_screen.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
 import 'package:tessera/features/attendees_view/landing_page/view/pages/landing_page.dart';
@@ -51,12 +57,36 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const VerificationScreen(),
         );
-      case '/third':
+      case '/landingPage':
         return MaterialPageRoute(
           builder: (_) => BlocProvider<EventsFilterCubit>(
             create: (context) => EventsFilterCubit(),
-            child: LandingPage(),
+            child: const LandingPage(),
           ),
+        );
+      case '/creatorlanding':
+        return MaterialPageRoute(
+          builder: (_) => CreatorLandingPage(),
+        );
+      case '/neweventtitle':
+        return MaterialPageRoute(
+          builder: (_) => const NewEventtitle(),
+        );
+      case '/neweventdescription':
+        return MaterialPageRoute(
+          builder: (_) => const NewEventDescription(),
+        );
+      case '/neweventsetdate':
+        return MaterialPageRoute(
+          builder: (_) => NewEventSetDate(),
+        );
+      case '/neweventlocation':
+        return MaterialPageRoute(
+          builder: (_) => NewEventLocation(),
+        );
+      case '/neweventreceipt':
+        return MaterialPageRoute(
+          builder: (_) => const NewEventReceipt(),
         );
       default:
         return MaterialPageRoute(

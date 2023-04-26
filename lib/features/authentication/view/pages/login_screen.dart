@@ -95,7 +95,7 @@ class LogIn extends StatelessWidget {
 
                           if (context.read<AuthCubit>().state is SignedIn) {
                             Navigator.of(context)
-                                .pushReplacementNamed('/third');
+                                .pushReplacementNamed('/landingPage');
                           }
                         }
                       },

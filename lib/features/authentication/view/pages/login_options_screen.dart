@@ -87,7 +87,7 @@ class LoginOptionsScreen extends StatelessWidget {
 
                           if (context.read<AuthCubit>().state is SignedIn) {
                             Navigator.of(context)
-                                .pushReplacementNamed('/third');
+                                .pushReplacementNamed('/landingPage');
                           }
                         }),
                     const SizedBox(
@@ -96,7 +96,8 @@ class LoginOptionsScreen extends StatelessWidget {
                     BlocListener<AuthCubit, AuthState>(
                       listenWhen: (previous, current) => current is SignedIn,
                       listener: (context, state) {
-                        Navigator.of(context).pushReplacementNamed('/third');
+                        Navigator.of(context)
+                            .pushReplacementNamed('/landingPage');
                       },
                       child: ContinueButton(
                         image: 'assets/images/Google.png',
