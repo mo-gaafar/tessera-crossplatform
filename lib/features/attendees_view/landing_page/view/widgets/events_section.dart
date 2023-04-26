@@ -66,10 +66,22 @@ class EventsSection extends StatelessWidget {
                   ),
                 ),
               ),
+
               if (context.select((EventsFilterCubit events) =>
                       events.nearbyEvents.isEmpty) &&
                   section == LandingPageSection.eventsNearYou)
                 const NoEventsFound(description: 'nearby'),
+
+              BlocBuilder<EventsFilterCubit, EventsFilterState>(
+                builder: (context, state) {
+                  if (state is EventsFiltered &&
+                      state.filteredEvents.isEmpty &&
+                      section == LandingPageSection.eventsYoullLove) {
+                    return const NoEventsFound();
+                  }
+                  return const SizedBox();
+                },
+              ),
               // Actual events list
               SliverList(
                 delegate: SliverChildBuilderDelegate(

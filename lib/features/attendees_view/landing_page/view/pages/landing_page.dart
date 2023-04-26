@@ -78,10 +78,13 @@ class _LandingPageState extends State<LandingPage> {
               ),
               expandedHeight: 250,
             ),
-            context.select((EventsFilterCubit events) => events.state)
-                    is EventsError
-                ? const NetworkErrorSection()
-                : const LandingPageSections()
+            BlocBuilder<EventsFilterCubit, EventsFilterState>(
+              builder: (context, state) {
+                return state is EventsError
+                    ? const NetworkErrorSection()
+                    : const LandingPageSections();
+              },
+            )
           ],
         ),
       ),

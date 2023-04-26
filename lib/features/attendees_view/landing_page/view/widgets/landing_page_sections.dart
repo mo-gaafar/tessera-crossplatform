@@ -55,8 +55,6 @@ class LandingPageSections extends StatelessWidget {
                         state is EventsFiltered ? state.filteredEvents : [],
                     radius: 0,
                     hasFilters: true),
-                if (state is EventsFiltered && state.filteredEvents.isEmpty)
-                  const NoEventsFound(),
               ],
             );
           },
