@@ -6,8 +6,7 @@ import 'package:tessera/core/theme/app_theme.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
-import 'package:tessera/features/events/cubit/event_book_cubit.dart';
-import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
 
 void main() {
   DartPluginRegistrant.ensureInitialized();

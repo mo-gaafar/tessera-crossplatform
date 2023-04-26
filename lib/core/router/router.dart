@@ -9,10 +9,10 @@ import 'package:tessera/features/authentication/view/pages/type_new_password_scr
 import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
-import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
-import 'package:tessera/features/landing_page/view/pages/landing_page.dart';
+import 'package:tessera/features/attendees_view/landing_page/view/pages/landing_page.dart';
 
 /// Acts as the main router for the app. Contains all possible routes.
 
