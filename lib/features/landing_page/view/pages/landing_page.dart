@@ -23,8 +23,6 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   late Image headerImage;
 
-  final GlobalKey<SideMenuState> _sideMenuKey = GlobalKey<SideMenuState>();
-
   @override
   void initState() {
     super.initState();
@@ -34,22 +32,10 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
-  toggleMenu() {
-    final state = _sideMenuKey.currentState!;
-    if (state.isOpened) {
-      state.closeSideMenu();
-    } else {
-      state.openSideMenu();
-    }
-
-    // setState(() {});
-  }
-
   // final userLocation = 'New York, ;
   @override
   Widget build(BuildContext context) {
     return CustomSideMenu(
-      sideMenuKey: _sideMenuKey,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: CustomScrollView(
@@ -57,10 +43,6 @@ class _LandingPageState extends State<LandingPage> {
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
-              leading: IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => toggleMenu(),
-              ),
               elevation: 0,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
@@ -70,11 +52,14 @@ class _LandingPageState extends State<LandingPage> {
                   child: SizedBox(
                     height: 200,
                     child: LayoutBuilder(builder: (context, constraints) {
-                      return Image.asset(
-                        'assets/images/LogoFullTextLarge.png',
-                        color:
-                            constraints.maxHeight > 100 ? Colors.white : null,
-                        width: 150,
+                      return Hero(
+                        tag: 'logo',
+                        child: Image.asset(
+                          'assets/images/LogoFullTextLarge.png',
+                          color:
+                              constraints.maxHeight > 100 ? Colors.white : null,
+                          width: 150,
+                        ),
                       );
                     }),
                   ),

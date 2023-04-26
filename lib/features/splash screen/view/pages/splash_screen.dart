@@ -44,13 +44,10 @@ class SplashScreen2 extends StatelessWidget {
         duration: 1500,
         splash: Column(
           children: [
-            Hero(
-              tag: 'logo',
-              child: Image.asset(
-                'assets/images/AppIconMed.png',
-                width: 110.0,
-                height: 120.0,
-              ),
+            Image.asset(
+              'assets/images/AppIconMed.png',
+              width: 110.0,
+              height: 120.0,
             ),
             const SizedBox(
               height: 20,

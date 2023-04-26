@@ -34,6 +34,9 @@ class AppTheme {
             fontFamily: 'NeuePlak',
           ),
         ),
+    iconTheme: ThemeData.light().iconTheme.copyWith(
+          color: AppColors.textOnLight,
+        ),
   );
 
   /// Returns the app's dark theme.

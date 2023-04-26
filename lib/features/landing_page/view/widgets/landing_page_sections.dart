@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:tessera/constants/enums.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/landing_page/view/widgets/no_events_found.dart';
@@ -36,10 +37,8 @@ class LandingPageSections extends StatelessWidget {
                   title: 'Events Near ${location!['area']}',
                   eventList: context.select(
                       (EventsFilterCubit events) => events.nearbyEvents),
+                  section: LandingPageSection.eventsNearYou,
                 ),
-                if (context.select(
-                    (EventsFilterCubit events) => events.nearbyEvents.isEmpty))
-                  const NoEventsFound(description: 'nearby'),
               ],
             );
           },
