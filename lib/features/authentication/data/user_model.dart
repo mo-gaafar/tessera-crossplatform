@@ -11,7 +11,6 @@ class UserModel {
   String? photoUrl;
   String? password;
   Map? location;
-  bool hidePassword=false;
 
   /// Creates a [UserModel] from given user data.
   ///

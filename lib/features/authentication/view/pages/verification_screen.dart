@@ -66,7 +66,7 @@ class VerificationScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-              child: const Text('Recieved Email'),
+              child: const Text('Received Email'),
               // ignore: avoid_print
               onPressed: () => Navigator.pushNamed(context, '/login'),
             ),

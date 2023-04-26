@@ -8,6 +8,7 @@ import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
+import 'package:tessera/features/authentication/view/widgets/password_form_field.dart';
 
 /// Reset password page requesting the user's new password.
 class TypeNewPassword extends StatelessWidget {
@@ -34,19 +35,7 @@ class TypeNewPassword extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                    labelText: "New Password",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    hintText: 'Passowrd',
-                    helperText: 'Password must have at least 8 characters.'),
-                validator: (value) {
-                  _newPassword = value!;
-                  return formValidator.passowrdValidty(_newPassword);
-                },
-              ),
+              PasswordFormField(formValidator: formValidator),
               Container(
                 padding: EdgeInsets.all(kPagePadding),
                 child: EmailButton(

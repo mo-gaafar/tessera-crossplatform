@@ -86,7 +86,7 @@ class LoginSignup extends StatelessWidget {
                       ),
                       const Expanded(
                         child: Text(
-                            "Sign in with the same email addrerss you used to get your tickets."),
+                            "Sign in with the same email address you used to get your tickets."),
                       ),
                     ],
                   ),
