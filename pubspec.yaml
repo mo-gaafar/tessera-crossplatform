@@ -36,12 +36,11 @@ dependencies:
   url_launcher: ^6.1.8
   cupertino_icons: ^1.0.2
   intl: ^0.18.1
-
   http: ^0.13.5
   bloc: any
   flutter_bloc: ^8.1.2
   equatable: ^2.0.5
-
+  image_picker: ^0.8.7+3
   sliver_tools: ^0.2.8
   animated_icon_button: ^1.0.2
 
@@ -77,7 +76,6 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/images/AppIconMed.png"
-
 
 # flutter_icons:
 #   android: true

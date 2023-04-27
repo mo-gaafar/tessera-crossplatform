@@ -87,7 +87,7 @@ class AppRouter {
         );
         case '/neweventreceipt':
         return MaterialPageRoute(
-          builder: (_) => const NewEventReceipt(),
+          builder: (_) => NewEventReceipt(),
         );
       default:
         return MaterialPageRoute(
