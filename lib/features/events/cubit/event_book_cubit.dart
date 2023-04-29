@@ -12,38 +12,43 @@ part 'event_book_state.dart';
 ///
 /// Makes use of [EventBookCubit] to make API calls to the backend server and retrieve and send data.
 
-
 class EventBookCubit extends Cubit<EventBookState> {
   EventBookCubit() : super(EventInitial());
 
   /// Returns the[EventModel] basic info
   // basic info is added to the event model
   Future<EventModel> getEventData() async {
-  
     emit(EventLoading());
-    var eventinfo = await EventRepository.eventBasicInfo();
-    EventModel event = EventModel.fromMap(eventinfo);
-    
-    emit(
-      EventChosen(),
-    );
-    return event;
+    try {
+      var eventinfo = await EventRepository.eventBasicInfo();
+      EventModel event = EventModel.fromMap(eventinfo);
+      emit(EventChosen());
+      return event;
+    } catch (e) {
+      emit(Error());
+      throw Exception('Error when reciving the data');
+    }
   }
+
   ///Sends the [BookingModel] data to the backend.
   ///
   ///Returns  True if successfully booked and false otherwise
   Future<bool> postBookingData(var data) async {
-    
-    var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
-    
-    if (response['success'] == true) {
-      emit(
-      EventSuccessfullyBooked(),
-    );
+    try {
       
-      return true;
-    } else {
-      return false;
+      var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
+
+      if (response['success'] == true) {
+        emit(EventSuccessfullyBooked());
+
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      emit(Error());
+      throw Exception('Error when reciving the data');
     }
+    
   }
 }

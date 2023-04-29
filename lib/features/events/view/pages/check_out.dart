@@ -17,7 +17,7 @@ class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final int _duration = 60; //1800;
   final List ticketTier;
-  final bool charge;
+  final bool charge; // does the event have all free tiers
   late String feesText; //money or free
   String inputEmailCheckOut = '';
   FormValidator formValidator = FormValidator();
@@ -37,125 +37,172 @@ class CheckOut extends StatelessWidget {
             },
             icon: Icon(Icons.close)),
         elevation: 0,
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.lightBackground,
         title: Text(
           'Check Out Information',
+          textAlign: TextAlign.left,
           style: TextStyle(
-              fontFamily: 'NeuePlak', color: Colors.white, fontSize: 25),
+              fontFamily: 'NeuePlak',
+              color: AppColors.textOnLight,
+              fontSize: 25),
         ),
         //backgroundColor: AppColors.primary,
       ),
       bottomNavigationBar: BottomAppBar(
+          color: AppColors.lightBackground,
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: CircularCountDownTimer(
-                width: 60,
-                height: 60,
-                duration: _duration,
-                fillColor: AppColors.secondary,
-                ringColor: AppColors.primary,
-                onComplete: () {
-                  //back to event page
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    duration: Duration(seconds: 2),
-                    content: Text('TIME OUT'),
-                    shape: StadiumBorder(),
-                    behavior: SnackBarBehavior.floating,
-                  ));
-                },
-              ),
-            ),
-            Expanded(
-                flex: 3,
-                child: EmailButton(
-                  buttonText: 'CheckOut',
-                  colourBackground: AppColors.primary,
-                  colourText: Colors.white,
-                  onTap: () async {
-                    if (formKey.currentState!.validate()) {
-                      ContactInformation info = ContactInformation(
-                          firstName: firstCheckOut,
-                          lastName: lastCheckOut,
-                          email: inputEmailCheckOut);
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CircularCountDownTimer(
+                    width: 60,
+                    height: 60,
+                    duration: _duration,
+                    fillColor: AppColors.secondary,
+                    ringColor: AppColors.primary,
+                    onComplete: () {
+                      //back to event page
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Text('TIME OUT'),
+                        shape: StadiumBorder(),
+                        behavior: SnackBarBehavior.floating,
+                      ));
+                    },
+                  ),
+                ),
+                Expanded(
+                    flex: 3,
+                    child: EmailButton(
+                      buttonText: 'CheckOut',
+                      colourBackground: AppColors.primary,
+                      colourText: Colors.white,
+                      onTap: () async {
+                        if (formKey.currentState!.validate()) {
+                          ContactInformation info = ContactInformation(
+                              firstName: firstCheckOut,
+                              lastName: lastCheckOut,
+                              email: inputEmailCheckOut);
 
-                      BookingModel book = BookingModel(
-                          contactInformation: info.toMap(),
-                          ticketTierSelected: ticketTier);
-                      // ignore: avoid_print
-                      print(jsonEncode(book.toMap()));
-                      bool output = await context
-                          .read<EventBookCubit>()
-                          .postBookingData(book.toMap());
-                      if (output == true) {
-                        Navigator.pushNamed(context, '/third');
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Successfully booked'),
-                          shape: StadiumBorder(),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Error in booking'),
-                          shape: StadiumBorder(),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      }
-                    }
-                  },
-                )),
-          ],
-        ),
-      )),
-      backgroundColor: Colors.white,
+                          BookingModel book = BookingModel(
+                              contactInformation: info.toMap(),
+                              ticketTierSelected: ticketTier);
+                          // ignore: avoid_print
+                          print(jsonEncode(book.toMap()));
+                          bool output = await context
+                              .read<EventBookCubit>()
+                              .postBookingData(book.toMap());
+                          if (output == true) {
+                            Navigator.pushNamed(context, '/third');
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text('Successfully booked'),
+                              shape: StadiumBorder(),
+                              behavior: SnackBarBehavior.floating,
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text('Error in booking'),
+                              shape: StadiumBorder(),
+                              behavior: SnackBarBehavior.floating,
+                            ));
+                          }
+                        }
+                      },
+                    )),
+              ],
+            ),
+          )),
+      backgroundColor: AppColors.lightBackground,
       body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Form(
               key: formKey,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.primary, width: 2),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        'Your Chosen tickets are' + ticketTier.toString(),
-                        style: TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: AppColors.textOnLight,
-                            fontSize: 30),
-                      ),
-                    ),
+                  Text(
+                    'Your tickets',
+                    style: TextStyle(
+                        fontFamily: 'NeuePlak',
+                        color: AppColors.textOnLight,
+                        fontSize: 30),
                   ),
                   SizedBox(
                     height: 20,
                   ),
+                  for (int i = 0; i < ticketTier.length; i++)
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            border: Border.all(color: AppColors.primary, width: 2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Column(
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    'Tier: ' + ticketTier[i]['tierName'].toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'NeuePlak',
+                                        color: AppColors.lightBackground,
+                                        fontSize: 30),
+                                  ),
+                                  Text(
+                                    'Number of Ticket: ' +
+                                        ticketTier[i]['quantity'].toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'NeuePlak',
+                                        color: AppColors.lightBackground,
+                                        fontSize: 30),
+                                  ),
+                                  Text(
+                                    'Price: ' + ticketTier[i]['price'].toString(),
+                                    style: TextStyle(
+                                        fontFamily: 'NeuePlak',
+                                        color: AppColors.lightBackground,
+                                        fontSize: 30),
+                                  ),
+                                  Divider(
+                                    color: AppColors.primary,
+                                    height: 5,
+                                    thickness: 1.5,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
-          'Billing Basic Information', //APP BAR EVENT NAME
-          style: TextStyle(
-              fontFamily: 'NeuePlak', color: AppColors.textOnLight, fontSize: 29),
-        ),
-        
+                    'Billing Basic Information', //APP BAR EVENT NAME
+                    style: TextStyle(
+                        fontFamily: 'NeuePlak',
+                        color: AppColors.textOnLight,
+                        fontSize: 29),
+                  ),
                   Row(
                     children: [
                       Expanded(
                         child: TextFormField(
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter your first name',
-                            helperText: 'Required'
-                          ),
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter your first name',
+                              helperText: 'Required'),
                           validator: (value) {
                             firstCheckOut = value!;
                             if (firstCheckOut == null ||
@@ -172,10 +219,9 @@ class CheckOut extends StatelessWidget {
                       Expanded(
                         child: TextFormField(
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Enter your last name',
-                            helperText: 'Required'
-                          ),
+                              border: OutlineInputBorder(),
+                              hintText: 'Enter your last name',
+                              helperText: 'Required'),
                           validator: (value) {
                             lastCheckOut = value!;
                             if (lastCheckOut == null || lastCheckOut.isEmpty) {
@@ -192,10 +238,9 @@ class CheckOut extends StatelessWidget {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter your Email address',
-                      helperText: 'Required'
-                    ),
+                        border: OutlineInputBorder(),
+                        hintText: 'Enter your Email address',
+                        helperText: 'Required'),
                     validator: (value) {
                       inputEmailCheckOut = value!;
                       if (inputEmailCheckOut == null ||
@@ -212,7 +257,7 @@ class CheckOut extends StatelessWidget {
                     height: 20,
                   ),
                   Visibility(
-                    visible: charge,
+                    visible: !charge,
                     child: Column(
                       children: [
                         Text(
