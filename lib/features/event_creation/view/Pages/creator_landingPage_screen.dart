@@ -3,6 +3,7 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/data/url_luncher.dart';
 import 'package:tessera/features/event_creation/view/Widgets/span_text_link.dart';
 import 'package:tessera/features/event_creation/view/Widgets/no_event_template.dart';
+import 'package:tessera/features/event_creation/view/Widgets/my_search_delegated.dart';
 
 class CreatorLandingPage extends StatelessWidget {
   var _controller = TextEditingController();
@@ -39,7 +40,9 @@ class CreatorLandingPage extends StatelessWidget {
             actions: <Widget>[
               Center(
                 child: GestureDetector(
-                  onTap: () => print('logged out'),
+                  onTap: () {
+                    showSearch(context: context, delegate: MySearchDelegated());
+                  },
                   child: const Icon(
                     Icons.search_outlined,
                     color: Colors.grey,

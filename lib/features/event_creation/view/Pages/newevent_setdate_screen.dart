@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/data/get_selected_date_time.dart';
-import 'package:tessera/features/event_creation/view/Widgets/pick_date_time.dart';
+import 'package:tessera/features/event_creation/view/Widgets/my_editable_dateAndTime_text.dart';
 
 class NewEventSetDate extends StatelessWidget {
   @override
@@ -40,7 +40,20 @@ class NewEventSetDate extends StatelessWidget {
                   textAlign: TextAlign.left,
                 ),
               ),
-              PickDateAndTime('from'),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_month_outlined),
+                    MyEditabelDateAndTimeText(
+                        text: 'Date', dateOrTime: 'date', fromOrTo: 'from'),
+                    const Text('   |   '),
+                    Icon(Icons.timelapse_rounded),
+                    MyEditabelDateAndTimeText(
+                        text: 'Time', dateOrTime: 'time', fromOrTo: 'from'),
+                  ],
+                ),
+              ),
               const Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
@@ -52,7 +65,20 @@ class NewEventSetDate extends StatelessWidget {
                   textAlign: TextAlign.left,
                 ),
               ),
-              PickDateAndTime('to'),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_month_outlined),
+                    MyEditabelDateAndTimeText(
+                        text: 'Date', dateOrTime: 'date', fromOrTo: 'to'),
+                    const Text('   |   '),
+                    Icon(Icons.timelapse_rounded),
+                    MyEditabelDateAndTimeText(
+                        text: 'Time', dateOrTime: 'time', fromOrTo: 'to'),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/event_creation/view/Widgets/my_drop_down_menu.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_editable_dateAndTime_text.dart';
 import 'package:tessera/features/event_creation/view/Widgets/receipt_section.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_editable_text.dart';
@@ -14,6 +15,7 @@ class NewEventReceipt extends StatelessWidget {
     'Venue',
     'Online Event'
   ];
+  String? LList = 'To be announced';
   List<String> ticketList = <String>['Display options', 'Reserved seating'];
   List<String> privacyList = <String>['Public event', 'Private event'];
   @override
@@ -148,23 +150,7 @@ class NewEventReceipt extends StatelessWidget {
                 sectionChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DropdownButton(
-                      value: locationList.first,
-                      onChanged: (value) {},
-                      items: locationList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                    MyDropDownMenu(myList: locationList),
                   ],
                 ),
               ),
@@ -184,7 +170,7 @@ class NewEventReceipt extends StatelessWidget {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text('Select Event Type'),
-                            content: PopupMenu(selectEvent: 'Title'),
+                            content: PopupMenu(selectEvent: 'Type'),
                           ),
                         );
                       },
@@ -198,6 +184,15 @@ class NewEventReceipt extends StatelessWidget {
                         'Select category',
                         style: TextStyle(color: Colors.grey),
                       ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Select Event Category'),
+                            content: PopupMenu(selectEvent: 'Category'),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -216,19 +211,7 @@ class NewEventReceipt extends StatelessWidget {
                         style: TextStyle(color: Colors.grey),
                       ),
                     ),
-                    DropdownButton(
-                      value: ticketList.first,
-                      onChanged: (value) {},
-                      items: ticketList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                    MyDropDownMenu(myList: ticketList),
                   ],
                 ),
               ),
@@ -241,19 +224,7 @@ class NewEventReceipt extends StatelessWidget {
                       'Privacy',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    DropdownButton(
-                      value: privacyList.first,
-                      onChanged: (value) {},
-                      items: privacyList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                    MyDropDownMenu(myList: privacyList),
                   ],
                 ),
               ),

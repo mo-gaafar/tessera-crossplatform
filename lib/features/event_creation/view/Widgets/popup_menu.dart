@@ -5,7 +5,7 @@ class PopupMenu extends StatelessWidget {
   late List<Icon> selectEventIcons;
   late List<Widget> selectEventText;
   PopupMenu({required this.selectEvent}) {
-    if (selectEvent == 'Title') {
+    if (selectEvent == 'Type') {
       selectEventIcons = const [
         Icon(Icons.mic_external_on_outlined),
         Icon(Icons.slideshow_outlined),
@@ -15,16 +15,45 @@ class PopupMenu extends StatelessWidget {
         Icon(Icons.music_note_outlined),
         Icon(Icons.video_camera_back_outlined),
         Icon(Icons.restaurant_outlined),
+
+
+        Icon(Icons.auto_stories_outlined),
+        Icon(Icons.home_repair_service_outlined),
+        Icon(Icons.local_bar_outlined),
+        Icon(Icons.group_outlined),
+        Icon(Icons.military_tech_outlined),
+        Icon(Icons.videogame_asset_outlined),
+        Icon(Icons.pedal_bike_outlined),
+        Icon(Icons.directions_bus_outlined),
+        Icon(Icons.map_outlined),
+        Icon(Icons.campaign_outlined),
+        Icon(Icons.mic_outlined),
+        Icon(Icons.dynamic_feed_outlined),
       ];
       selectEventText = const [
         Text('Confrence'),
         Text('Seminar or Talk'),
-        Text('Tradeshow, Consumer S..'),
+        Text('Tradeshow, Consumer Show or Expo'),
         Text('Convection'),
         Text('Fesitval or Fair'),
         Text('Concert or Performance'),
         Text('Screening'),
         Text('Dinner or Gala'),
+
+        Text('Class, Training, or Workshop'),
+        Text('Meeting or Networking Event'),
+        Text('Party or Social Gathering'),
+        Text('Rally'),
+        Text('Tournament'),
+        Text('Game or Competiotion'),
+        Text('Race or Endurance Event'),
+        Text('Tour'),
+        Text('Attraction'),
+        Text('Camp, Trip, or Retreat'),
+        Text('Appearance or Signing'),
+        Text('Other'),
+
+
       ];
     } else if (selectEvent == 'Category') {
       selectEventIcons = const [
