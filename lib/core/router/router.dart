@@ -4,6 +4,7 @@ import 'package:tessera/features/example/view/pages/example_screen.dart';
 import 'package:tessera/features/events/view/pages/check_out.dart';
 import 'package:tessera/features/events/view/pages/event_screen.dart';
 import 'package:tessera/features/events/view/pages/see_more.dart';
+import 'package:tessera/features/events/view/pages/make_sure.dart';
 class AppRouter {
   Route onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -13,7 +14,7 @@ class AppRouter {
         );
       case '/second':
         return MaterialPageRoute(
-          builder: (_) => Container(),
+          builder: (_) => MakeSure(),
         );
       case '/third':
         return MaterialPageRoute(

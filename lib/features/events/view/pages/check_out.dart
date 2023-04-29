@@ -33,7 +33,7 @@ class CheckOut extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/second');
             },
             icon: Icon(Icons.close)),
         elevation: 0,
