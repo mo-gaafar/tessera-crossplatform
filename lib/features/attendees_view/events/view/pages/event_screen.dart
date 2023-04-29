@@ -7,6 +7,7 @@ import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 import 'package:tessera/features/attendees_view/events/view/pages/see_more.dart';
 import 'package:tessera/features/attendees_view/events/view/pages/check_out.dart';
 import 'package:tessera/features/attendees_view/events/data/booking_data.dart';
+import 'package:tessera/features/attendees_view/events/data/ticketing_data.dart';
 
 ///  A Screen that is directed to from landing page to show the details of the event
 
@@ -20,26 +21,19 @@ List splitting(String data) {
   return [formatted, formatted1];
 }
 
-List teirsIndeces(int len) {
-  List data = [];
-  for (var i = 0; i < len; i++) {
-    data.add(i);
-  }
-  return data;
+List<String> teirsSplitting(String data) {
+  int idx = data.indexOf(":");
+  return [data.substring(0, idx).trim(), data.substring(idx + 1).trim()];
 }
 
-List<String> teirsStrings(List map) {
-  List<String> data = [];
-  for (var i = 0; i < map.length; i++) {
-    data.add(map[i]['tierName']);
-  }
-  return data;
-}
-
-List<bool> teirsCapacity(List map) {
-  List<bool> data = [];
-  for (var i = 0; i < map.length; i++) {
-    data.add(map[i]['isCapacityFull']);
+List<Map> ticketModels(List tiers, List capacity) {
+  List<Map> data = [];
+  for (var i = 0; i < tiers.length; i++) {
+    data.add(TicketModel(
+            capacityFull: capacity[i]['isCapacityFull'],
+            
+            nameAndPrice: tiers[i]['tierName'] + ':' + tiers[i]['price'])
+        .toMap());
   }
   return data;
 }
@@ -58,24 +52,9 @@ class _EventPageState extends State<EventPage> {
   String tier = '';
   late List tiersToCheck = []; //index for each tier
   String promo = '';
-
-  late List<int> count = List.filled(
-      _eventData.filteredEvents[0]['ticketTiers'].length,
-      0); //each tier has a count initialized with zero
-  late List<String> tiers = teirsStrings(
-      _eventData.filteredEvents[0]['ticketTiers']); //list of the tiers
-  late Map<String, int> ticketTiersNumber =
-      Map.fromIterables(tiers, count); //Map of tiers and the tickets
-
-  late List<bool> tiersCap = teirsCapacity(_eventData.tierCapacityFull);
-  late Map<String, bool> ticketTiersCap =
-      Map.fromIterables(tiers, tiersCap); //Map of tiers and their capacity
-
-  late List<bool> tiersChosen =
-      List.filled(_eventData.filteredEvents[0]['ticketTiers'].length, false);
-  late Map<String, bool> ticketTiersChosen = Map.fromIterables(
-      tiers, tiersChosen); //Map of tiers and if they are chosen
-
+  late List<Map> ticketsOfEvent = ticketModels(
+      _eventData.filteredEvents[0]['ticketTiers'], _eventData.tierCapacityFull);
+  late int indexOfSelectedEvent;
   //POP UP
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(
@@ -91,23 +70,24 @@ class _EventPageState extends State<EventPage> {
                     key: formKey,
                     child: Column(
                       children: [
-                        for (int i = 0;
-                            i <
-                                _eventData
-                                    .filteredEvents[0]['ticketTiers'].length;
-                            i++)
+                        for (int i = 0; i < ticketsOfEvent.length; i++)
                           Column(
                             children: [
                               Row(
                                 children: [
                                   Radio(
-                                      value: _eventData.filteredEvents[0]
-                                              ['ticketTiers'][i]['tierName']
+                                      value: ticketsOfEvent[i]['nameAndPrice']
                                           .toString(),
                                       groupValue: tier,
                                       onChanged: (value) {
                                         setState(() {
-                                          if (ticketTiersCap[value] == true) {
+                                          indexOfSelectedEvent =
+                                              ticketsOfEvent.indexWhere((map) =>
+                                                  map['nameAndPrice'] == value);
+                                          if (ticketsOfEvent[
+                                                      indexOfSelectedEvent]
+                                                  ['capacityFull'] ==
+                                              true) {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
                                               duration: Duration(seconds: 2),
@@ -120,17 +100,16 @@ class _EventPageState extends State<EventPage> {
                                             ));
                                           } else {
                                             tier = value.toString();
-                                            ticketTiersChosen[tier] = true;
+                                            ticketsOfEvent[indexOfSelectedEvent]
+                                                ['ticketTierSelected'] = true;
                                             print('this tier not full');
-                                            print(ticketTiersChosen);
+                                            print(ticketsOfEvent);
                                           }
                                         });
                                       }),
-                                  Text(_eventData.filteredEvents[0]
-                                          ['ticketTiers'][i]['tierName'] +
-                                      ' -  Price: ' +
-                                      _eventData.filteredEvents[0]
-                                          ['ticketTiers'][i]['price']),
+                                  // ignore: prefer_interpolation_to_compose_strings
+                                  Text(ticketsOfEvent[i]['nameAndPrice']
+                                      .toString()),
                                 ],
                               ),
                               //Tickets Addition and Subtraction
@@ -143,25 +122,38 @@ class _EventPageState extends State<EventPage> {
                               IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      ticketTiersNumber[tier] =
-                                          (ticketTiersNumber[tier]! + 1);
+                                      ticketsOfEvent[indexOfSelectedEvent]
+                                              ['ticketsNumber'] =
+                                          (ticketsOfEvent[indexOfSelectedEvent]
+                                                  ['ticketsNumber'] +
+                                              1);
                                       // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                      print(tier+
-                                      ' :' + ticketTiersNumber[tier].toString());
-                                      
+                                      print('selected tier: ' +
+                                          ticketsOfEvent[indexOfSelectedEvent]
+                                                  ['nameAndPrice']
+                                              .toString());
                                     });
                                   },
                                   icon: const Icon(Icons.add)),
-                              Text(ticketTiersNumber[tier].toString()),
+                              Text(ticketsOfEvent[indexOfSelectedEvent]
+                                      ['ticketsNumber']
+                                  .toString()),
                               IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      if (ticketTiersNumber[tier]! > 0) {
-                                        ticketTiersNumber[tier] =
-                                            (ticketTiersNumber[tier]! - 1);
+                                      if (ticketsOfEvent[indexOfSelectedEvent]
+                                              ['ticketsNumber'] >
+                                          0) {
+                                        ticketsOfEvent[indexOfSelectedEvent]
+                                            ['ticketsNumber'] = (ticketsOfEvent[
+                                                    indexOfSelectedEvent]
+                                                ['ticketsNumber'] -
+                                            1);
                                         // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                        print(tier+
-                                      ' :' + ticketTiersNumber[tier].toString());
+                                        print('selected tier: ' +
+                                            ticketsOfEvent[indexOfSelectedEvent]
+                                                    ['nameAndPrice']
+                                                .toString());
                                       }
                                     });
                                   },
@@ -204,76 +196,76 @@ class _EventPageState extends State<EventPage> {
                               child: const Text("CheckOut"),
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
-                                    for (int k = 0;
-                                        k <
-                                            _eventData
-                                                .filteredEvents[0]['ticketTiers']
-                                                .length;
-                                        k++) {
-                                      if (_eventData.tierCapacityFull[k]
-                                              ['isCapacityFull'] ==
-                                          true) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          duration: const Duration(seconds: 2),
-                                          // ignore: prefer_interpolation_to_compose_strings
-                                          content: Text(_eventData
-                                                  .filteredEvents[0]
-                                                      ['ticketTiers'][k]
-                                                      ['tierName']
-                                                  .toString() +
-                                              'is Full'),
-                                          shape: const StadiumBorder(),
-                                          behavior: SnackBarBehavior.floating,
-                                        ));
-                                      }
-                                        }
-                                    if (ticketTiersChosen.containsValue(true)) {
-                                      // ignore: avoid_print
-                                      print('Checked out can happen');
-                                      for (int k = 0;
-                                          k <
-                                              _eventData
-                                                  .filteredEvents[0]
-                                                      ['ticketTiers']
-                                                  .length;
-                                          k++) {
-                                        if (ticketTiersNumber[tiers[k]]!>0) {
-                                          tiersToCheck.add(TicketTierSelected(
-                                                  tierName: tiers[k],
-                                                  quantity: ticketTiersNumber[
-                                                      tiers[k]]!,
-                                                  price: 20)
-                                              .toMap());
-                                        }
-                                      }
-                                    }
-                                      print(tiersToCheck);
-                                  if(tiersToCheck.isNotEmpty)
-                                  {
-                                    print('Check out done');
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CheckOut(
-                                        //charge: _eventData.isEventFree,
-                                          charge: true,
-                                          ticketTier:
-                                              tiersToCheck), //GIVING THE PRICE AS STRING
-                                    ),
-                                  );
-                                    } else {
-                                      // ignore: avoid_print
-                                      print('No tier was chosen or no tickets were added');
+                                  for (int k = 0;
+                                      k < ticketsOfEvent.length;
+                                      k++) {
+                                    if (ticketsOfEvent[k]['isCapacityFull'] ==
+                                        true) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                        duration: Duration(seconds: 2),
-                                        content: Text('Choose a tier and atleast one ticket'),
-                                        shape: StadiumBorder(),
+                                          .showSnackBar(SnackBar(
+                                        duration: const Duration(seconds: 2),
+                                        // ignore: prefer_interpolation_to_compose_strings
+                                        content: Text(ticketsOfEvent[k]
+                                                    ['nameAndPrice']
+                                                .toString() +
+                                            'is Full'),
+                                        shape: const StadiumBorder(),
                                         behavior: SnackBarBehavior.floating,
                                       ));
                                     }
-                                  
+                                  }
+                                  print('tiers to be chosen');
+                                  print(tiersToCheck.length);
+                                  if (ticketsOfEvent
+                                      .any((map) => map.containsValue(true))) {
+                                    // ignore: avoid_print
+                                    print('Checked out can happen');
+                                    for (int k = 0;
+                                        k < ticketsOfEvent.length;
+                                        k++) {
+                                      if (ticketsOfEvent[k]['ticketsNumber'] >
+                                          0) {
+                                        tiersToCheck.add(TicketTierSelected(
+                                                tierName: teirsSplitting(
+                                                    ticketsOfEvent[k]
+                                                        ['nameAndPrice'])[0],
+                                                quantity: ticketsOfEvent[k][
+                                                    'ticketsNumber'], //price should be sent as int
+                                                //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
+                                                price: 20)
+                                            .toMap());
+                                      }
+                                    }
+                                  }
+                                  print('tiers of event');
+                                  print(ticketsOfEvent.length);
+                                  print('tiers to check out with');
+                                  print(tiersToCheck);
+                                  if (tiersToCheck.isNotEmpty) {
+                                    print('Check out done');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CheckOut(
+                                            //charge: _eventData.isEventFree,
+                                            charge: true,
+                                            ticketTier:
+                                                tiersToCheck), //GIVING THE PRICE AS STRING
+                                      ),
+                                    );
+                                  } else {
+                                    // ignore: avoid_print
+                                    print(
+                                        'No tier was chosen or no tickets were added');
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      duration: Duration(seconds: 2),
+                                      content: Text(
+                                          'Choose a tier and atleast one ticket'),
+                                      shape: StadiumBorder(),
+                                      behavior: SnackBarBehavior.floating,
+                                    ));
+                                  }
                                 }
                               },
                             )
