@@ -1,7 +1,8 @@
+// ignore_for_file: unnecessary_import
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RoundedButton extends StatelessWidget {
   final Function()? onTap;
@@ -17,9 +18,10 @@ class RoundedButton extends StatelessWidget {
       onPressed: () {
         debugPrint('tags Clicked');
       },
+      // ignore: sort_child_properties_last
       child: Text(
         buttonText,
-        style: TextStyle(
+        style:  const TextStyle(
             fontFamily: 'NeuePlak', color: AppColors.secondary, fontSize: 13),
       ),
       style: ElevatedButton.styleFrom(

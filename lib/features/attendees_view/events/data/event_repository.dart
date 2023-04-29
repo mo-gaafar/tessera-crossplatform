@@ -1,6 +1,4 @@
-import 'package:tessera/constants/enums.dart';
 import 'package:tessera/core/services/networking/networking.dart';
-import 'dart:convert';
 
 /// Repository for all evenr services and API calls to the backend server.
 class EventRepository {
