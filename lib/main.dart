@@ -7,7 +7,8 @@ import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
-
+import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.dart';
+import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 void main() {
   DartPluginRegistrant.ensureInitialized();
   runApp(MyApp());
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
 
   final AppRouter _appRouter = AppRouter();
   final snackbarKey = GlobalKey<ScaffoldMessengerState>();
-
+ 
+   
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => EventBookCubit(),
         ),
+        
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

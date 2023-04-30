@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tessera/features/attendees_view/events/view/widgets/email_button.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 import 'package:tessera/features/attendees_view/events/view/pages/see_more.dart';
-import 'package:tessera/features/attendees_view/events/view/pages/check_out.dart';
 import 'package:tessera/features/attendees_view/events/data/booking_data.dart';
 import 'package:tessera/features/attendees_view/events/data/ticketing_data.dart';
 
@@ -31,7 +30,6 @@ List<Map> ticketModels(List tiers, List capacity) {
   for (var i = 0; i < tiers.length; i++) {
     data.add(TicketModel(
             capacityFull: capacity[i]['isCapacityFull'],
-            
             nameAndPrice: tiers[i]['tierName'] + ':' + tiers[i]['price'])
         .toMap());
   }
@@ -243,16 +241,22 @@ class _EventPageState extends State<EventPage> {
                                   print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
                                     print('Check out done');
-                                    Navigator.push(
+                                    List arg = [true, tiersToCheck,_eventData];
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/checkOut',
+                                      arguments:arg, //GIVING THE PRICE AS Int
+                                    );
+                                    /*Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => CheckOut(
                                             //charge: _eventData.isEventFree,
                                             charge: true,
                                             ticketTier:
-                                                tiersToCheck), //GIVING THE PRICE AS STRING
+                                                tiersToCheck), 
                                       ),
-                                    );
+                                    );*/
                                   } else {
                                     // ignore: avoid_print
                                     print(

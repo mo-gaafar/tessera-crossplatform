@@ -5,9 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
-import 'package:tessera/features/attendees_view/events/view/pages/event_screen.dart';
 import 'package:tessera/features/attendees_view/landing_page/data/event_card_model.dart';
-
+import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.dart';
 /// A card displaying a single event.
 ///
 /// Takes in an [EventCardModel] and displays the event's title, image, date and
@@ -23,12 +22,15 @@ class EventCard extends StatelessWidget {
       onPressed: () async {
         EventModel eventModel =
             await context.read<EventBookCubit>().getEventData(event.id);
+            print(eventModel.toMap());
         if (context.mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (BuildContext context) {
-              return EventPage(eventData: eventModel);
-            }),
-          );
+          //final dataCubit = DataCubit<EventModel>(eventModel);
+          Navigator.pushNamed(
+                                      context,
+                                      '/eventPage',
+                                      arguments:eventModel, 
+                                    );
+          
         }
       },
       child: Container(

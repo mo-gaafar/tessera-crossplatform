@@ -15,6 +15,7 @@ part 'event_book_state.dart';
 class EventBookCubit extends Cubit<EventBookState> {
   EventBookCubit() : super(EventInitial());
 
+
   /// Returns the[EventModel] basic info
   // basic info is added to the event model
   Future<EventModel> getEventData(String id) async {

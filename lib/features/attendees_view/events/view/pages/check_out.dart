@@ -10,7 +10,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/attendees_view/events/data/booking_data.dart';
-
+import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 /// A screen in which the user entres the data to check out
 
 class CheckOut extends StatelessWidget {
@@ -23,8 +23,9 @@ class CheckOut extends StatelessWidget {
   FormValidator formValidator = FormValidator();
   String firstCheckOut = '';
   String lastCheckOut = '';
+  final EventModel data; 
 
-  CheckOut({Key? key, required this.charge, required this.ticketTier})
+  CheckOut({Key? key, required this.charge, required this.ticketTier,required this.data})
       : super(key: key);
 
   @override
@@ -33,7 +34,13 @@ class CheckOut extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/makeSure');
+              
+            
+            Navigator.pushNamed(
+              context,
+              '/makeSure',
+              arguments:data, //GIVING THE PRICE AS Int
+            );
             },
             icon: const Icon(Icons.close)),
         elevation: 0,
