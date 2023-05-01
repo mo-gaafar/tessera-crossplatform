@@ -85,11 +85,21 @@ class NewEventReceipt extends StatelessWidget {
                           color: Colors.black),
                     ),
                     MyEditabelText(
-                      title: "un named organizer",
+                      title: "by Unnamed organizer",
                       textStyle: TextStyle(fontSize: 18, color: Colors.black),
                     ),
                     MyEditabelText(
-                      title: "Event description",
+                      title: (context
+                                  .read<CreateEventCubit>()
+                                  .currentEvent
+                                  .description ==
+                              null)
+                          ? "Event description"
+                          : context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .description
+                              .toString(),
                       textStyle:
                           TextStyle(fontSize: 18, color: Colors.grey.shade700),
                     ),
@@ -110,14 +120,20 @@ class NewEventReceipt extends StatelessWidget {
                       child: Row(
                         children: [
                           MyEditabelDateAndTimeText(
-                              text: 'Thu, 25 may 2023',
+                              text: context
+                                  .read<CreateEventCubit>()
+                                  .currentEvent
+                                  .startDate!,
                               dateOrTime: 'date',
                               fromOrTo: 'from'),
                           const SizedBox(
                             width: 30,
                           ),
                           MyEditabelDateAndTimeText(
-                              text: '07:00 pm',
+                              text: context
+                                  .read<CreateEventCubit>()
+                                  .currentEvent
+                                  .startTime!,
                               dateOrTime: 'time',
                               fromOrTo: 'from'),
                         ],
@@ -132,14 +148,20 @@ class NewEventReceipt extends StatelessWidget {
                       child: Row(
                         children: [
                           MyEditabelDateAndTimeText(
-                              text: 'Thu, 25 may 2023',
+                              text: context
+                                  .read<CreateEventCubit>()
+                                  .currentEvent
+                                  .endDate!,
                               dateOrTime: 'date',
                               fromOrTo: 'to'),
                           const SizedBox(
                             width: 30,
                           ),
                           MyEditabelDateAndTimeText(
-                              text: '10:00 pm',
+                              text: context
+                                  .read<CreateEventCubit>()
+                                  .currentEvent
+                                  .endTime!,
                               dateOrTime: 'time',
                               fromOrTo: 'to'),
                         ],

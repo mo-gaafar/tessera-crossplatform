@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/data/get_selected_date_time.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class MyEditabelDateAndTimeText extends StatefulWidget {
   String text;
@@ -33,12 +36,16 @@ class _MyEditabelDateAndTimeTextState extends State<MyEditabelDateAndTimeText> {
         late var tempText;
         if (fromOrTo == 'from' && dateOrTime == 'date') {
           tempText = await GetSelectedDateAndTime().selectDate(context);
+          context.read<CreateEventCubit>().currentEvent.startDate = tempText;
         } else if (fromOrTo == 'from' && dateOrTime == 'time') {
           tempText = await GetSelectedDateAndTime().selectTime(context);
+          context.read<CreateEventCubit>().currentEvent.startTime = tempText;
         } else if (fromOrTo == 'to' && dateOrTime == 'date') {
           tempText = await GetSelectedDateAndTime().selectDate(context);
+          context.read<CreateEventCubit>().currentEvent.endDate = tempText;
         } else if (fromOrTo == 'to' && dateOrTime == 'time') {
           tempText = await GetSelectedDateAndTime().selectTime(context);
+          context.read<CreateEventCubit>().currentEvent.endTime = tempText;
         }
         setState(
           () {

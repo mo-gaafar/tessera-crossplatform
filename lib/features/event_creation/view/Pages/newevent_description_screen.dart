@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class NewEventDescription extends StatelessWidget {
   const NewEventDescription({super.key});
@@ -35,7 +37,12 @@ class NewEventDescription extends StatelessWidget {
                   textAlign: TextAlign.left,
                 ),
               ),
-              const TextField(),
+              TextField(
+                onChanged: (value) {
+                  context.read<CreateEventCubit>().currentEvent.description =
+                      value;
+                },
+              ),
             ],
           ),
         ),

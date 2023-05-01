@@ -43,7 +43,7 @@ dependencies:
   image_picker: ^0.8.7+3
   sliver_tools: ^0.2.8
   animated_icon_button: ^1.0.2
-
+  timezone: ^0.9.2
   google_sign_in: ^6.0.2
   shared_preferences: ^2.0.18
   page_transition: ^2.0.9

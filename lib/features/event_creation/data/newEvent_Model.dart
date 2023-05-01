@@ -4,8 +4,10 @@ class NewEventModel {
   String? eventName;
   String? description;
   String? timezone;
-  String? startDateAndTime;
-  String? endDateAndTime;
+  String? startDate;
+  String? startTime;
+  String? endDate;
+  String? endTime;
   String? eventStatus;
   bool? isPublic;
   // missing isVerified, ticketTiers, location, start/end selling, promocodes
@@ -16,8 +18,10 @@ class NewEventModel {
   NewEventModel(
       {this.eventName,
       this.description,
-      this.startDateAndTime,
-      this.endDateAndTime,
+      this.startDate,
+      this.startTime,
+      this.endDate,
+      this.endTime,
       this.isPublic,
       this.eventStatus});
 
@@ -34,6 +38,8 @@ class NewEventModel {
   /// Returns a [String] representation of the [NewEventModel].
   @override
   String toString() {
+    String startDateAndTime = startDate! + 'T' + startTime! + 'Z';
+    String endDateAndTime = endDate! + 'T' + endTime! + 'Z';
     return 'NewEventModel(eventName: $eventName, description: $description, eventStatus: $eventStatus, isPublic: $isPublic, startDateAndTime: $startDateAndTime, endDateAndTime: $endDateAndTime)';
   }
 
