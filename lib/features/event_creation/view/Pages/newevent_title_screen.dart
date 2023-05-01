@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class NewEventtitle extends StatelessWidget {
-  const NewEventtitle({super.key});
-
+  NewEventtitle({super.key});
+  String tempEventTitle = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +21,13 @@ class NewEventtitle extends StatelessWidget {
                     fontSize: 40.0,
                     fontFamily: 'NeuePlak'),
               ),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                decoration: const InputDecoration(
                   hintText: "Enter a short distinct name",
                 ),
+                onChanged: (value) {
+                  tempEventTitle = value;
+                },
               ),
             ],
           ),
@@ -30,7 +35,15 @@ class NewEventtitle extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/neweventdescription');
+          if (tempEventTitle != '') {
+            context.read<CreateEventCubit>().currentEvent.eventName =
+                tempEventTitle;
+            Navigator.pushNamed(context, '/neweventdescription');
+          } else {
+            context
+                .read<CreateEventCubit>()
+                .displayError(errormessage: 'Event must have a title.');
+          }
         },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.arrow_forward_ios),

@@ -7,6 +7,8 @@ import 'package:tessera/features/event_creation/view/Widgets/my_editable_text.da
 import 'package:tessera/features/event_creation/view/Widgets/my_image_picker.dart';
 import 'package:tessera/features/event_creation/view/Widgets/popup_menu.dart';
 import 'dart:math' as math;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class NewEventReceipt extends StatelessWidget {
   NewEventReceipt({super.key});
@@ -72,7 +74,11 @@ class NewEventReceipt extends StatelessWidget {
                 sectionChild: Column(
                   children: [
                     MyEditabelText(
-                      title: "Test",
+                      title: context
+                          .read<CreateEventCubit>()
+                          .currentEvent
+                          .eventName
+                          .toString(),
                       textStyle: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,

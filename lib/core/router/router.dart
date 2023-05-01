@@ -71,7 +71,7 @@ class AppRouter {
         );
       case '/neweventtitle':
         return MaterialPageRoute(
-          builder: (_) => const NewEventtitle(),
+          builder: (_) => NewEventtitle(),
         );
       case '/neweventdescription':
         return MaterialPageRoute(
