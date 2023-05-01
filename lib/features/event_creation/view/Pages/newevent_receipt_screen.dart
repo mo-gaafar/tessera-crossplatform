@@ -178,7 +178,10 @@ class NewEventReceipt extends StatelessWidget {
                 sectionChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MyDropDownMenu(myList: locationList),
+                    MyDropDownMenu(
+                      myList: locationList,
+                      type: 'location',
+                    ),
                   ],
                 ),
               ),
@@ -239,7 +242,9 @@ class NewEventReceipt extends StatelessWidget {
                         style: TextStyle(color: Colors.grey),
                       ),
                     ),
-                    MyDropDownMenu(myList: ticketList),
+                    MyDropDownMenu(
+                      myList: ticketList,
+                    ),
                   ],
                 ),
               ),
@@ -252,7 +257,10 @@ class NewEventReceipt extends StatelessWidget {
                       'Privacy',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    MyDropDownMenu(myList: privacyList),
+                    MyDropDownMenu(
+                      myList: privacyList,
+                      type: 'Privacy',
+                    ),
                   ],
                 ),
               ),

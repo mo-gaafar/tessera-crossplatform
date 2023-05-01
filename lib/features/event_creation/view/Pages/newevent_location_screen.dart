@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_drop_down_menu.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 // ignore: must_be_immutable
 class NewEventLocation extends StatefulWidget {
-
   NewEventLocation({super.key});
 
   @override
@@ -16,8 +17,8 @@ class _NewEventLocationState extends State<NewEventLocation> {
     'Online Event',
     'To be announced'
   ];
-
-  bool visabilty=true;
+  late String selectedValue = locationList.first;
+  bool visabilty = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,32 @@ class _NewEventLocationState extends State<NewEventLocation> {
                     const Spacer(
                       flex: 1,
                     ),
-                    MyDropDownMenu(myList: locationList),
+                    DropdownButton(
+                      value: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value.toString();
+                          context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .locationType = selectedValue.toString();
+                          if (selectedValue == 'Venue') {
+                            visabilty = true;
+                          } else {
+                            visabilty = false;
+                          }
+                        });
+                      },
+                      items: locationList
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                          ),
+                        );
+                      }).toList(),
+                    ),
                     const Spacer(
                       flex: 20,
                     ),

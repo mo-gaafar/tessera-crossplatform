@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/data/get_selected_date_time.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_editable_dateAndTime_text.dart';
+import 'package:tessera/features/event_creation/data/validation.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class NewEventSetDate extends StatelessWidget {
   @override
@@ -13,7 +16,7 @@ class NewEventSetDate extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Divider(
+              const Divider(
                 color: Colors.green,
                 thickness: 3,
                 endIndent: 200,
@@ -44,11 +47,11 @@ class NewEventSetDate extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Row(
                   children: [
-                    Icon(Icons.calendar_month_outlined),
+                    const Icon(Icons.calendar_month_outlined),
                     MyEditabelDateAndTimeText(
                         text: 'Date', dateOrTime: 'date', fromOrTo: 'from'),
                     const Text('   |   '),
-                    Icon(Icons.timelapse_rounded),
+                    const Icon(Icons.timelapse_rounded),
                     MyEditabelDateAndTimeText(
                         text: 'Time', dateOrTime: 'time', fromOrTo: 'from'),
                   ],
@@ -69,11 +72,11 @@ class NewEventSetDate extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Row(
                   children: [
-                    Icon(Icons.calendar_month_outlined),
+                    const Icon(Icons.calendar_month_outlined),
                     MyEditabelDateAndTimeText(
                         text: 'Date', dateOrTime: 'date', fromOrTo: 'to'),
                     const Text('   |   '),
-                    Icon(Icons.timelapse_rounded),
+                    const Icon(Icons.timelapse_rounded),
                     MyEditabelDateAndTimeText(
                         text: 'Time', dateOrTime: 'time', fromOrTo: 'to'),
                   ],
@@ -85,7 +88,28 @@ class NewEventSetDate extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/neweventlocation');
+          if (context.read<CreateEventCubit>().currentEvent.endTime == null) {
+            context
+                .read<CreateEventCubit>()
+                .displayError(errormessage: 'Please Add all dates and times.');
+          } else if (context.read<CreateEventCubit>().currentEvent.endDate ==
+              null) {
+            context
+                .read<CreateEventCubit>()
+                .displayError(errormessage: 'Please Add all dates and times.');
+          } else if (context.read<CreateEventCubit>().currentEvent.startTime ==
+              null) {
+            context
+                .read<CreateEventCubit>()
+                .displayError(errormessage: 'Please Add all dates and times.');
+          } else if (context.read<CreateEventCubit>().currentEvent.startDate ==
+              null) {
+            context
+                .read<CreateEventCubit>()
+                .displayError(errormessage: 'Please Add all dates and times.');
+          } else {
+            Navigator.pushNamed(context, '/neweventlocation');
+          }
         },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.arrow_forward_ios),

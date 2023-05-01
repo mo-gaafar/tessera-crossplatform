@@ -10,6 +10,7 @@ class NewEventModel {
   String? endTime;
   String? eventStatus;
   bool? isPublic;
+  String? locationType;
   // missing isVerified, ticketTiers, location, start/end selling, promocodes
 
   /// Creates a [NewEventModel] from given user data.
@@ -23,7 +24,8 @@ class NewEventModel {
       this.endDate,
       this.endTime,
       this.isPublic,
-      this.eventStatus});
+      this.eventStatus,
+      this.locationType});
 
   /// Returns a [Map] representation of the [NewEventModel].
   Map<String, dynamic> toMap() {
