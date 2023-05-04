@@ -9,6 +9,9 @@ import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+
+import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
+import 'features/organizers_view/ticketing/cubit/tickets_store_cubit.dart';
 void main() {
   DartPluginRegistrant.ensureInitialized();
   runApp(MyApp());
@@ -33,6 +36,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EventBookCubit(),
+        ),
+        BlocProvider(
+          create: (context) => EventTicketsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => MyCubit(),
         ),
         
       ],

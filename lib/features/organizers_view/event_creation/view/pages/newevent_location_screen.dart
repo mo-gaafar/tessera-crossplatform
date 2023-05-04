@@ -87,7 +87,7 @@ class NewEventLocation extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/neweventreceipt');
+          Navigator.pushNamed(context, '/neweventtickets');
         },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.arrow_forward_ios),

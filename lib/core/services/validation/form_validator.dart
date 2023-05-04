@@ -33,7 +33,7 @@ class FormValidator {
     //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
     RegExp lowerCaseRegExp = RegExp(r'[a-z]');
     RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~+-]');
     RegExp numberRegExp = RegExp(r'[0-9]');
 
     if (specialCharRegExp.hasMatch(name) == true) {
@@ -101,6 +101,23 @@ class FormValidator {
     } else if (upperCaseRegExp.hasMatch(data) == true) {
       return 'No uppercase letters  is allowed.';
     } else {
+      return null;
+    }
+  }
+  String? numberValidty(String name) {
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp numberRegExp = RegExp(r'[0-9]');
+
+    if (specialCharRegExp.hasMatch(name) == true) {
+      return 'No special character is allowed.';
+    } else if (lowerCaseRegExp.hasMatch(name) == true) {
+      return 'charachters is allowed.';
+    } 
+    else if (upperCaseRegExp.hasMatch(name) == true) {
+      return 'charachters is allowed.';
+    }else {
       return null;
     }
   }
