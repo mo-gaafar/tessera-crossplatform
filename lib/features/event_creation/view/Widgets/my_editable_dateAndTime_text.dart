@@ -35,14 +35,22 @@ class _MyEditabelDateAndTimeTextState extends State<MyEditabelDateAndTimeText> {
       onTap: () async {
         late var tempText;
         if (fromOrTo == 'from' && dateOrTime == 'date') {
-          tempText = await GetSelectedDateAndTime().selectDate(context);
+          GetSelectedDateAndTime getSelectedDateAndTime =
+              GetSelectedDateAndTime();
+          tempText = await getSelectedDateAndTime.selectDate(context);
           context.read<CreateEventCubit>().currentEvent.startDate = tempText;
+          context.read<CreateEventCubit>().currentEvent.timeZoneName =
+              getSelectedDateAndTime.getTimeZoneName();
         } else if (fromOrTo == 'from' && dateOrTime == 'time') {
           tempText = await GetSelectedDateAndTime().selectTime(context);
           context.read<CreateEventCubit>().currentEvent.startTime = tempText;
         } else if (fromOrTo == 'to' && dateOrTime == 'date') {
-          tempText = await GetSelectedDateAndTime().selectDate(context);
+          GetSelectedDateAndTime getSelectedDateAndTime =
+              GetSelectedDateAndTime();
+          tempText = await getSelectedDateAndTime.selectDate(context);
           context.read<CreateEventCubit>().currentEvent.endDate = tempText;
+          context.read<CreateEventCubit>().currentEvent.timeZoneName =
+              getSelectedDateAndTime.getTimeZoneName();
         } else if (fromOrTo == 'to' && dateOrTime == 'time') {
           tempText = await GetSelectedDateAndTime().selectTime(context);
           context.read<CreateEventCubit>().currentEvent.endTime = tempText;

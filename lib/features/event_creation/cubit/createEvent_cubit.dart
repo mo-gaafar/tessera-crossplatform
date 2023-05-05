@@ -14,6 +14,13 @@ class CreateEventCubit extends Cubit<CreateEventState> {
   CreateEventCubit() : super(CreateEventInitial());
 
   void displayError({String? errormessage}) {
+    emit(CreateEventInitial());
     emit(CreateEventError(message: errormessage!));
+  }
+
+  void updateBasicInfo({String? eventCategory}) {
+    emit(CreateEventInitial());
+    emit(CreateEventBasicInfo(eventCategory: eventCategory));
+    currentEvent.eventCategory = eventCategory!;
   }
 }

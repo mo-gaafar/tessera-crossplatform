@@ -6,8 +6,13 @@ abstract class CreateEventState extends Equatable {
 
   @override
   List<Object> get props => [];
+
 }
 class CreateEventInitial extends CreateEventState {}
+class CreateEventBasicInfo extends CreateEventState {
+  final String? eventCategory;
+  CreateEventBasicInfo({this.eventCategory});
+}
 class CreateEventError extends CreateEventState {
   final String message;
 

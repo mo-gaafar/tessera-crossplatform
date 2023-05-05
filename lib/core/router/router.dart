@@ -9,6 +9,7 @@ import 'package:tessera/features/authentication/view/pages/type_new_password_scr
 import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
+import 'package:tessera/features/event_creation/view/Pages/atendeeManagement_homepage_screen.dart';
 
 import 'package:tessera/features/event_creation/view/Pages/creator_landingPage_screen.dart';
 import 'package:tessera/features/event_creation/view/Pages/newevent_location_screen.dart';
@@ -16,8 +17,11 @@ import 'package:tessera/features/event_creation/view/Pages/newevent_title_screen
 import 'package:tessera/features/event_creation/view/Pages/newevent_description_screen.dart';
 import 'package:tessera/features/event_creation/view/Pages/newevent_setdate_screen.dart';
 import 'package:tessera/features/event_creation/view/Pages/newevent_receipt_screen.dart';
+import 'package:tessera/features/event_creation/view/Pages/atendeeManagement_processing_screen.dart';
+import 'package:tessera/features/event_creation/view/Pages/atendeeManagement_sendEmail_screen.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
+import 'package:tessera/features/event_creation/view/Pages/my_customized_numpad.dart';
 
 import 'package:tessera/features/landing_page/view/pages/landing_page.dart';
 
@@ -85,9 +89,25 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => NewEventLocation(),
         );
-        case '/neweventreceipt':
+      case '/neweventreceipt':
         return MaterialPageRoute(
           builder: (_) => NewEventReceipt(),
+        );
+      case '/numpadscreen':
+        return MaterialPageRoute(
+          builder: (_) => MyCustomizedNumpad(),
+        );
+      case '/atendeemanagementhomescreen':
+        return MaterialPageRoute(
+          builder: (_) => AtendeeManagementHomePage(),
+        );
+        case '/atendeemanagementprocessingscreen':
+        return MaterialPageRoute(
+          builder: (_) => AtendeeManagementProcessingPage(),
+        );
+        case '/sendemailtoatendeescreen':
+        return MaterialPageRoute(
+          builder: (_) => SendEmailToAtendee(),
         );
       default:
         return MaterialPageRoute(

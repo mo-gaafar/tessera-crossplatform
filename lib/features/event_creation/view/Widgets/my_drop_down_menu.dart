@@ -21,16 +21,12 @@ class _MyDropDownMenuState extends State<MyDropDownMenu> {
       onChanged: (value) {
         setState(() {
           selectedValue = value.toString();
-          if (widget.type == 'location') {
-            context.read<CreateEventCubit>().currentEvent.locationType =
-                selectedValue.toString();
-          } else if (widget.type == 'Privacy') {
+          if (widget.type == 'Privacy') {
             if (selectedValue.toString() == 'Public event') {
               context.read<CreateEventCubit>().currentEvent.isPublic = true;
             } else {
               context.read<CreateEventCubit>().currentEvent.isPublic = false;
             }
-            print(context.read<CreateEventCubit>().currentEvent.isPublic);
           }
         });
       },

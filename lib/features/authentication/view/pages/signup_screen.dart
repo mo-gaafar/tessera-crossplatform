@@ -153,10 +153,6 @@ class SignUp extends StatelessWidget {
                                     .currentUser
                                     .hidePassword = false;
                               }
-                              print(context
-                                  .read<AuthCubit>()
-                                  .currentUser
-                                  .hidePassword);
                             },
                           ),
                         ),

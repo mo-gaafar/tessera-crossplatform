@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class PopupMenu extends StatelessWidget {
   String selectEvent = '';
@@ -15,8 +17,6 @@ class PopupMenu extends StatelessWidget {
         Icon(Icons.music_note_outlined),
         Icon(Icons.video_camera_back_outlined),
         Icon(Icons.restaurant_outlined),
-
-
         Icon(Icons.auto_stories_outlined),
         Icon(Icons.home_repair_service_outlined),
         Icon(Icons.local_bar_outlined),
@@ -39,7 +39,6 @@ class PopupMenu extends StatelessWidget {
         Text('Concert or Performance'),
         Text('Screening'),
         Text('Dinner or Gala'),
-
         Text('Class, Training, or Workshop'),
         Text('Meeting or Networking Event'),
         Text('Party or Social Gathering'),
@@ -52,8 +51,6 @@ class PopupMenu extends StatelessWidget {
         Text('Camp, Trip, or Retreat'),
         Text('Appearance or Signing'),
         Text('Other'),
-
-
       ];
     } else if (selectEvent == 'Category') {
       selectEventIcons = const [
@@ -97,7 +94,19 @@ class PopupMenu extends StatelessWidget {
             leading: selectEventIcons[index],
             title: selectEventText[index],
             onTap: () {
-              print(selectEventText[index]);
+              if (selectEvent == 'Category') {
+                String tempSelectedEventText =
+                    selectEventText[index].toString().replaceAll('Text(', "");
+                tempSelectedEventText =
+                    tempSelectedEventText.replaceAll(')', "");
+                                    tempSelectedEventText =
+                    tempSelectedEventText.replaceAll('"', "");
+                // context.read<CreateEventCubit>().currentEvent.eventCategory =
+                //     tempSelectedEventText;
+                context
+                    .read<CreateEventCubit>()
+                    .updateBasicInfo(eventCategory: tempSelectedEventText);
+              }
               Navigator.pop(context);
             },
           );

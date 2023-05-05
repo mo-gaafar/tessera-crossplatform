@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_state.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_drop_down_menu.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_editable_dateAndTime_text.dart';
 import 'package:tessera/features/event_creation/view/Widgets/receipt_section.dart';
@@ -45,6 +46,7 @@ class NewEventReceipt extends StatelessWidget {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('This is a done icon snackbar')));
+                    print(context.read<CreateEventCubit>().currentEvent);
               },
             ),
             IconButton(
@@ -182,6 +184,11 @@ class NewEventReceipt extends StatelessWidget {
                       myList: locationList,
                       type: 'location',
                     ),
+                    Text(context
+                        .read<CreateEventCubit>()
+                        .currentEvent
+                        .eventLocation
+                        .toString()),
                   ],
                 ),
               ),
@@ -190,30 +197,30 @@ class NewEventReceipt extends StatelessWidget {
                 sectionChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Event type'),
-                    GestureDetector(
-                      child: const Text(
-                        'Select type',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Select Event Type'),
-                            content: PopupMenu(selectEvent: 'Type'),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    
                     const Text('Event category'),
                     GestureDetector(
-                      child: const Text(
-                        'Select category',
-                        style: TextStyle(color: Colors.grey),
+                      child: BlocBuilder<CreateEventCubit, CreateEventState>(
+                        builder: (context, state) {
+                          if (state is CreateEventBasicInfo) {
+                            if (state.eventCategory != null) {
+                              return Text(
+                                state.eventCategory!,
+                                style: TextStyle(color: Colors.grey),
+                              );
+                            } else {
+                              return Text(
+                                'Select a Category',
+                                style: TextStyle(color: Colors.grey),
+                              );
+                            }
+                          } else {
+                            return Text(
+                              'Select a Category',
+                              style: TextStyle(color: Colors.grey),
+                            );
+                          }
+                        },
                       ),
                       onTap: () {
                         showDialog(

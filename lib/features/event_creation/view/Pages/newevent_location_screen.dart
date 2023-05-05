@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tessera/features/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_drop_down_menu.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
@@ -19,6 +20,25 @@ class _NewEventLocationState extends State<NewEventLocation> {
   ];
   late String selectedValue = locationList.first;
   bool visabilty = true;
+  late String value = '';
+  late List predictions;
+
+  Future<dynamic> jsonBodyToAllPlacesList(String value) async {
+    late final response;
+    try {
+      response = await CreatorRepository.getAllPlaces(value);
+      if (response == null ||
+          response['predictions'] == [] ||
+          response['predictions'] == null) {
+        return 'No Places';
+      } else {
+        predictions = response['predictions'];
+      }
+      return predictions;
+    } catch (e) {
+      return 'Network Error'; //if netwrok is connected so the porblem will be in request [404 status] check with back end or try removing tr{}catch
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +67,6 @@ class _NewEventLocationState extends State<NewEventLocation> {
                       onChanged: (value) {
                         setState(() {
                           selectedValue = value.toString();
-                          context
-                              .read<CreateEventCubit>()
-                              .currentEvent
-                              .locationType = selectedValue.toString();
                           if (selectedValue == 'Venue') {
                             visabilty = true;
                           } else {
@@ -78,11 +94,87 @@ class _NewEventLocationState extends State<NewEventLocation> {
                 visible: visabilty,
                 child: Container(
                   padding: const EdgeInsets.only(top: 10, bottom: 20),
-                  child: const TextField(
+                  child: TextField(
                     decoration: InputDecoration(
                       hintText: "Search for a location",
                     ),
+                    onChanged: (val) async {
+                      setState(() {
+                        value = val;
+                      });
+                    },
                   ),
+                ),
+              ),
+              Visibility(
+                visible: visabilty,
+                child: FutureBuilder(
+                  future: jsonBodyToAllPlacesList(value),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasData) {
+                      if (snapshot.data == 'Network Error') {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Network Error'),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {});
+                              },
+                              child: Text('Refresh'),
+                            ),
+                          ],
+                        );
+                      } else if (snapshot.data == 'No Places') {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Cannot find what you are looking for? '),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {});
+                              },
+                              child: Text('Refresh'),
+                            ),
+                          ],
+                        );
+                      } else {
+                        if (predictions != null || predictions.length != 0) {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: predictions.length,
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, index) {
+                                return ListTile(
+                                  subtitle:
+                                      Text(predictions[index]["description"]),
+                                  dense: true,
+                                  onTap: () {
+                                    context
+                                        .read<CreateEventCubit>()
+                                        .currentEvent
+                                        .eventLocation = predictions[index]
+                                            ["description"]
+                                        .toString();
+                                    Navigator.pushNamed(
+                                        context, '/neweventreceipt');
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return Text('Error!');
+                        }
+                      }
+                    } else {
+                      return Text('Error!');
+                    }
+                  },
                 ),
               ),
               Visibility(

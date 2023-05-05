@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 
 class MyImagePicker extends StatefulWidget {
   const MyImagePicker({super.key});
@@ -40,6 +42,8 @@ class _MyImagePickerState extends State<MyImagePicker> {
                     await picker.pickImage(source: ImageSource.camera);
                 setState(() {
                   image = tempImage;
+                  context.read<CreateEventCubit>().currentEvent.eventImage =
+                      File(image!.path);
                 });
               },
             ),
@@ -53,6 +57,8 @@ class _MyImagePickerState extends State<MyImagePicker> {
                     await picker.pickImage(source: ImageSource.gallery);
                 setState(() {
                   image = tempImage;
+                  context.read<CreateEventCubit>().currentEvent.eventImage =
+                      File(image!.path);
                 });
               },
             ),

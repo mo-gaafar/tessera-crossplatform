@@ -4,10 +4,13 @@ import 'package:tessera/features/event_creation/data/url_luncher.dart';
 import 'package:tessera/features/event_creation/view/Widgets/span_text_link.dart';
 import 'package:tessera/features/event_creation/view/Widgets/no_event_template.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_search_delegated.dart';
+import 'package:tessera/features/event_creation/data/organiser_model.dart';
+import 'package:tessera/features/event_creation/view/Widgets/creator_eventsList.dart';
 
 class CreatorLandingPage extends StatelessWidget {
   var _controller = TextEditingController();
-
+  OrganiserModel organiserModel =
+      OrganiserModel(email: 'email', accessToken: '6439f95a3d607d6c49e56a1e');
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,7 +56,9 @@ class CreatorLandingPage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              NoEvenTemplate('you don\'t have any live events'),
+              // NoEvenTemplate('you don\'t have any live events'),
+              CreatorEventList(
+                  filterType: 'upcomingevents', organiserModel: organiserModel),
               NoEvenTemplate('you don\'t have any past events'),
               NoEvenTemplate('you don\'t have any draft events'),
             ],
@@ -61,6 +66,10 @@ class CreatorLandingPage extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.pushNamed(context, '/neweventtitle');
+              //Navigator.pushNamed(context, '/atendeemanagementhomescreen');
+              // Navigator.pushNamed(
+              //     context, '/atendeemanagementprocessingscreen');
+              //Navigator.pushNamed(context, '/neweventlocation');
             },
             backgroundColor: Colors.orange,
             child: const Icon(Icons.add),
