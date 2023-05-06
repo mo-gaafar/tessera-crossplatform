@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:numpad/numpad.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
-import 'package:tessera/features/event_creation/view/Widgets/atendeeManagement_evnetslist.dart';
+import 'package:tessera/features/atendee_management/view/widgets/atendeeManagement_evnetslist.dart';
+import 'package:tessera/features/authentication/view/widgets/email_button.dart';
+import 'package:tessera/constants/app_colors.dart';
 
 class AtendeeManagementHomePage extends StatelessWidget {
   const AtendeeManagementHomePage({super.key});
@@ -90,10 +92,13 @@ class AtendeeManagementHomePage extends StatelessWidget {
                 AtendeeEventsList(),
                 const Spacer(),
                 Container(
-                  padding: EdgeInsets.all(16),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text('Register'),
+                  child: EmailButton(
+                    buttonText: 'Add Atendee Detail',
+                    colourBackground: AppColors.primary,
+                    colourText: Colors.white,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/addatendeedetails');
+                    },
                   ),
                 ),
               ],

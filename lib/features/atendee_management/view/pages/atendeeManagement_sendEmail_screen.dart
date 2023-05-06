@@ -1,6 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class SendEmailToAtendee extends StatefulWidget {
   const SendEmailToAtendee({super.key});
@@ -11,6 +12,8 @@ class SendEmailToAtendee extends StatefulWidget {
 
 class _SendEmailToAtendeeState extends State<SendEmailToAtendee> {
   bool? checkBox = false;
+  final formkey = GlobalKey<FormState>();
+  String inputEmail = '';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,12 +36,31 @@ class _SendEmailToAtendeeState extends State<SendEmailToAtendee> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Email'),
-              TextField(
-                decoration: InputDecoration(
+              Form(
+                key: formkey,
+                child: TextFormField(
+                  decoration: InputDecoration(
                     suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {print('go to funtion');},
-                )),
+                      icon: Icon(Icons.send),
+                      onPressed: () {
+                        setState(() {});
+                        if (formkey.currentState!.validate()) {
+                          print(inputEmail);
+                          print(checkBox);
+                        }
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    inputEmail = value!;
+                    if (inputEmail.trim().isEmpty) {
+                      return 'Email is required.';
+                    }
+                    if (!EmailValidator.validate(inputEmail)) {
+                      return 'This is not a valid email.';
+                    }
+                  },
+                ),
               ),
               CheckboxListTile(
                 //checkbox positioned at left

@@ -3,7 +3,9 @@ import 'package:numpad/numpad.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
-import 'package:tessera/features/event_creation/view/Widgets/atendeeManagement_evnetslist.dart';
+import 'package:tessera/features/atendee_management/view/widgets/atendeeManagement_evnetslist.dart';
+import 'package:tessera/features/authentication/view/widgets/email_button.dart';
+import 'package:tessera/constants/app_colors.dart';
 
 class AtendeeManagementProcessingPage extends StatelessWidget {
   const AtendeeManagementProcessingPage({super.key});
@@ -80,19 +82,13 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                         ],
                       )),
                   Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(style: BorderStyle.solid)),
-                    child: TextButton(
-                      onPressed: () {Navigator.pushNamed(context, '/sendemailtoatendeescreen');},
-                      child: Text('Email'),
-                    ),
-                    width: 240,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text('Check in all'),
+                    child: EmailButton(
+                      buttonText: 'Check in all tickets for the atendee added.',
+                      colourBackground: AppColors.primary,
+                      colourText: Colors.white,
+                      onTap: () {
+                        print('go to confirmation page ');
+                      },
                     ),
                   ),
                   ListTile(
@@ -108,10 +104,14 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                   ),
                   const Spacer(),
                   Container(
-                    padding: EdgeInsets.all(16),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text('New Sale'),
+                    child: EmailButton(
+                      buttonText: 'New Sale',
+                      colourBackground: AppColors.primary,
+                      colourText: Colors.white,
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, '/atendeemanagementhomescreen');
+                      },
                     ),
                   ),
                 ],
