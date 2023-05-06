@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
+import 'package:tessera/features/organizers_view/ticketing/data/publish_data.dart';
 
 import '../../../../../core/services/validation/form_validator.dart';
 
@@ -37,20 +38,21 @@ class _PublishPageState extends State<PublishPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
-          child: TextButton(
-            onPressed: () {
-              //to  publishing
-              Navigator.pushNamed(context, '/creatorlanding');
-            },
-            child: Text(
-              'Publish',
-              style: TextStyle(
-                  fontFamily: 'NeuePlak',
-                  color: AppColors.secondaryTextOnLight,
-                  fontSize: 25),
-            ),
+        child: TextButton(
+          onPressed: () {
+            //to  publishing
+            PublishModel(alwaysPrivate: null, link: null, isPublic: null, password: null, privateToPublicDate: '', publicDate: '', publishNow: null);
+            Navigator.pushNamed(context, '/creatorlanding');
+          },
+          child: Text(
+            'Publish',
+            style: TextStyle(
+                fontFamily: 'NeuePlak',
+                color: AppColors.secondaryTextOnLight,
+                fontSize: 25),
           ),
         ),
+      ),
       appBar: AppBar(
         title: const Text(
           'Publishing',
@@ -297,9 +299,10 @@ class _PublishPageState extends State<PublishPage> {
                     } else if (state is EventPrivate ||
                         state is EventAccessWithLink ||
                         state is EventAccessWithPassword ||
-                                  state
-                                      is EventAccessWithPasswordAndBecamePublic ||
-                                  state is EventAccessWithLinkAndBecamePublic || state is EventAccessWithPasswordAndKeptPrivate || state is EventAccessWithLinkAndKeptPrivate) {
+                        state is EventAccessWithPasswordAndBecamePublic ||
+                        state is EventAccessWithLinkAndBecamePublic ||
+                        state is EventAccessWithPasswordAndKeptPrivate ||
+                        state is EventAccessWithLinkAndKeptPrivate) {
                       return Column(
                         children: [
                           Text(
@@ -347,7 +350,8 @@ class _PublishPageState extends State<PublishPage> {
                               if (state is EventAccessWithPassword ||
                                   state
                                       is EventAccessWithPasswordAndBecamePublic ||
-                                  state is EventAccessWithPasswordAndKeptPrivate) {
+                                  state
+                                      is EventAccessWithPasswordAndKeptPrivate) {
                                 return TextFormField(
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
@@ -418,12 +422,13 @@ class _PublishPageState extends State<PublishPage> {
                                       if (dropdownValue ==
                                           'Anyone with the Link') {
                                         context
-                                            .read<EventTicketsCubit>().EventBecamePublicAndWithLink()
-                                            ;
+                                            .read<EventTicketsCubit>()
+                                            .EventBecamePublicAndWithLink();
                                       } else if (dropdownValue ==
                                           'Only People With Passward') {
                                         context
-                                            .read<EventTicketsCubit>().EventBecamePublicAndWithPassward();
+                                            .read<EventTicketsCubit>()
+                                            .EventBecamePublicAndWithPassward();
                                       }
                                     });
                                   }),
@@ -441,7 +446,9 @@ class _PublishPageState extends State<PublishPage> {
                           ),
                           BlocBuilder<EventTicketsCubit, EventTicketsState>(
                             builder: (context, state) {
-                              if (state is EventAccessWithPasswordAndBecamePublic ||state is EventAccessWithLinkAndBecamePublic) {
+                              if (state
+                                      is EventAccessWithPasswordAndBecamePublic ||
+                                  state is EventAccessWithLinkAndBecamePublic) {
                                 return Row(
                                   children: [
                                     Expanded(

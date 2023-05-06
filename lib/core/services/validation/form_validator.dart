@@ -113,10 +113,10 @@ class FormValidator {
     if (specialCharRegExp.hasMatch(name) == true) {
       return 'No special character is allowed.';
     } else if (lowerCaseRegExp.hasMatch(name) == true) {
-      return 'charachters is allowed.';
+      return 'no charachters is allowed.';
     } 
     else if (upperCaseRegExp.hasMatch(name) == true) {
-      return 'charachters is allowed.';
+      return 'no charachters is allowed.';
     }else {
       return null;
     }

@@ -55,6 +55,12 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
   void EventBecamePublicAndWithLink() {
     emit(EventAccessWithLinkAndBecamePublic());
   }
+  void TicketaddPromocode() {
+    emit(TicketAddPromocode());
+  }
+  void TicketuploadPromocode() {
+    emit(TicketUploadPromocode());
+  }
   
   
 }

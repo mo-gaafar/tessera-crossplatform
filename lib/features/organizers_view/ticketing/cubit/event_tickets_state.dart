@@ -21,3 +21,5 @@ class EventAccessWithPasswordAndKeptPrivate extends EventTicketsState {}
 class EventAccessWithLinkAndKeptPrivate extends EventTicketsState {}
 class EventAccessWithPasswordAndBecamePublic extends EventTicketsState {}
 class EventAccessWithLinkAndBecamePublic extends EventTicketsState {}
+class TicketAddPromocode extends EventTicketsState {}
+class TicketUploadPromocode extends EventTicketsState {}
