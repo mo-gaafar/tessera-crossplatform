@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tessera/constants/app_colors.dart';
 
 class DashboardItem extends StatelessWidget {
   const DashboardItem(
@@ -18,8 +19,7 @@ class DashboardItem extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color:
-            Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.3),
+        color: Theme.of(context).colorScheme.inversePrimary,
       ),
       child: child,
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/features/organizers_view/dashboard/view/widgets/dashboard_item.dart';
 import 'package:tessera/features/organizers_view/dashboard/view/widgets/expandable_dashboard_item.dart';
@@ -13,17 +14,19 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Dashboard',
           style: TextStyle(
               fontFamily: 'NeuePlak',
               fontSize: 25,
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary),
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
         children: [
           DashboardItem(
             child: Column(
@@ -40,9 +43,9 @@ class Dashboard extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ExpandableDashboardItem(
+            padding: 15,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Gross Sales',
                     style: TextStyle(
@@ -62,13 +65,13 @@ class Dashboard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          DashboardItem(
+          ExpandableDashboardItem(
             height: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,20 +79,98 @@ class Dashboard extends StatelessWidget {
                       Text(
                         '% of the event\'s invitees have showed up so far.',
                         style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade400),
+                            fontSize: 14,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onTertiaryContainer),
                       ),
                       Text(
                         'More live event statistics will be added to the app soon!',
                         style: TextStyle(
-                            fontSize: 14, color: Colors.grey.shade400),
+                            fontSize: 14,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onTertiaryContainer),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 20),
-                PercentageIndicator(),
+                // const SizedBox(width: 20),
+                const PercentageIndicator(),
               ],
             ),
+            children: [],
+          ),
+          const SizedBox(height: 10),
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            children: [
+              GestureDetector(
+                onTap: () {},
+                child: DashboardItem(
+                  padding: 15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Attendee Summary',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer)),
+                      Center(
+                          child: Icon(
+                        FontAwesomeIcons.peopleGroup,
+                        size: 60,
+                      )),
+                      Text('Click to view and download your attendees list.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontSize: 13,
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: DashboardItem(
+                  padding: 15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Attendee Summary',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onTertiaryContainer)),
+                      Center(
+                          child: Icon(
+                        Icons.sell_outlined,
+                        size: 60,
+                      )),
+                      Text('Manually sell new tickets to attendees.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontSize: 13,
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
           // const SizedBox(height: 10),
           // GridView.count(
