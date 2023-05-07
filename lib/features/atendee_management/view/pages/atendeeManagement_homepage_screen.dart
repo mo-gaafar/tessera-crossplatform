@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:numpad/numpad.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_cubit.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_state.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
 import 'package:tessera/features/atendee_management/view/widgets/atendeeManagement_evnetslist.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import 'package:tessera/constants/app_colors.dart';
 
-class AtendeeManagementHomePage extends StatelessWidget {
+class AtendeeManagementHomePage extends StatefulWidget {
   const AtendeeManagementHomePage({super.key});
 
+  @override
+  State<AtendeeManagementHomePage> createState() =>
+      _AtendeeManagementHomePageState();
+}
+
+class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
+  List<bool> _selections = List.generate(2, (_) => false);
+  String? ticketType;
+  String? isTicketsFree;
+  String totalPrice = '0';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -67,19 +79,25 @@ class AtendeeManagementHomePage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        (context
-                                    .read<CreateEventCubit>()
-                                    .currentEvent
-                                    .tickets ==
-                                null)
-                            ? '0'
-                            : context
-                                .read<CreateEventCubit>()
-                                .currentEvent
-                                .tickets!,
-                        style: const TextStyle(
-                            fontSize: 48, fontWeight: FontWeight.bold),
+                      BlocBuilder<AtendeeManagementCubit,
+                          AtendeeManagementState>(
+                        builder: (context, state) {
+                          if (state is AtendeeManagementInfo) {
+                            return Text(
+                              context
+                                  .read<AtendeeManagementCubit>()
+                                  .atendeeModel
+                                  .ticketPrice!,
+                              style: const TextStyle(
+                                  fontSize: 48, fontWeight: FontWeight.bold),
+                            );
+                          }
+                          return Text(
+                            totalPrice,
+                            style: const TextStyle(
+                                fontSize: 48, fontWeight: FontWeight.bold),
+                          );
+                        },
                       ),
                       const Text(
                         '£',
@@ -89,7 +107,112 @@ class AtendeeManagementHomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                AtendeeEventsList(),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text("VIP"),
+                            value: "VIP",
+                            groupValue: ticketType,
+                            onChanged: (value) {
+                              setState(() {
+                                ticketType = value.toString();
+                                context
+                                    .read<AtendeeManagementCubit>()
+                                    .atendeeModel
+                                    .ticketTierName = ticketType;
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text("Regular"),
+                            value: "Regular",
+                            groupValue: ticketType,
+                            onChanged: (value) {
+                              setState(() {
+                                ticketType = value.toString();
+                                context
+                                    .read<AtendeeManagementCubit>()
+                                    .atendeeModel
+                                    .ticketTierName = ticketType;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          RadioListTile(
+                            title: Text("Free"),
+                            value: "Free",
+                            groupValue: isTicketsFree,
+                            onChanged: (value) {
+                              setState(() {
+                                isTicketsFree = value.toString();
+                                totalPrice = '0';
+                                context
+                                    .read<AtendeeManagementCubit>()
+                                    .atendeeModel
+                                    .ticketisFree = true;
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: Text("Not Free"),
+                            value: "Not Free",
+                            groupValue: isTicketsFree,
+                            onChanged: (value) {
+                              setState(
+                                () {
+                                  isTicketsFree = value.toString();
+                                  totalPrice = (context
+                                              .read<AtendeeManagementCubit>()
+                                              .atendeeModel
+                                              .ticketPrice ==
+                                          null)
+                                      ? "0"
+                                      : context
+                                          .read<AtendeeManagementCubit>()
+                                          .atendeeModel
+                                          .ticketPrice!;
+                                  context
+                                      .read<AtendeeManagementCubit>()
+                                      .atendeeModel
+                                      .ticketisFree = false;
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                BlocBuilder<AtendeeManagementCubit, AtendeeManagementState>(
+                  builder: (context, state) {
+                    String? ticketsQuantity = context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .ticketQuantity;
+                    if (ticketsQuantity == null) {
+                      ticketsQuantity = '0';
+                    }
+                    return Column(
+                      children: [
+                        AtendeeEventsList(),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                              'Number of tickets chosen: ${ticketsQuantity}'),
+                        ),
+                      ],
+                    );
+                  },
+                ),
                 const Spacer(),
                 Container(
                   child: EmailButton(

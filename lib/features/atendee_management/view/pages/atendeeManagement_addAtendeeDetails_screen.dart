@@ -4,6 +4,7 @@ import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
 import 'package:tessera/constants/constants.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_cubit.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import 'package:tessera/constants/app_colors.dart';
 
@@ -106,6 +107,18 @@ class AddAtendeeDetails extends StatelessWidget {
                 colourText: Colors.white,
                 onTap: () async {
                   if (formkey.currentState!.validate()) {
+                    context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .atendeeFirstName = _firstName;
+                    context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .atendeeLastName = _lastName;
+                    context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .atendeeEmail = inputEmail;
                     Navigator.pushNamed(
                         context, '/atendeemanagementprocessingscreen');
                   }

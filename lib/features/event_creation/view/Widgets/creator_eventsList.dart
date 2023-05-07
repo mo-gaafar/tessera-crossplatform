@@ -93,7 +93,8 @@ class _CreatorEventListState extends State<CreatorEventList> {
                 );
               }
             } else {
-              return Text('Error!');
+              return Text(
+                  'Error!'); //flutter gives me that the body will continue with null error so i added this
             }
           },
         ),

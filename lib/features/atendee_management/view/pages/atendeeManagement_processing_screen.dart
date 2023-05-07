@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:numpad/numpad.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/atendee_management/data/atendeeManagement_repository.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
-import 'package:tessera/features/atendee_management/view/widgets/atendeeManagement_evnetslist.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_cubit.dart';
 import 'package:tessera/features/authentication/view/widgets/email_button.dart';
 import 'package:tessera/constants/app_colors.dart';
 
@@ -77,17 +78,21 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                              'Total Paid ${context.read<CreateEventCubit>().currentEvent.tickets}'),
+                              'Total Paid ${(context.read<AtendeeManagementCubit>().atendeeModel.ticketisFree == true) ? '0' : context.read<AtendeeManagementCubit>().atendeeModel.ticketPrice}'),
                           Text('No change due'),
                         ],
                       )),
                   Container(
                     child: EmailButton(
-                      buttonText: 'Check in all tickets for the atendee added.',
+                      buttonText:
+                          'Check out all the tickets for the atendee added.',
                       colourBackground: AppColors.primary,
                       colourText: Colors.white,
-                      onTap: () {
-                        print('go to confirmation page ');
+                      onTap: () async {
+                        AtendeeManagementRepository().addAtendee(context
+                            .read<AtendeeManagementCubit>()
+                            .atendeeModel
+                            .toJson());
                       },
                     ),
                   ),

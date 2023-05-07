@@ -5,6 +5,8 @@ import 'package:tessera/core/router/router.dart';
 import 'package:tessera/core/theme/app_theme.dart';
 import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_cubit.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_state.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/events/cubit/event_book_cubit.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => CreateEventCubit(),
         ),
+        BlocProvider(
+          create: (context) => AtendeeManagementCubit(),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
@@ -59,6 +64,18 @@ class MyApp extends StatelessWidget {
               BlocListener<CreateEventCubit, CreateEventState>(
                 listener: (context, state) {
                   if (state is CreateEventError) {
+                    snackbarKey.currentState?.showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+              ),
+              BlocListener<AtendeeManagementCubit, AtendeeManagementState>(
+                listener: (context, state) {
+                  if (state is AtendeeManagementError) {
                     snackbarKey.currentState?.showSnackBar(
                       SnackBar(
                         content: Text(state.message),

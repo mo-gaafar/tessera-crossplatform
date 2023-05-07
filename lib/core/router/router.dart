@@ -21,7 +21,7 @@ import 'package:tessera/features/atendee_management/view/Pages/atendeeManagement
 import 'package:tessera/features/atendee_management/view/Pages/atendeeManagement_sendEmail_screen.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
-import 'package:tessera/features/event_creation/view/Pages/my_customized_numpad.dart';
+import 'package:tessera/features/atendee_management/view/widgets/my_customized_numpad.dart';
 import 'package:tessera/features/atendee_management/view/Pages/atendeeManagement_addAtendeeDetails_screen.dart';
 
 import 'package:tessera/features/landing_page/view/pages/landing_page.dart';

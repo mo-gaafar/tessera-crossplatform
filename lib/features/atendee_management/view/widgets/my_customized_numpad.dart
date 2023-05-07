@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:numpad/numpad.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
+import 'package:tessera/features/atendee_management/cubit/atendeeManagement_cubit.dart';
 
 class MyCustomizedNumpad extends StatefulWidget {
-  const MyCustomizedNumpad({super.key});
+  String? priceOfTheTicketSelected;
+  MyCustomizedNumpad({this.priceOfTheTicketSelected});
 
   @override
   State<MyCustomizedNumpad> createState() => _MyCustomizedNumpadState();
@@ -33,8 +34,21 @@ class _MyCustomizedNumpadState extends State<MyCustomizedNumpad> {
                 Icons.done_outlined,
               ),
               onPressed: () {
-                context.read<CreateEventCubit>().currentEvent.tickets=code;
-                print(context.read<CreateEventCubit>().currentEvent.tickets);
+                context
+                    .read<AtendeeManagementCubit>()
+                    .atendeeModel
+                    .ticketQuantity = code;
+                context
+                    .read<AtendeeManagementCubit>()
+                    .atendeeModel
+                    .ticketPrice = (int.parse((code == null) ? '0' : code) *
+                        double.parse(widget.priceOfTheTicketSelected!))
+                    .toString();
+                context.read<AtendeeManagementCubit>().updateAtendeeInfo(
+                    ticketsTotalPrice: context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .ticketPrice);
                 Navigator.pop(context);
               },
             ),
@@ -95,7 +109,12 @@ class _MyCustomizedNumpadState extends State<MyCustomizedNumpad> {
                       }
                     } else {
                       setState(() {
-                        code += "$val";
+                        if (code == '0') {
+                          code = '';
+                          code += "$val";
+                        } else {
+                          code += "$val";
+                        }
                       });
                     }
                   },
