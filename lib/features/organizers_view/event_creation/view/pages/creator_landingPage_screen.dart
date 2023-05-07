@@ -36,7 +36,7 @@ class CreatorLandingPage extends StatelessWidget {
             actions: <Widget>[
               Center(
                 child: GestureDetector(
-                  onTap: () => print('logged out'),
+                  onTap: () => Navigator.pushNamed(context, '/dashboard'),
                   child: const Icon(
                     Icons.search_outlined,
                     color: Colors.grey,
