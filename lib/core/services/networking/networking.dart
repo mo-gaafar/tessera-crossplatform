@@ -14,12 +14,32 @@ class NetworkService {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json'
   };
+  static final Map<String, String> _organizerHeaders = {
+    'Accept-Charset': 'utf-8',
+    'Content-Type': 'application/json',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzOWY5NWEzZDYwN2Q2YzQ5ZTU2YTFlIiwiaWF0IjoxNjgzNDczMDcyLCJleHAiOjE2ODM1NTk0NzJ9.d8wouhzD1TqrMFF16pmaPeuUz1uBwnpjVb_ArNOJxyw'
+  };
 
   /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponse(String url) async {
     try {
       final response = await http.get(
         Uri.parse(url),
+      );
+      final responseJson = returnResponse(response);
+      return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+  }
+
+  /// Returns the response body in JSON format from a GET request.
+  static Future getGetApiResponseOrganizer(String url) async {
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: _organizerHeaders,
       );
       final responseJson = returnResponse(response);
       return responseJson;

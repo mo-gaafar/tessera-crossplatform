@@ -59,8 +59,12 @@ class CreatorLandingPage extends StatelessWidget {
               // NoEvenTemplate('you don\'t have any live events'),
               CreatorEventList(
                   filterType: 'upcomingevents', organiserModel: organiserModel),
-              NoEvenTemplate('you don\'t have any past events'),
-              NoEvenTemplate('you don\'t have any draft events'),
+              CreatorEventList(
+                  filterType: 'pastevents', organiserModel: organiserModel),
+              // NoEvenTemplate('you don\'t have any past events'),
+              // NoEvenTemplate('you don\'t have any draft events'),
+              CreatorEventList(
+                  filterType: 'draft', organiserModel: organiserModel),
             ],
           ),
           floatingActionButton: FloatingActionButton(

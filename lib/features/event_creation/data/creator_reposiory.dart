@@ -6,10 +6,9 @@ import 'package:tessera/features/event_creation/data/organiser_model.dart';
 import 'package:uuid/uuid.dart';
 
 class CreatorRepository {
-  static Future<dynamic> getAllEvents(
-      String filterType, OrganiserModel organiserModel) async {
-    final response = await NetworkService.getGetApiResponse(
-        'https://www.tessera.social/api/event-management/listEvents/:${organiserModel.accessToken}?filterBy=${filterType}');
+  static Future<dynamic> getAllEvents(String filterType) async {
+    final response = await NetworkService.getGetApiResponseOrganizer(
+        'https://www.tessera.social/api/event-management/listEvents/?filterBy=${filterType}');
     return response;
   }
 
