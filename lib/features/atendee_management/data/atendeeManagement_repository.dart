@@ -19,7 +19,7 @@ class AtendeeManagementRepository {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNDUyOTc0LCJleHAiOjE2ODM1MzkzNzR9.bym3bG2pig4Ew4mLOL5TdLlJUv2w1ps6BxFTMSrW714'
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTc0MjgxLCJleHAiOjE2ODM2NjA2ODF9.cemAiMZ5KxrH188ZWy8PEc8_lWLJu9J9BOSm9gi1ThE'
   };
   Future addAtendee(var data) async {
     try {

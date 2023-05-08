@@ -22,9 +22,15 @@ class CreatorRepository {
   }
 
   static Future<dynamic> postCreatedEventBasicInfo(dynamic data) async {
+    String? eventId;
     final response = await NetworkService.getPostApiResponseOrganizer(
-        'https://www.tessera.social/api/event-management/creator',
-        data);
+        'https://www.tessera.social/api/event-management/creator', data);
+    if (response == 'false') {
+      return;
+    }
+    eventId = response['event_Id'];
+    print(eventId);
+    //hena hatal3 snackbar we hab3at el event id
     return response;
   }
 

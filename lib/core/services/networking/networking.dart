@@ -18,7 +18,7 @@ class NetworkService {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzOWY5NWEzZDYwN2Q2YzQ5ZTU2YTFlIiwiaWF0IjoxNjgzNDczMDcyLCJleHAiOjE2ODM1NTk0NzJ9.d8wouhzD1TqrMFF16pmaPeuUz1uBwnpjVb_ArNOJxyw'
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTc0MjgxLCJleHAiOjE2ODM2NjA2ODF9.cemAiMZ5KxrH188ZWy8PEc8_lWLJu9J9BOSm9gi1ThE'
   };
 
   /// Returns the response body in JSON format from a GET request.
@@ -77,13 +77,12 @@ class NetworkService {
             body: data,
           )
           .timeout(const Duration(seconds: 10));
-          print(returnResponse(response));
-      if (response.body[0] == true) {
+      if (returnResponse(response)['success'] == true) {
         final responseJson = returnResponse(response);
-        print('responseJson of Post API');
-        print(responseJson);
         return responseJson;
-      } else {}
+      } else {
+        return 'false';
+      }
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
