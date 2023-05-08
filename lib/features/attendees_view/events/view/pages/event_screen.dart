@@ -18,7 +18,8 @@ String getTheSmallestPrice(List tiers) {
   for (var i = 0; i < tiers.length; i++) {
     prices.add(int.parse(tiers[i]['price']));
   }
-  return prices.reduce((curr, next) => curr < next ? curr : next);
+  int price = prices.reduce((curr, next) => curr < next ? curr : next);
+  return price.toString();
 }
 
 List splitting(String data) {
@@ -48,17 +49,18 @@ List<Map> ticketModels(List tiers, List capacity) {
 }
 
 class EventPage extends StatefulWidget {
-  const EventPage({super.key, required this.eventData});
+  const EventPage({super.key, required this.eventData, required this.iD});
   final EventModel eventData;
+  final String iD;
 
   @override
   State<EventPage> createState() => _EventPageState();
 }
 
 class _EventPageState extends State<EventPage> {
-  late int disc=1;
-  late String id;
+  late int disc = 1;
   late EventModel _eventData;
+  late String id;
   final formKey = GlobalKey<FormState>();
   String tier = '';
   late List tiersToCheck = []; //index for each tier
@@ -204,12 +206,12 @@ class _EventPageState extends State<EventPage> {
                             TextButton(
                               child: const Text("CheckOut"),
                               onPressed: () async {
-                                var response = await context
-                                    .read<EventBookCubit>()
-                                    .promocodeValidity(promo, id);
-                                if (response['success'] == true) {
-                                  disc = response['discout'];
-                                } 
+                                //var response = await context
+                                  //  .read<EventBookCubit>()
+                                  //  .promocodeValidity(promo, id);
+                                //if (response['success'] == true) {
+                                 // disc = response['discout'];
+                                //}
 
                                 if (formKey.currentState!.validate()) {
                                   for (int k = 0;
@@ -241,16 +243,18 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
-                                               tiersToCheck.add(TicketTierSelected(
+                                        tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
                                                         ['nameAndPrice'])[0],
                                                 quantity: ticketsOfEvent[k][
                                                     'ticketsNumber'], //price should be sent as int
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
-                                                price:int.parse(teirsSplitting(
-                                                    ticketsOfEvent[k]
-                                                        ['nameAndPrice'])[1])*disc)
+                                                price: int.parse(teirsSplitting(
+                                                            ticketsOfEvent[k][
+                                                                'nameAndPrice'])[
+                                                        1]) *
+                                                    disc)
                                             .toMap());
                                       }
                                     }
@@ -261,7 +265,14 @@ class _EventPageState extends State<EventPage> {
                                   print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
                                     print('Check out done');
-                                    List arg = [true, tiersToCheck, _eventData,disc];
+                                    List arg = [
+                                      true,
+                                      tiersToCheck,
+                                      _eventData,
+                                      
+                                      id,
+                                      promo
+                                    ];
                                     Navigator.pushNamed(
                                       context,
                                       '/checkOut',
@@ -297,6 +308,7 @@ class _EventPageState extends State<EventPage> {
   void initState() {
     super.initState();
     _eventData = widget.eventData; // initialize the attribute
+    id = widget.iD; // initialize the attribute
   }
 
   @override

@@ -52,7 +52,7 @@ class EditTickets extends StatefulWidget {
 }
 
 class _EditTicketsState extends State<EditTickets> {
-  String id = '6456c9d351ed139b0a9d71b2';
+  String id = '6455d7d716fea49283ba6b3d';
   final formKey = GlobalKey<FormState>();
   TextEditingController dateinputStart = TextEditingController();
   TextEditingController timeinputStart = TextEditingController();
@@ -98,7 +98,7 @@ class _EditTicketsState extends State<EditTickets> {
                   
                   String message = await context
                       .read<EventTicketsCubit>()
-                      .editTicketData(EditTierModel(desiredTierName: widget.ticketName , ticketTier: [TierModel(
+                      .editTicketData(EditTierModel(desiredTierName: widget.ticketName , ticketTiers: [TierModel(
                                   tierName: ticketNameEdit,
                                   maxCapacity: int.parse(quantityEdit),
                                   price: priceEdit,
@@ -109,16 +109,38 @@ class _EditTicketsState extends State<EditTickets> {
                           ,
                           id);
                   if (message == 'successfully edited') {
-                    List list = await context
-                        .read<EventTicketsCubit>()
-                        .getTicketsData(id);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TicketPage(
-                                lisofteirs: list as List,
-                              )),
-                    );
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            // ignore: prefer_interpolation_to_compose_strings
+                            content: Text(message as String),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                          var resp = await context
+                              .read<EventTicketsCubit>()
+                              .getTicketsData(id);
+                          if(resp['success']==true)
+                          {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TicketPage(
+                                      lisofteirs: resp['ticketTiers'] as List,
+                                    )),
+                          );
+
+                          }
+                          else
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            // ignore: prefer_interpolation_to_compose_strings
+                            content: Text(resp['message'] as String),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                            
+                          }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 2),
@@ -127,16 +149,6 @@ class _EditTicketsState extends State<EditTickets> {
                       shape: StadiumBorder(),
                       behavior: SnackBarBehavior.floating,
                     ));
-                    List list = await context
-                        .read<EventTicketsCubit>()
-                        .getTicketsData(id);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TicketPage(
-                                lisofteirs: list as List,
-                              )),
-                    );
                   }
                 }
               },
@@ -199,7 +211,7 @@ class _EditTicketsState extends State<EditTickets> {
                         if (ticketNameEdit.trim().isEmpty) {
                           return 'Ticket Name is required.';
                         }
-                        return formValidator.nameValidty(
+                        return formValidator.ticketNameValidty(
                             ticketNameEdit); //not more than 50 characters
                       },
                     ),
@@ -228,7 +240,7 @@ class _EditTicketsState extends State<EditTickets> {
                       builder: (context, state) {
                         print(state.toString());
                         if (state is TicketIsPaid ||
-                            state is TicketDefaultPaid) {
+                            state is TicketDefaultPaid ||(state is TicketEventInfoRetrived && widget.price!='Free' )) {
                           print('hena');
                           return TextFormField(
                             initialValue: widget.price,
@@ -245,7 +257,7 @@ class _EditTicketsState extends State<EditTickets> {
                                   .numberValidty(priceEdit); //should be number
                             },
                           );
-                        } else {
+                        } else  {
                           print('here?');
                           priceEdit = 'Free';
                           return const TextField(

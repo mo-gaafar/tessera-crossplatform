@@ -20,7 +20,8 @@ import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 
 class MakeSure extends StatelessWidget {
   final EventModel dataEvent;
-  const MakeSure({Key? key, required this.dataEvent}) : super(key: key);
+  final String id;
+  const MakeSure({Key? key, required this.dataEvent, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class MakeSure extends StatelessWidget {
                     fontSize: 25),
               ),
               const Text(
-                'Are you sure you want to go back to the Event Page?, the items you selected might not be available later.',
+                'Are you sure you want to go back to the Event Page?   the items you selected might not be available later.',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                     fontFamily: 'NeuePlak',
@@ -73,7 +74,9 @@ class MakeSure extends StatelessWidget {
                           Navigator.pushNamed(
                             context,
                             '/eventPage',
-                            arguments:dataEvent, //GIVING THE PRICE AS Int
+                            arguments: [
+                              dataEvent,id
+                            ], //GIVING THE PRICE AS Int
                           );
                         }),
                   ),

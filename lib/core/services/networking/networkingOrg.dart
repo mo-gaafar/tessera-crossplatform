@@ -14,7 +14,7 @@ class NetworkOrgService {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzOWY5NWEzZDYwN2Q2YzQ5ZTU2YTFlIiwiaWF0IjoxNjgzNDk0MzM0LCJleHAiOjE2ODM1ODA3MzR9.IT0OR31IvISw9jjK6G9sS-yvH8zRp6NVSAkBqYfvnt0'};
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTgxMjc1LCJleHAiOjE2ODM2Njc2NzV9.2HCSJpkapk3-lHNBYijpb9tO2dwc6KiLTxmuAxCeUPI'};
 
   /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponse(String url) async {
@@ -77,9 +77,9 @@ dynamic returnResponse(http.Response response) {
     case 201:
       return jsonDecode(response.body);
     case 400:
-      throw BadRequestException(response.body.toString());
+      return jsonDecode(response.body);
     case 404:
-      throw BadRequestException(response.body.toString());
+      return jsonDecode(response.body);
     case 500:
       throw BadRequestException(response.body.toString());
     default:

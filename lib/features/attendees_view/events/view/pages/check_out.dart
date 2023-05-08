@@ -11,23 +11,31 @@ import 'package:email_validator/email_validator.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/attendees_view/events/data/booking_data.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+
 /// A screen in which the user entres the data to check out
 
 class CheckOut extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   final int _duration = 60; //1800;
   final List ticketTier;
+  final String id;
   final bool charge; // does the event have all free tiers
   late String feesText; //money or free
   String inputEmailCheckOut = '';
   FormValidator formValidator = FormValidator();
   String firstCheckOut = '';
   String lastCheckOut = '';
-  final EventModel data; 
+  final EventModel data;
+  final String promocode;
+  late BookingModel book;
 
-  late String id;
-
-  CheckOut({Key? key, required this.charge, required this.ticketTier,required this.data})
+  CheckOut(
+      {Key? key,
+      required this.charge,
+      required this.ticketTier,
+      required this.data,
+      required this.id,
+      required this.promocode})
       : super(key: key);
 
   @override
@@ -36,13 +44,11 @@ class CheckOut extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              
-            
-            Navigator.pushNamed(
-              context,
-              '/makeSure',
-              arguments:data, //GIVING THE PRICE AS Int
-            );
+              Navigator.pushNamed(
+                context,
+                '/makeSure',
+                arguments: [data,id], //GIVING THE PRICE AS Int
+              );
             },
             icon: const Icon(Icons.close)),
         elevation: 0,
@@ -89,31 +95,40 @@ class CheckOut extends StatelessWidget {
                       colourBackground: AppColors.primary,
                       colourText: Colors.white,
                       onTap: () async {
-                        
                         if (formKey.currentState!.validate()) {
                           ContactInformation info = ContactInformation(
                               firstName: firstCheckOut,
                               lastName: lastCheckOut,
                               email: inputEmailCheckOut);
 
-                          BookingModel book = BookingModel(
-                              contactInformation: info.toMap(),
-                              ticketTierSelected: ticketTier);
+                          if (promocode == '') {
+                            book = BookingModel(
+                                contactInformation: info.toMap(),
+                                ticketTierSelected: ticketTier);
+                          } else {
+                            book = BookingModel(
+                                contactInformation: info.toMap(),
+                                promocode: promocode,
+                                ticketTierSelected: ticketTier);
+                          }
                           // ignore: avoid_print
                           print(jsonEncode(book.toMap()));
                           bool output = await context
                               .read<EventBookCubit>()
-                              .postBookingData(book.toMap(),id);
+                              .postBookingData(book.toMap(), id);
                           if (output == true) {
                             Navigator.pushNamed(context, '/third');
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            print('done');
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                               duration: Duration(seconds: 2),
                               content: Text('Successfully booked'),
                               shape: StadiumBorder(),
                               behavior: SnackBarBehavior.floating,
                             ));
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
                               duration: Duration(seconds: 2),
                               content: Text('Error in booking'),
                               shape: StadiumBorder(),
@@ -151,7 +166,8 @@ class CheckOut extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             color: AppColors.primary,
-                            border: Border.all(color: AppColors.primary, width: 2),
+                            border:
+                                Border.all(color: AppColors.primary, width: 2),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: Column(
@@ -159,7 +175,8 @@ class CheckOut extends StatelessWidget {
                               Column(
                                 children: [
                                   Text(
-                                    'Tier: ' + ticketTier[i]['tierName'].toString(),
+                                    'Tier: ' +
+                                        ticketTier[i]['tierName'].toString(),
                                     style: TextStyle(
                                         fontFamily: 'NeuePlak',
                                         color: AppColors.lightBackground,
@@ -175,7 +192,8 @@ class CheckOut extends StatelessWidget {
                                         fontSize: 30),
                                   ),
                                   Text(
-                                    'Price: ' + ticketTier[i]['price'].toString(),
+                                    'Price: ' +
+                                        ticketTier[i]['price'].toString(),
                                     style: TextStyle(
                                         fontFamily: 'NeuePlak',
                                         color: AppColors.lightBackground,

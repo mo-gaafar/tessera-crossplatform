@@ -74,18 +74,18 @@ class AppRouter {
           ),
         );
       case '/eventPage':
-        final args = settings.arguments as EventModel;
+        final args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (context) => EventPage(eventData: args));
+            builder: (context) => EventPage(eventData: args[0],iD:args[1]));
       case '/checkOut':
         final args = settings.arguments as List;
         return MaterialPageRoute(
             builder: (context) =>
-                CheckOut(charge: args[0], ticketTier: args[1], data: args[2]));
+                CheckOut(charge: args[0], ticketTier: args[1], data: args[2], id: args[3], promocode: args[4],));
       case '/makeSure':
-        final args = settings.arguments as EventModel;
+        final args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (context) => MakeSure(dataEvent: args));
+            builder: (context) => MakeSure(dataEvent: args[0], id: args[1],));
       case '/creatorlanding':
         return MaterialPageRoute(
           builder: (_) => CreatorLandingPage(),

@@ -93,7 +93,19 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
 
   Future<String> editTicketData(var data, String id) async {
     //try {
-    print(jsonEncode(data));
+      print(data);
+    /*data = {
+      "desiredTierName": "Regular",
+      "ticketTiers": [
+        {
+          "tierName": "Dol",
+          "maxCapacity": 10000,
+          "price": "10000",
+          "startSelling": "2023-06-01T09:00:00Z",
+          "endSelling": "2023-06-30T17:00:00Z"
+        }
+      ]
+    };*/
     var response = await TicketsRepository.editEventTicketTier(data, id);
 
     if (response['success'] == true) {
@@ -115,9 +127,9 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
 
       if (response['success'] == true) {
         emit(TicketEventInfoRetrived());
-        return response['ticketTiers'];
+        return response;
       } else {
-        return response['message'];
+        return response;
       }
     } catch (e) {
       emit(Error());

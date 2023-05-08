@@ -64,11 +64,6 @@ class MyApp extends StatelessWidget {
                   }
                 },
               ),
-              // BlocListener<EventsFilterCubit, EventsFilterState>(
-              //   listener: (context, state) {
-              //     // TODO: implement listener
-              //   },
-              // ),
             ],
             child: MaterialApp(
               scaffoldMessengerKey: snackbarKey,

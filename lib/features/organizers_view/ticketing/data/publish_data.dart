@@ -6,8 +6,10 @@ class PublishModel {
   String? publicDate;
   bool link;
   bool password;
+  String? generatedPassword;
   bool alwaysPrivate;
   String? privateToPublicDate;
+  
 
   PublishModel(
       {required this.isPublic,
@@ -16,7 +18,7 @@ class PublishModel {
       required this.link,
       required this.password,
       required this.alwaysPrivate,
-       this.privateToPublicDate});
+       this.privateToPublicDate,this.generatedPassword});
 
   factory PublishModel.fromMap(Map<String, dynamic> map) {
     return PublishModel(
@@ -25,6 +27,7 @@ class PublishModel {
         publicDate: map['publicDate'] != null ? map['publicDate'] as String : null ,
         link: map['link'] as bool,
         password: map['password'] as bool,
+        generatedPassword: map['generatedPassword'] != null ? map['generatedPassword'] as String : null ,
         alwaysPrivate: map['alwaysPrivate'] as bool,
         privateToPublicDate: map['privateToPublicDate']  != null ? map['privateToPublicDate'] as String : null);
   }
@@ -36,6 +39,7 @@ class PublishModel {
         'publicDate': publicDate,
         'link': link,
         'password': password,
+        'generatedPassword': generatedPassword,
         'alwaysPrivate': alwaysPrivate,
         'privateToPublicDate': privateToPublicDate,
       };

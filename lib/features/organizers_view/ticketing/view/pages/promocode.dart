@@ -22,24 +22,22 @@ class PromoCode extends StatefulWidget {
 }
 
 class _PromoCodeState extends State<PromoCode> {
-  String id = '6456c9d351ed139b0a9d71b2';
+  String id = '6455d7d716fea49283ba6b3d';
   final formKey = GlobalKey<FormState>();
   String dropdownValue = 'Add Promo code';
-  late String code ;
-  late String discount ;
-  late String limitOfUses ;
+  late String code;
+  late String discount;
+  late String limitOfUses;
   FormValidator formValidator = FormValidator();
-  
-  Future<List> loadCSV() async {
+  late dynamic output;
+
+  Future<dynamic> loadCSV() async {
     final result = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['csv', 'xlsx']);
     final file = result!.files.single.path;
     final filefinal = File(file!);
     final input = await filefinal.readAsString();
-    const converter = CsvToListConverter();
-    final List<List<dynamic>> csvList = converter.convert(input);
-    
-    return csvList;
+    return input;
   }
 
   @override
@@ -50,39 +48,69 @@ class _PromoCodeState extends State<PromoCode> {
             onPressed: () async {
               //to  publishing
               //Navigator.pushNamed(context, '/publishPage');
-              if (formKey.currentState!.validate())  {
-                  
-                       String message = await context.read<PromocodeCubit>().addPromocode(id,PromocodeModel(code: code, discount: int.parse(discount), limitOfUses: int.parse(limitOfUses))
-                      .toMap());
-                      if (message== 'successfully added')
-                      {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar( SnackBar(
-                          duration: Duration(seconds: 2),
-                          // ignore: prefer_interpolation_to_compose_strings
-                          content:
-                              Text('go to admissiom'),
-                          shape: StadiumBorder(),
-                          behavior:
-                              SnackBarBehavior.floating,
-                        ));
-                      }
-                      else
-                      {
-                           ScaffoldMessenger.of(context)
-                            .showSnackBar( SnackBar(
-                          duration: Duration(seconds: 2),
-                          // ignore: prefer_interpolation_to_compose_strings
-                          content:
-                              Text(message as String),
-                          shape: StadiumBorder(),
-                          behavior:
-                              SnackBarBehavior.floating,
-                        ));
 
-                      }
-                 
+              if (dropdownValue == 'Add Promo code') {
+                if (formKey.currentState!.validate()) {
+                  String message = await context
+                      .read<PromocodeCubit>()
+                      .addPromocode(
+                          id,
+                          PromocodeModel(
+                                  code: code,
+                                  discount: int.parse(discount),
+                                  limitOfUses: int.parse(limitOfUses))
+                              .toMap());
+                  if (message == 'successfully added') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      content: Text('go to admissiom'),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  }
                 }
+              } else {
+                if(output!=null)
+                {
+                    String message = await context
+                      .read<PromocodeCubit>()
+                      .importPromocode(id, output);
+                  if (message == 'succussfully impored') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      content: Text('succussfully impored, Go to admissiom'),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                  }
+                }
+                else
+                {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 3),
+                    content: Text('you did not upload a file'),
+                    shape: StadiumBorder(),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+
+                }
+              }
             },
             child: Text(
               'Save',
@@ -95,9 +123,9 @@ class _PromoCodeState extends State<PromoCode> {
         ),
         body: SafeArea(
             child: Form(
-              key: formKey,
-              child: SingleChildScrollView(
-                      child: Column(children: [
+          key: formKey,
+          child: SingleChildScrollView(
+            child: Column(children: [
               DropdownButton<String>(
                 // Step 3.
                 value: dropdownValue,
@@ -128,8 +156,8 @@ class _PromoCodeState extends State<PromoCode> {
                 builder: (context, state) {
                   if (state is TicketUploadPromocode) {
                     return TextButton(
-                      onPressed: () {
-                        Future<List> csv = loadCSV();
+                      onPressed: () async {
+                        output = loadCSV();
                       },
                       child: Text(
                         'upload promocode',
@@ -152,10 +180,13 @@ class _PromoCodeState extends State<PromoCode> {
                             if (code.trim().isEmpty) {
                               return 'code is required.';
                             }
-                            return formValidator.nameValidty(code); //not more than 50 characters
+                            return formValidator.codeValidty(
+                                code); //not more than 50 characters
                           },
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         TextFormField(
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -166,10 +197,13 @@ class _PromoCodeState extends State<PromoCode> {
                             if (discount.trim().isEmpty) {
                               return 'discount is required.';
                             }
-                            return formValidator.numberValidty(discount); //not more than 50 characters
+                            return formValidator.numberValidty(
+                                discount); //not more than 50 characters
                           },
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         TextFormField(
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(),
@@ -180,7 +214,8 @@ class _PromoCodeState extends State<PromoCode> {
                             if (limitOfUses.trim().isEmpty) {
                               return 'limitOfUses is required.';
                             }
-                            return formValidator.numberValidty(limitOfUses); //not more than 50 characters
+                            return formValidator.numberValidty(
+                                limitOfUses); //not more than 50 characters
                           },
                         ),
                       ],
@@ -190,8 +225,8 @@ class _PromoCodeState extends State<PromoCode> {
                   }
                 },
               ),
-                      ]),
-                    ),
-            )));
+            ]),
+          ),
+        )));
   }
 }

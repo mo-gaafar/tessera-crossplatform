@@ -39,7 +39,7 @@ class _AddTicketsState extends State<AddTickets> {
   TextEditingController dateinputEnd = TextEditingController();
   TextEditingController timeinputEnd = TextEditingController();
   FormValidator formValidator = FormValidator();
-  String id = '64543c4802a6601619a0a972';
+  String id = '6455d7d716fea49283ba6b3d';
 
   @override
   void initState() {
@@ -90,25 +90,38 @@ class _AddTicketsState extends State<AddTickets> {
                               .toMap(),
                           id);
                   if (message == 'successfully added') {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 3),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      content: Text(message as String),
-                      shape: StadiumBorder(),
-                      behavior: SnackBarBehavior.floating,
-                    ));
-                    List list = await context
-                        .read<EventTicketsCubit>()
-                        .getTicketsData(id);
-                    print('retrive response');
-                    print(list);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TicketPage(
-                                lisofteirs: list as List,
-                              )),
-                    );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            // ignore: prefer_interpolation_to_compose_strings
+                            content: Text(message as String),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                          var resp = await context
+                              .read<EventTicketsCubit>()
+                              .getTicketsData(id);
+                          if(resp['success']==true)
+                          {
+                            Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TicketPage(
+                                      lisofteirs: resp['ticketTiers'] as List,
+                                    )),
+                          );
+
+                          }
+                          else
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            // ignore: prefer_interpolation_to_compose_strings
+                            content: Text(resp['message'] as String),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                            
+                          }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),
@@ -117,16 +130,6 @@ class _AddTicketsState extends State<AddTickets> {
                       shape: StadiumBorder(),
                       behavior: SnackBarBehavior.floating,
                     ));
-                    /*List list = await context
-                        .read<EventTicketsCubit>()
-                        .getTicketsData(id);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => TicketPage(
-                                lisofteirs: list as List,
-                              )),
-                    );*/
                   }
                 }
               },
@@ -188,7 +191,7 @@ class _AddTicketsState extends State<AddTickets> {
                         if (ticketName.trim().isEmpty) {
                           return 'Ticket Name is required.';
                         }
-                        return formValidator.nameValidty(
+                        return formValidator.ticketNameValidty(
                             ticketName); //not more than 50 characters
                       },
                     ),
