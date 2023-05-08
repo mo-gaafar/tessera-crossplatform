@@ -282,6 +282,8 @@ class NewEventReceipt extends StatelessWidget {
                           .read<CreateEventCubit>()
                           .currentEvent
                           .basicInfoToJson());
+                  context.read<CreateEventCubit>().displayError(
+                      errormessage: response['message'].toString());
                 },
               )
             ],

@@ -84,7 +84,7 @@ class PopupMenu extends StatelessWidget {
         Text('Film, Media & Entertainment'),
         Text('Sports & Fitness'),
         Text('Health & Wellness'),
-        Text('Auto, Boat & Air'),
+        Text('Boat & Air'),
         Text('Charity & Causes'),
         Text('Family & Education'),
         Text('Fashion & Beauty'),
