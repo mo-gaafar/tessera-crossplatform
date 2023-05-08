@@ -1,12 +1,12 @@
 import '../data/promocode_data.dart';
 
-class PromocodeCubitState {
+class PromoCubitState {
   final List<Map> ticketList;
 
-  PromocodeCubitState({required this.ticketList});
+  PromoCubitState({required this.ticketList});
 
   // copyWith method to create new state with updated data
-  PromocodeCubitState copyWith({List<Map>? ticketList}) {
-    return PromocodeCubitState(ticketList: ticketList ?? this.ticketList);
+  PromoCubitState copyWith({List<Map>? ticketList}) {
+    return PromoCubitState(ticketList: ticketList ?? this.ticketList);
   }
 }

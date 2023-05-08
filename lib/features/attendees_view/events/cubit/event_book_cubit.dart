@@ -34,10 +34,10 @@ class EventBookCubit extends Cubit<EventBookState> {
   ///Sends the [BookingModel] data to the backend.
   ///
   ///Returns  True if successfully booked and false otherwise
-  Future<bool> postBookingData(var data) async {
-    try {
+  Future<bool> postBookingData(var data,String id) async {
+    //try {
       
-      var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
+      var response = await EventRepository.bookingTicketInfo(data,id);
 
       if (response['success'] == true) {
         emit(EventSuccessfullyBooked());
@@ -46,10 +46,29 @@ class EventBookCubit extends Cubit<EventBookState> {
       } else {
         return false;
       }
-    } catch (e) {
-      emit(Error());
-      throw Exception('Error when reciving the data');
-    }
+    //} catch (e) {
+      //emit(Error());
+      //throw Exception('Error when reciving the data');
+    //}
+    
+  }
+
+  Future<dynamic> promocodeValidity(var data,String id) async {
+    //try {
+      
+      var response = await EventRepository.promocodeAvailable(data,id);
+
+      if (response['success'] == true) {
+        emit(PromocodeProcessing());
+
+        return response;
+      } else {
+        return response;
+      }
+    //} catch (e) {
+      //emit(Error());
+      //throw Exception('Error when reciving the data');
+    //}
     
   }
 }

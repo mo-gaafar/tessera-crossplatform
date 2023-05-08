@@ -9,14 +9,10 @@ import '../../cubit/tickets_store_cubit.dart';
 import '../widgets/card.dart';
 
 String scheduling(Map data) {
-  String startDate = data['startDate'];
-  //String endDate=data['endDate'];
-  String startTime = data['startTime'];
-  //String endTime=data['endTime'];
-  DateTime date = DateTime.now();
-  DateTime dt =
-      DateFormat('yyyy-MM-dd hh:mm a').parse(startDate + ' ' + startTime);
-  if (dt.isAfter(date)) {
+  String startDateTime = data['startSelling'];
+  DateTime dateTime = DateTime.parse(startDateTime);
+  DateTime currentTime = DateTime.now().toUtc();
+  if (dateTime.isAfter(currentTime)) {
     return 'Scheduled';
   } else {
     return 'OnSale';
@@ -24,11 +20,11 @@ String scheduling(Map data) {
 }
 
 class Admission extends StatelessWidget {
-  const Admission({super.key});
+  const Admission({super.key, required this.ticketTiersList});
+  final List ticketTiersList;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         bottomNavigationBar: BottomAppBar(
           child: TextButton(
             onPressed: () {
@@ -48,33 +44,29 @@ class Admission extends StatelessWidget {
             child: SingleChildScrollView(
           child: Column(
             children: [
-              BlocBuilder<MyCubit, MyCubitState>(
+              BlocBuilder<EventTicketsCubit, EventTicketsState>(
                 builder: (context, state) {
-                  List tickets = state.myDataList;
-                  print(tickets);
                   return Column(
                     children: [
-                      for (int i = 0; i < tickets.length; i++)
+                      for (int i = 0; i < ticketTiersList.length; i++)
                         TicketCard(
-                            tierName: tickets[i]['name'],
-                            saleSchedule: scheduling(tickets[i]),
-                            tierPrice: tickets[i]['price'],
-                            availableQuantity: tickets[i]['quantity'],
-                            numberOfCard: i,
+                            tierName: ticketTiersList[i]['tierName'],
+                            saleSchedule: scheduling(ticketTiersList[i]),
+                            tierPrice: ticketTiersList[i]['price'],
+                            availableQuantity: ticketTiersList[i]['maxCapacity'],
                             onTap: () {
                               //to  edit
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) =>   EditTickets(
-                                  ticketName: tickets[i]['name'],
-                                  quantity: tickets[i]['quantity'],
-                                  price: tickets[i]['price'],
-                                  datestart: tickets[i]['startDate'],
-                                  timestart: tickets[i]['startTime'],
-                                  dateend: tickets[i]['endDate'],
-                                  timeend: tickets[i]['endTime'], index: i,)),
-                                   );
-                              
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditTickets(
+                                          ticketName: ticketTiersList[i]['tierName'],
+                                          quantity: ticketTiersList[i]['maxCapacity'],
+                                          price: ticketTiersList[i]['price'],
+                                          datetimestart: ticketTiersList[i]['startSelling'],
+                                          datetimeend: ticketTiersList[i]['endSelling'])),
+                              );
+                             
                             }),
                     ],
                   );

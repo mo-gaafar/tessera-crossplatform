@@ -8,11 +8,28 @@ import 'package:intl/intl.dart';
 
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/pick_date_time.dart';
+import 'package:tessera/features/organizers_view/ticketing/data/edit_tier_model.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
 import '../../../../../core/services/validation/form_validator.dart';
 import '../../cubit/event_tickets_cubit.dart';
 import '../../cubit/tickets_store_cubit.dart';
 import '../../data/tier_data.dart';
+
+List changeFromIso(String datetimestart) {
+  DateTime dateTime = DateTime.parse(datetimestart);
+  String dateString = DateFormat('yyyy-MM-dd').format(dateTime);
+  String timeString = DateFormat('h:mm a').format(dateTime.toLocal());
+  return [dateString, timeString];
+}
+
+String changetoIso(String time, String date) {
+  String originalDateString = time + ' ' + date;
+  DateTime originalDateTime =
+      DateFormat('h:mm a yyyy-MM-dd').parse(originalDateString);
+  String isoDateTimeString = originalDateTime.toUtc().toIso8601String();
+  return isoDateTimeString;
+}
 
 class EditTickets extends StatefulWidget {
   const EditTickets({
@@ -20,27 +37,22 @@ class EditTickets extends StatefulWidget {
     required this.ticketName,
     required this.quantity,
     required this.price,
-    required this.datestart,
-    required this.timestart,
-    required this.dateend,
-    required this.timeend,
-    required this.index,
+    required this.datetimestart,
+    required this.datetimeend,
   }) : super(key: key);
 
   final String ticketName;
-  final String quantity;
+  final int quantity;
   final String price;
-  final String datestart;
-  final String timestart;
-  final String dateend;
-  final String timeend;
-  final int index;
+  final String datetimestart; //from the already edited
+  final String datetimeend;
 
   @override
   State<EditTickets> createState() => _EditTicketsState();
 }
 
 class _EditTicketsState extends State<EditTickets> {
+  String id = '6456c9d351ed139b0a9d71b2';
   final formKey = GlobalKey<FormState>();
   TextEditingController dateinputStart = TextEditingController();
   TextEditingController timeinputStart = TextEditingController();
@@ -50,25 +62,24 @@ class _EditTicketsState extends State<EditTickets> {
   late String ticketNameEdit;
   late String quantityEdit;
   late String priceEdit;
-  late String datestartEdit;
-  late String timestartWdit;
-  late String dateendEdit;
-  late String timeendEdit;
+  //late String datestartEdit=changeFromIso(widget.datetimestart)[0];
+  //late String timestartWdit=changeFromIso(widget.datetimestart)[1];
+  //late String dateendEdit=changeFromIso(widget.datetimeend)[0];
+  //late String timeendEdit=changeFromIso(widget.datetimeend)[1];
   void initState() {
-    dateinputStart.text = widget.datestart;
-    timeinputStart.text = widget.timestart;
-    dateinputEnd.text = widget.dateend;
-    timeinputEnd.text = widget.timeend;
+    dateinputStart.text = changeFromIso(widget.datetimestart)[0];
+    timeinputStart.text = changeFromIso(widget.datetimestart)[1];
+    dateinputEnd.text = changeFromIso(widget.datetimeend)[0];
+    timeinputEnd.text = changeFromIso(widget.datetimeend)[1];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        automaticallyImplyLeading: false, 
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: AppColors.lightBackground,
         title: const Text(
@@ -82,22 +93,51 @@ class _EditTicketsState extends State<EditTickets> {
         //backgroundColor: AppColors.primary,
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  //save and move to the next page
-                  context.read<MyCubit>().updateData(
-                      widget.index,
-                      TierModel(
-                              name: ticketNameEdit,
-                              quantity: quantityEdit,
-                              price: priceEdit,
-                              startDate: dateinputStart.text,
-                              endDate: dateinputEnd.text,
-                              startTime: timeinputStart.text,
-                              endTime: timeinputEnd.text)
-                          .toMap());
-
-                  Navigator.pushNamed(context, '/ticketseditpromo');
+                  
+                  String message = await context
+                      .read<EventTicketsCubit>()
+                      .editTicketData(EditTierModel(desiredTierName: widget.ticketName , ticketTier: [TierModel(
+                                  tierName: ticketNameEdit,
+                                  maxCapacity: int.parse(quantityEdit),
+                                  price: priceEdit,
+                                  startSelling: changetoIso(
+                                      timeinputStart.text, dateinputStart.text),
+                                  endSelling: changetoIso(
+                                      timeinputEnd.text, dateinputEnd.text)).toMap()]).toMap()
+                          ,
+                          id);
+                  if (message == 'successfully edited') {
+                    List list = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TicketPage(
+                                lisofteirs: list as List,
+                              )),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                    List list = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TicketPage(
+                                lisofteirs: list as List,
+                              )),
+                    );
+                  }
                 }
               },
               icon: const Icon(Icons.done)),
@@ -167,7 +207,7 @@ class _EditTicketsState extends State<EditTickets> {
                       height: 20,
                     ),
                     TextFormField(
-                      initialValue: widget.quantity,
+                      initialValue: widget.quantity.toString(),
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Available Quantity *',

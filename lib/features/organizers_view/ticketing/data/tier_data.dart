@@ -2,44 +2,37 @@ import 'dart:convert';
 
 /// Model class representing the events's data.
 class TierModel {
-  final String name;
-  final String quantity; //event capacity
+  final String tierName;
+  final int maxCapacity; //event capacity //int 
   final String price; //free/price
-  final String startDate; 
-  final String endDate;
-  final String startTime;
-  final String endTime;
+  final String startSelling;  
+  final String endSelling;
 
   /// Creates a [TierModel] from given user data.
   ///
   /// Requires [name] , [quantity] , [price] , [startDate] , [endDate] , [startTime] ,[endTime]
   TierModel(
-      {required this.name, 
-      required this.quantity,required  this.price, 
-      required this.startDate,required  this.endDate, 
-      required this.startTime,required this.endTime});
+      {required this.tierName, 
+      required this.maxCapacity,required  this.price, 
+      required this.startSelling,required  this.endSelling});
 
   /// Creates a [EventModel] from a [Map].
   factory TierModel.fromMap(Map<String, dynamic> map) {
     return TierModel(
-        name: map['name'] as String,
-        quantity: map['quantity'] as String,
+        tierName: map['tierName'] as String,
+        maxCapacity: map['maxCapacity'] as int,
         price: map['price'] as String,
-        startDate: map['startDate'] as String,
-        endDate: map['endDate'] as String,
-        startTime: map['startTime'] as String,
-        endTime: map['endTime'] as String);
+        startSelling: map['startSelling'] as String,
+        endSelling: map['endSelling'] as String);
   }
 
   /// Returns a [Map] representation of the [EventModel].
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'quantity': quantity,
+        'tierName': tierName,
+        'maxCapacity': maxCapacity,
         'price': price,
-        'startDate': startDate,
-        'endDate': endDate,
-        'startTime': startTime,
-        'endTime': endTime
+        'startSelling': startSelling,
+        'endSelling': endSelling
       };
 
   /// Encodes the [EventModel] to JSON.

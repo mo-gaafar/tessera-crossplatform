@@ -1,20 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/admission.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/promocode.dart';
 
 class TicketPage extends StatelessWidget {
-  const TicketPage({super.key});
-  
+  const TicketPage({super.key, required this.lisofteirs});
+  final List lisofteirs;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +13,11 @@ class TicketPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-        centerTitle: false,
-        automaticallyImplyLeading: false, 
+          centerTitle: false,
+          automaticallyImplyLeading: false,
           bottom: const TabBar(
             labelColor: AppColors.primary, //<-- selected text color
-            unselectedLabelColor: AppColors.secondary, //<-- Unselected text 
+            unselectedLabelColor: AppColors.secondary, //<-- Unselected text
             indicatorColor: AppColors.primary,
             tabs: [
               Tab(
@@ -49,9 +40,7 @@ class TicketPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TabBarView(
-              children: [Admission()
-                ,PromoCode()
-              ],
+              children: [Admission(ticketTiersList:lisofteirs ,), PromoCode()],
             ),
           ),
         ),

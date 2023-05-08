@@ -9,11 +9,12 @@ import 'exceptions.dart';
 ///
 /// Focuses on implementing GET and POST requests. Responses are first handled
 /// by [returnResponse()] and checked for errors before returning their bodies.
-class NetworkService {
+class NetworkOrgService {
   static final Map<String, String> _headers = {
     'Accept-Charset': 'utf-8',
-    'Content-Type': 'application/json'
-  };
+    'Content-Type': 'application/json',
+    'Authorization':
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzOWY5NWEzZDYwN2Q2YzQ5ZTU2YTFlIiwiaWF0IjoxNjgzNDk0MzM0LCJleHAiOjE2ODM1ODA3MzR9.IT0OR31IvISw9jjK6G9sS-yvH8zRp6NVSAkBqYfvnt0'};
 
   /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponse(String url) async {
@@ -31,6 +32,8 @@ class NetworkService {
   /// Returns the response body in JSON format from a POST request.
   static Future getPostApiResponse(String url, dynamic data) async {
     try {
+      print('JHVFKUTYFIL');
+      print(data);
       http.Response response = await http
           .post(
             Uri.parse(url),
@@ -39,18 +42,20 @@ class NetworkService {
           )
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
+      print('djfiiiii');
+      print(responseJson);
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
-  
   }
+
 
   /// Returns the response body in JSON format from a POST request.
   static Future getPutApiResponse(String url, dynamic data) async {
     try {
       http.Response response = await http
-          .post(
+          .put(
             Uri.parse(url),
             headers: _headers,
             body: data,
@@ -62,9 +67,6 @@ class NetworkService {
       throw FetchDataException('No Internet Connection');
     }
   }
-
-
-
 }
 
 /// Checks the response status code and throws an [AppException] if an error is found.

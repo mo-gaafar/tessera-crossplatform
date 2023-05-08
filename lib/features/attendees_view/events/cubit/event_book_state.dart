@@ -11,3 +11,4 @@ class Error extends EventBookState {}
 class EventLoading extends EventBookState {}  // event data is being fetched
 class EventInitial extends EventBookState {}
 class EventSuccessfullyBooked extends EventBookState {} //event has been booked
+class PromocodeProcessing extends EventBookState {} //event has been booked

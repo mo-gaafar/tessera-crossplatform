@@ -7,11 +7,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/pick_date_time.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
 import '../../../../../core/services/validation/form_validator.dart';
 import '../../cubit/event_tickets_cubit.dart';
 import '../../cubit/tickets_store_cubit.dart';
 import '../../data/tier_data.dart';
+
+String changetoIso(String time, String date) {
+  String originalDateString = time + ' ' + date;
+  DateTime originalDateTime =
+      DateFormat('h:mm a yyyy-MM-dd').parse(originalDateString);
+  String isoDateTimeString = originalDateTime.toUtc().toIso8601String();
+  return isoDateTimeString;
+}
 
 class AddTickets extends StatefulWidget {
   AddTickets({super.key});
@@ -30,6 +39,7 @@ class _AddTicketsState extends State<AddTickets> {
   TextEditingController dateinputEnd = TextEditingController();
   TextEditingController timeinputEnd = TextEditingController();
   FormValidator formValidator = FormValidator();
+  String id = '64543c4802a6601619a0a972';
 
   @override
   void initState() {
@@ -63,19 +73,61 @@ class _AddTicketsState extends State<AddTickets> {
         //backgroundColor: AppColors.primary,
         actions: [
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  //save and move to the next page
-                  context.read<MyCubit>().addData(TierModel(
-                          name: ticketName,
-                          quantity: quantity,
-                          price: price,
-                          startDate: dateinputStart.text,
-                          endDate: dateinputEnd.text,
-                          startTime: timeinputStart.text,
-                          endTime: timeinputEnd.text)
-                      .toMap());
-                  Navigator.pushNamed(context, '/ticketseditpromo');
+                  print('trying to add');
+                  String message = await context
+                      .read<EventTicketsCubit>()
+                      .addTicketData(
+                          TierModel(
+                                  tierName: ticketName,
+                                  maxCapacity: int.parse(quantity),
+                                  price: price,
+                                  startSelling: changetoIso(
+                                      timeinputStart.text, dateinputStart.text),
+                                  endSelling: changetoIso(
+                                      timeinputEnd.text, dateinputEnd.text))
+                              .toMap(),
+                          id);
+                  if (message == 'successfully added') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                    List list = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    print('retrive response');
+                    print(list);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TicketPage(
+                                lisofteirs: list as List,
+                              )),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                    /*List list = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TicketPage(
+                                lisofteirs: list as List,
+                              )),
+                    );*/
+                  }
                 }
               },
               icon: const Icon(Icons.done)),

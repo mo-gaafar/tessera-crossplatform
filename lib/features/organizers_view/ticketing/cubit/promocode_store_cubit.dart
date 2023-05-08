@@ -3,8 +3,8 @@ import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_store
 
 import '../data/promocode_data.dart';
 
-class PromocodeCubit extends Cubit<PromocodeCubitState> {
-  PromocodeCubit() : super(PromocodeCubitState(ticketList: []));
+class PromoCubit extends Cubit<PromoCubitState> {
+  PromoCubit() : super(PromoCubitState(ticketList: []));
 
   // method to add a new data object to the list
   void addData(Map newData) {

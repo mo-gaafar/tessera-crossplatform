@@ -8,6 +8,7 @@ import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_store_cubit.dart';
 
 import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';

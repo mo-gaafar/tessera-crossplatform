@@ -25,6 +25,8 @@ class CheckOut extends StatelessWidget {
   String lastCheckOut = '';
   final EventModel data; 
 
+  late String id;
+
   CheckOut({Key? key, required this.charge, required this.ticketTier,required this.data})
       : super(key: key);
 
@@ -87,6 +89,7 @@ class CheckOut extends StatelessWidget {
                       colourBackground: AppColors.primary,
                       colourText: Colors.white,
                       onTap: () async {
+                        
                         if (formKey.currentState!.validate()) {
                           ContactInformation info = ContactInformation(
                               firstName: firstCheckOut,
@@ -100,7 +103,7 @@ class CheckOut extends StatelessWidget {
                           print(jsonEncode(book.toMap()));
                           bool output = await context
                               .read<EventBookCubit>()
-                              .postBookingData(book.toMap());
+                              .postBookingData(book.toMap(),id);
                           if (output == true) {
                             Navigator.pushNamed(context, '/third');
                             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

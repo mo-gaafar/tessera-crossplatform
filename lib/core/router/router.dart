@@ -118,10 +118,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AddTickets(),
         );
-      case '/ticketseditpromo':
+      /*case '/ticketseditpromo':
         return MaterialPageRoute(
-          builder: (_) => TicketPage(),
-        );
+          builder: (_) => TicketPage(lisofteirs: [],),
+        );*/
       case '/publishPage':
         return MaterialPageRoute(
           builder: (_) => PublishPage(),

@@ -3,30 +3,30 @@ import 'dart:convert';
 class PublishModel {
   bool isPublic;
   bool publishNow;
-  String publicDate;
+  String? publicDate;
   bool link;
   bool password;
   bool alwaysPrivate;
-  String privateToPublicDate;
+  String? privateToPublicDate;
 
   PublishModel(
       {required this.isPublic,
       required this.publishNow,
-      required this.publicDate,
+       this.publicDate,
       required this.link,
       required this.password,
       required this.alwaysPrivate,
-      required this.privateToPublicDate});
+       this.privateToPublicDate});
 
   factory PublishModel.fromMap(Map<String, dynamic> map) {
     return PublishModel(
         isPublic: map['isPublic'] as bool,
         publishNow: map['publishNow'] as bool,
-        publicDate: map['publicDate'] as String,
+        publicDate: map['publicDate'] != null ? map['publicDate'] as String : null ,
         link: map['link'] as bool,
         password: map['password'] as bool,
         alwaysPrivate: map['alwaysPrivate'] as bool,
-        privateToPublicDate: map['privateToPublicDate'] as String);
+        privateToPublicDate: map['privateToPublicDate']  != null ? map['privateToPublicDate'] as String : null);
   }
 
   /// Returns a [Map] representation of the [EventModel].

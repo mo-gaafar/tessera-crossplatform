@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
 import 'package:tessera/features/attendees_view/events/view/widgets/email_button.dart';
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 import 'package:tessera/features/attendees_view/events/view/pages/see_more.dart';
@@ -9,6 +11,15 @@ import 'package:tessera/features/attendees_view/events/data/booking_data.dart';
 import 'package:tessera/features/attendees_view/events/data/ticketing_data.dart';
 
 ///  A Screen that is directed to from landing page to show the details of the event
+
+String getTheSmallestPrice(List tiers) {
+  List prices = [];
+
+  for (var i = 0; i < tiers.length; i++) {
+    prices.add(int.parse(tiers[i]['price']));
+  }
+  return prices.reduce((curr, next) => curr < next ? curr : next);
+}
 
 List splitting(String data) {
   DateTime now = DateTime.parse(data);
@@ -45,6 +56,8 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  late int disc=1;
+  late String id;
   late EventModel _eventData;
   final formKey = GlobalKey<FormState>();
   String tier = '';
@@ -53,6 +66,9 @@ class _EventPageState extends State<EventPage> {
   late List<Map> ticketsOfEvent = ticketModels(
       _eventData.filteredEvents[0]['ticketTiers'], _eventData.tierCapacityFull);
   late int indexOfSelectedEvent;
+  late String smallestPrice =
+      getTheSmallestPrice(_eventData.filteredEvents[0]['ticketTiers'])
+          .toString();
   //POP UP
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(
@@ -173,12 +189,7 @@ class _EventPageState extends State<EventPage> {
                             if (value == null || value.isEmpty) {
                               return null;
                             } else {
-                              if (value == 'spring') {
-                                promo = value;
-                                return null;
-                              } else {
-                                return 'Not a valid promocode';
-                              }
+                              promo = value;
                             }
                           },
                         ),
@@ -192,7 +203,14 @@ class _EventPageState extends State<EventPage> {
                             ),
                             TextButton(
                               child: const Text("CheckOut"),
-                              onPressed: () {
+                              onPressed: () async {
+                                var response = await context
+                                    .read<EventBookCubit>()
+                                    .promocodeValidity(promo, id);
+                                if (response['success'] == true) {
+                                  disc = response['discout'];
+                                } 
+
                                 if (formKey.currentState!.validate()) {
                                   for (int k = 0;
                                       k < ticketsOfEvent.length;
@@ -223,14 +241,16 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
-                                        tiersToCheck.add(TicketTierSelected(
+                                               tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
                                                         ['nameAndPrice'])[0],
                                                 quantity: ticketsOfEvent[k][
                                                     'ticketsNumber'], //price should be sent as int
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
-                                                price: 20)
+                                                price:int.parse(teirsSplitting(
+                                                    ticketsOfEvent[k]
+                                                        ['nameAndPrice'])[1])*disc)
                                             .toMap());
                                       }
                                     }
@@ -241,22 +261,12 @@ class _EventPageState extends State<EventPage> {
                                   print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
                                     print('Check out done');
-                                    List arg = [true, tiersToCheck,_eventData];
+                                    List arg = [true, tiersToCheck, _eventData,disc];
                                     Navigator.pushNamed(
                                       context,
                                       '/checkOut',
-                                      arguments:arg, //GIVING THE PRICE AS Int
+                                      arguments: arg, //GIVING THE PRICE AS Int
                                     );
-                                    /*Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CheckOut(
-                                            //charge: _eventData.isEventFree,
-                                            charge: true,
-                                            ticketTier:
-                                                tiersToCheck), 
-                                      ),
-                                    );*/
                                   } else {
                                     // ignore: avoid_print
                                     print(
@@ -300,10 +310,10 @@ class _EventPageState extends State<EventPage> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       textAlign: TextAlign.center,
-                      'price',
+                      smallestPrice,
                       style: TextStyle(
                           fontFamily: 'NeuePlak',
                           color: AppColors.textOnLight,

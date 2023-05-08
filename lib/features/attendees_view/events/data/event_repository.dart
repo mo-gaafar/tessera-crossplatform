@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:tessera/core/services/networking/networking.dart';
 
 /// Repository for all evenr services and API calls to the backend server.
@@ -14,10 +16,16 @@ class EventRepository {
   /// Sends the booking basic information to the database.
   ///
   /// Returns [true] if the booking is done successfully.
-  static Future bookingTicketInfo(var data) async {
+  static Future bookingTicketInfo(var data,String id) async {
     final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/attendee/ticket/643ad9af53ce2a393ad6a23e/book',
-        data);
+        'https://www.tessera.social/api/attendee/ticket/$id/book',
+        jsonEncode(data));
+    return responseBody;
+  }
+  static Future promocodeAvailable(var data,String id) async {
+    final responseBody = await NetworkService.getPostApiResponse(
+        'https://www.tessera.social/api/attendee/ticket/$id/promocode/retrieve',
+        jsonEncode(data));
     return responseBody;
   }
 }

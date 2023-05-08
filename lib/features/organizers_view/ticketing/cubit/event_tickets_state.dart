@@ -23,3 +23,8 @@ class EventAccessWithPasswordAndBecamePublic extends EventTicketsState {}
 class EventAccessWithLinkAndBecamePublic extends EventTicketsState {}
 class TicketAddPromocode extends EventTicketsState {}
 class TicketUploadPromocode extends EventTicketsState {}
+class Ticketadded extends EventTicketsState {}
+class Ticketedited extends EventTicketsState {}
+class TicketingDone extends EventTicketsState {}
+class Error extends EventTicketsState {}
+class TicketEventInfoRetrived extends EventTicketsState {}

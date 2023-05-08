@@ -3,9 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/data/publish_data.dart';
 
 import '../../../../../core/services/validation/form_validator.dart';
+
+String changetoIso(String time, String date) {
+  if ((time == '') && (date == '')) {
+    DateTime now = DateTime.now();
+    String formattedDate = now.toIso8601String();
+    return formattedDate;
+  } else {
+    String originalDateString = time + ' ' + date;
+    DateTime originalDateTime =
+        DateFormat('h:mm a yyyy-MM-dd').parse(originalDateString);
+    String isoDateTimeString = originalDateTime.toUtc().toIso8601String();
+    return isoDateTimeString;
+  }
+}
 
 class PublishPage extends StatefulWidget {
   const PublishPage({super.key});
@@ -15,9 +30,16 @@ class PublishPage extends StatefulWidget {
 }
 
 class _PublishPageState extends State<PublishPage> {
+  String id = '6456c9d351ed139b0a9d71b2';
   late String privacy = ''; //event is public or private
   late String publicly = ''; //will ever be public later
   late String Schedule = ''; //publish now or later
+  late bool isPublic;
+  late bool publishNow;
+  late bool link;
+  late bool password;
+  late bool alwaysPrivate;
+  late bool chosen;
   TextEditingController datePublish = TextEditingController();
   TextEditingController timePublish = TextEditingController();
   TextEditingController datePublic = TextEditingController();
@@ -31,6 +53,9 @@ class _PublishPageState extends State<PublishPage> {
   void initState() {
     datePublic.text = '';
     timePublic.text = '';
+
+    datePublish.text = '';
+    timePublish.text = '';
     super.initState();
   }
 
@@ -39,10 +64,100 @@ class _PublishPageState extends State<PublishPage> {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         child: TextButton(
-          onPressed: () {
+          onPressed: () async {
             //to  publishing
-            PublishModel(alwaysPrivate: null, link: null, isPublic: null, password: null, privateToPublicDate: '', publicDate: '', publishNow: null);
+            if (Schedule == '') {
+              publishNow = false;
+            }
+
+           if (publicly == '') {
+              alwaysPrivate = false;
+            }
+
+             if ((dropdownValue == 'Anyone with the Link') &&
+                (privacy == 'Public')) {
+              link = false;
+              password = false;
+            }
+
+            print(PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        privateToPublicDate:
+                            changetoIso(timePublic.text, datePublic.text),
+                        publicDate:
+                            changetoIso(timePublish.text, datePublish.text),
+                        publishNow: publishNow));
+
+            if(chosen == true && privacy == 'Public')
+            {
+              List data = await context.read<PublishCubit>().publish(
+                id,
+                PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        publicDate:
+                            changetoIso(timePublish.text, datePublish.text),
+                        publishNow: publishNow)
+                    .toMap());
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(data[0] as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
             Navigator.pushNamed(context, '/creatorlanding');
+            }
+            else if (chosen == true && privacy == 'Private' && publicly == 'Yes')
+            {
+              List data  = await context.read<PublishCubit>().publish(
+                id,
+                PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        privateToPublicDate:
+                            changetoIso(timePublic.text, datePublic.text),
+                        publishNow: publishNow)
+                    .toMap());
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(data[0] as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+            Navigator.pushNamed(context, '/creatorlanding');
+            }
+            else if (chosen == true && privacy == 'Private' && publicly == 'no')
+            {
+              List data = await context.read<PublishCubit>().publish(
+                id,
+                PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        publishNow: publishNow)
+                    .toMap());
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(data[0] as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+            Navigator.pushNamed(context, '/creatorlanding');
+
+                
+
+            }
           },
           child: Text(
             'Publish',
@@ -102,6 +217,11 @@ class _PublishPageState extends State<PublishPage> {
                         onChanged: (value) {
                           setState(() {
                             privacy = value!;
+                            publicly = '';
+                            datePublic.text = '';
+                            timePublic.text = '';
+                            isPublic = true;
+                            chosen = true;
                             context.read<EventTicketsCubit>().EventIsPublic();
                           });
                         }),
@@ -125,6 +245,11 @@ class _PublishPageState extends State<PublishPage> {
                         onChanged: (value) {
                           setState(() {
                             privacy = value!;
+                            isPublic = false;
+                            chosen = true;
+                            Schedule = ''; //publish now or later
+                            datePublish.text = '';
+                            timePublish.text = '';
                             context.read<EventTicketsCubit>().EventIsPrivate();
                           });
                         }),
@@ -162,6 +287,7 @@ class _PublishPageState extends State<PublishPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       Schedule = value!;
+                                      publishNow = true;
                                       context
                                           .read<EventTicketsCubit>()
                                           .EventIsPublicAndPublishNow();
@@ -187,6 +313,7 @@ class _PublishPageState extends State<PublishPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       Schedule = value!;
+                                      publishNow = false;
                                       context
                                           .read<EventTicketsCubit>()
                                           .EventIsPublicAndPublishLater();
@@ -206,7 +333,9 @@ class _PublishPageState extends State<PublishPage> {
                           ),
                           BlocBuilder<EventTicketsCubit, EventTicketsState>(
                             builder: (context, state) {
-                              if (state is EventPublishLater) {
+                              if ((state is EventPublishLater) ||
+                                  (state is EventPublic &&
+                                      (Schedule == 'Later'))) {
                                 return Row(
                                   children: [
                                     Expanded(
@@ -333,11 +462,15 @@ class _PublishPageState extends State<PublishPage> {
                               setState(() {
                                 dropdownValue = newValue!;
                                 if (dropdownValue == 'Anyone with the Link') {
+                                  link = true;
+                                  password = false;
                                   context
                                       .read<EventTicketsCubit>()
                                       .EventIsPrivateAndWithLink();
                                 } else if (dropdownValue ==
                                     'Only People With Passward') {
+                                      link = false;
+                                  password = true;
                                   context
                                       .read<EventTicketsCubit>()
                                       .EventIsPrivateAndWithPassward();
@@ -386,6 +519,7 @@ class _PublishPageState extends State<PublishPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       publicly = value!;
+                                      alwaysPrivate = true;
                                       if (dropdownValue ==
                                           'Anyone with the Link') {
                                         context
@@ -419,6 +553,7 @@ class _PublishPageState extends State<PublishPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       publicly = value!;
+                                      alwaysPrivate = false;
                                       if (dropdownValue ==
                                           'Anyone with the Link') {
                                         context
@@ -446,9 +581,14 @@ class _PublishPageState extends State<PublishPage> {
                           ),
                           BlocBuilder<EventTicketsCubit, EventTicketsState>(
                             builder: (context, state) {
-                              if (state
-                                      is EventAccessWithPasswordAndBecamePublic ||
-                                  state is EventAccessWithLinkAndBecamePublic) {
+                              if ((state
+                                      is EventAccessWithPasswordAndBecamePublic) ||
+                                  (state
+                                      is EventAccessWithLinkAndBecamePublic) ||
+                                  ((state is EventAccessWithLink ||
+                                          state is EventAccessWithPassword ||
+                                          state is EventPrivate) &&
+                                      (publicly == 'Yes'))) {
                                 return Row(
                                   children: [
                                     Expanded(

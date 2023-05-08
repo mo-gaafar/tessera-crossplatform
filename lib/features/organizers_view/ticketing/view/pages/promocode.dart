@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
 
 import '../../cubit/event_tickets_cubit.dart';
 import '../../cubit/promocode_store_cubit.dart';
@@ -21,6 +22,7 @@ class PromoCode extends StatefulWidget {
 }
 
 class _PromoCodeState extends State<PromoCode> {
+  String id = '6456c9d351ed139b0a9d71b2';
   final formKey = GlobalKey<FormState>();
   String dropdownValue = 'Add Promo code';
   late String code ;
@@ -45,14 +47,41 @@ class _PromoCodeState extends State<PromoCode> {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
           child: TextButton(
-            onPressed: () {
+            onPressed: () async {
               //to  publishing
               //Navigator.pushNamed(context, '/publishPage');
-              if (formKey.currentState!.validate()) {
-                  //save and move to the next page
-                  context.read<PromocodeCubit>().addData(PromocodeModel(code: code, discount: int.parse(discount), limitOfUses: int.parse(limitOfUses))
+              if (formKey.currentState!.validate())  {
+                  
+                       String message = await context.read<PromocodeCubit>().addPromocode(id,PromocodeModel(code: code, discount: int.parse(discount), limitOfUses: int.parse(limitOfUses))
                       .toMap());
-                  Navigator.pop(context);
+                      if (message== 'successfully added')
+                      {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar( SnackBar(
+                          duration: Duration(seconds: 2),
+                          // ignore: prefer_interpolation_to_compose_strings
+                          content:
+                              Text('go to admissiom'),
+                          shape: StadiumBorder(),
+                          behavior:
+                              SnackBarBehavior.floating,
+                        ));
+                      }
+                      else
+                      {
+                           ScaffoldMessenger.of(context)
+                            .showSnackBar( SnackBar(
+                          duration: Duration(seconds: 2),
+                          // ignore: prefer_interpolation_to_compose_strings
+                          content:
+                              Text(message as String),
+                          shape: StadiumBorder(),
+                          behavior:
+                              SnackBarBehavior.floating,
+                        ));
+
+                      }
+                 
                 }
             },
             child: Text(

@@ -11,12 +11,11 @@ class TicketCard extends StatelessWidget {
       required this.tierName,
       required this.saleSchedule,
       required this.tierPrice,
-      required this.availableQuantity, required this.numberOfCard, this.onTap});
+      required this.availableQuantity, this.onTap});
   final String tierName;
   final String saleSchedule;
   final String tierPrice;
-  final String availableQuantity; //current
-  final int numberOfCard;
+  final int availableQuantity; //current
   final Function()? onTap;
 
   @override
@@ -95,7 +94,7 @@ class TicketCard extends StatelessWidget {
               height: 10,
             ),
             Text(
-              'Available Quantity  ' + availableQuantity,
+              'Available Quantity  ' + availableQuantity.toString(),
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontFamily: 'NeuePlak',
