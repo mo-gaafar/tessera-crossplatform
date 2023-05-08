@@ -27,6 +27,7 @@ class _NewEventLocationState extends State<NewEventLocation> {
     late final response;
     try {
       response = await CreatorRepository.getAllPlaces(value);
+      print(response);
       if (response == null ||
           response['predictions'] == [] ||
           response['predictions'] == null) {
@@ -153,13 +154,21 @@ class _NewEventLocationState extends State<NewEventLocation> {
                                   subtitle:
                                       Text(predictions[index]["description"]),
                                   dense: true,
-                                  onTap: () {
+                                  onTap: () async {
+                                    final eventGeoLocation =
+                                        await CreatorRepository
+                                            .getAddressGeoLocation(
+                                                predictions[index]
+                                                    ["description"]);
                                     context
                                         .read<CreateEventCubit>()
                                         .currentEvent
-                                        .eventLocation = predictions[index]
-                                            ["description"]
-                                        .toString();
+                                        .eventGeoLocation = eventGeoLocation;
+                                    context
+                                            .read<CreateEventCubit>()
+                                            .currentEvent
+                                            .eventLocationName =
+                                        predictions[index]["description"];
                                     Navigator.pushNamed(
                                         context, '/neweventreceipt');
                                   },

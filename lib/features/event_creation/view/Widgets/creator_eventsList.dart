@@ -39,8 +39,6 @@ class _CreatorEventListState extends State<CreatorEventList> {
                 '${response['eventsoldtickets'][i]}/${response['maxCapacity'][i]}');
           }
         }
-        print(widget.eventSoldTicketsPercentage);
-        print(widget.eventSoldTicketsPercentageToString);
         return widget.filteredEvents;
       }
     } catch (e) {

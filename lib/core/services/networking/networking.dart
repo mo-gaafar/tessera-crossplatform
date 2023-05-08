@@ -37,10 +37,13 @@ class NetworkService {
   /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponseOrganizer(String url) async {
     try {
+      print('response getGetApiResponseOrganizer');
       final response = await http.get(
         Uri.parse(url),
         headers: _organizerHeaders,
       );
+      print(response.statusCode);
+      print(response.body.toString());
       final responseJson = returnResponse(response);
       return responseJson;
     } on SocketException {
@@ -60,6 +63,27 @@ class NetworkService {
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
       return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+  }
+
+  static Future getPostApiResponseOrganizer(String url, dynamic data) async {
+    try {
+      http.Response response = await http
+          .post(
+            Uri.parse(url),
+            headers: _organizerHeaders,
+            body: data,
+          )
+          .timeout(const Duration(seconds: 10));
+          print(returnResponse(response));
+      if (response.body[0] == true) {
+        final responseJson = returnResponse(response);
+        print('responseJson of Post API');
+        print(responseJson);
+        return responseJson;
+      } else {}
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }

@@ -3,15 +3,17 @@ import 'dart:io';
 
 class NewEventModel {
   String? eventName;
-  String? eventLocation;
+  late Map? eventGeoLocation;
   String? description;
   String? startDate;
   String? startTime;
   String? endDate;
   String? endTime;
-  String? eventStatus;
+  String? eventStatus = 'live';
   String? eventCategory;
+  String? eventLocationName;
   String? timeZoneName;
+  String? eventSummary;
   File? eventImage;
   bool? isPublic;
   String? tickets;
@@ -42,6 +44,27 @@ class NewEventModel {
     };
   }
 
+  /// Returns a [Map] representation of the [NewEventModel].
+  Map<String, dynamic> basicInfoToMap() {
+    String startDateAndTime = startDate! + 'T' + startTime! + 'Z';
+    String endDateAndTime = endDate! + 'T' + endTime! + 'Z';
+    return <String, dynamic>{
+      'basicInfo': {
+        'eventName': eventName,
+        'startDateTime': startDateAndTime,
+        'endDateTime': endDateAndTime,
+        'eventImage': "https://example.com/image.jpg",
+        'categories': eventCategory,
+        'location': eventGeoLocation
+      },
+      'summary': eventSummary,
+      'description': description,
+      'eventStatus': 'live',
+      "isOnline": false,
+      "onlineEventUrl": null
+    };
+  }
+
   /// Returns a [String] representation of the [NewEventModel].
   @override
   String toString() {
@@ -52,4 +75,5 @@ class NewEventModel {
 
   /// Encodes the [NewEventModel] to JSON.
   String toJson() => json.encode(toMap());
+  String basicInfoToJson() => json.encode(basicInfoToMap());
 }

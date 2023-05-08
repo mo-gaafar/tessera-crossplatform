@@ -62,16 +62,40 @@ class PopupMenu extends StatelessWidget {
         Icon(Icons.movie_creation_outlined),
         Icon(Icons.sports_outlined),
         Icon(Icons.health_and_safety_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
+        Icon(Icons.category_outlined),
       ];
       selectEventText = const [
         Text('Music'),
-        Text('Buisness & Professional'),
+        Text('Business & Professional'),
         Text('Food & Drink'),
-        Text('Commiunity & Culture'),
-        Text('Preforming & Visual Arts'),
-        Text('Film, Media &Entertainment'),
+        Text('Community & Culture'),
+        Text('Performing & Visual Arts'),
+        Text('Film, Media & Entertainment'),
         Text('Sports & Fitness'),
         Text('Health & Wellness'),
+        Text('Auto, Boat & Air'),
+        Text('Charity & Causes'),
+        Text('Family & Education'),
+        Text('Fashion & Beauty'),
+        Text('Government & Politics'),
+        Text('Hobbies & Special Interest'),
+        Text('Home & Lifestyle'),
+        Text('School Activities'),
+        Text('Science & Technology'),
+        Text('Seasonal & Holiday'),
+        Text('Travel & Outdoor'),
+        Text('Other'),
       ];
     }
   }
@@ -99,7 +123,7 @@ class PopupMenu extends StatelessWidget {
                     selectEventText[index].toString().replaceAll('Text(', "");
                 tempSelectedEventText =
                     tempSelectedEventText.replaceAll(')', "");
-                                    tempSelectedEventText =
+                tempSelectedEventText =
                     tempSelectedEventText.replaceAll('"', "");
                 // context.read<CreateEventCubit>().currentEvent.eventCategory =
                 //     tempSelectedEventText;

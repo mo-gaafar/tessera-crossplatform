@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_state.dart';
+import 'package:tessera/features/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_drop_down_menu.dart';
 import 'package:tessera/features/event_creation/view/Widgets/my_editable_dateAndTime_text.dart';
 import 'package:tessera/features/event_creation/view/Widgets/receipt_section.dart';
@@ -10,6 +11,7 @@ import 'package:tessera/features/event_creation/view/Widgets/popup_menu.dart';
 import 'dart:math' as math;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/event_creation/cubit/createEvent_cubit.dart';
+import 'package:tessera/features/events/view/widgets/email_button.dart';
 
 class NewEventReceipt extends StatelessWidget {
   NewEventReceipt({super.key});
@@ -46,7 +48,7 @@ class NewEventReceipt extends StatelessWidget {
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('This is a done icon snackbar')));
-                    print(context.read<CreateEventCubit>().currentEvent);
+                print(context.read<CreateEventCubit>().currentEvent);
               },
             ),
             IconButton(
@@ -187,7 +189,7 @@ class NewEventReceipt extends StatelessWidget {
                     Text(context
                         .read<CreateEventCubit>()
                         .currentEvent
-                        .eventLocation
+                        .eventLocationName
                         .toString()),
                   ],
                 ),
@@ -197,7 +199,6 @@ class NewEventReceipt extends StatelessWidget {
                 sectionChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                     const Text('Event category'),
                     GestureDetector(
                       child: BlocBuilder<CreateEventCubit, CreateEventState>(
@@ -235,26 +236,26 @@ class NewEventReceipt extends StatelessWidget {
                   ],
                 ),
               ),
-              ReceiptSection(
-                sectionIcon: Transform.rotate(
-                    angle: 90 * math.pi / 180,
-                    child: const Icon(Icons.confirmation_number_outlined)),
-                sectionChild: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Ticket'),
-                    GestureDetector(
-                      child: const Text(
-                        'Add ticket',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                    MyDropDownMenu(
-                      myList: ticketList,
-                    ),
-                  ],
-                ),
-              ),
+              // ReceiptSection(
+              //   sectionIcon: Transform.rotate(
+              //       angle: 90 * math.pi / 180,
+              //       child: const Icon(Icons.confirmation_number_outlined)),
+              //   sectionChild: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       const Text('Ticket'),
+              //       GestureDetector(
+              //         child: const Text(
+              //           'Add ticket',
+              //           style: TextStyle(color: Colors.grey),
+              //         ),
+              //       ),
+              //       MyDropDownMenu(
+              //         myList: ticketList,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               ReceiptSection(
                 sectionIcon: const Icon(Icons.local_activity_outlined),
                 sectionChild: Column(
@@ -271,6 +272,18 @@ class NewEventReceipt extends StatelessWidget {
                   ],
                 ),
               ),
+              EmailButton(
+                buttonText: 'Create event and continue to ticketing',
+                colourBackground: AppColors.buttonColor,
+                colourText: AppColors.lightBackground,
+                onTap: () async {
+                  final response =
+                      await CreatorRepository.postCreatedEventBasicInfo(context
+                          .read<CreateEventCubit>()
+                          .currentEvent
+                          .basicInfoToJson());
+                },
+              )
             ],
           ),
         ),
