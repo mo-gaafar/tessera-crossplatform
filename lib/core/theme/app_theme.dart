@@ -9,6 +9,7 @@ class AppTheme {
       primary: AppColors.primary,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
+      // primaryContainer: Colors.white,
       onSecondaryContainer: Colors.black,
       onTertiaryContainer: AppColors.secondaryTextOnLight,
       inversePrimary: AppColors.secondary.withOpacity(0.3),
@@ -26,7 +27,7 @@ class AppTheme {
         ),
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
           foregroundColor: Colors.black,
-          color: AppColors.lightBackground,
+          color: Colors.white,
           elevation: 0,
           toolbarHeight: 65,
           titleTextStyle: const TextStyle(
@@ -46,13 +47,14 @@ class AppTheme {
       surface: AppColors.primary,
       primary: AppColors.primary,
       secondary: Colors.white,
+      // primaryContainer: Colors.black,
       onSecondaryContainer: const Color(0xfff2f2f2),
       onTertiaryContainer: Colors.grey,
       inversePrimary: Colors.grey.shade900,
     ),
     appBarTheme: lightTheme.appBarTheme.copyWith(
       foregroundColor: Colors.white,
-      color: AppColors.darkBackground,
+      color: Colors.black,
       titleTextStyle: const TextStyle(
         color: AppColors.primary,
       ),

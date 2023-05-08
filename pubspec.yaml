@@ -57,6 +57,12 @@ dependencies:
   circular_countdown_timer: ^0.2.3
   shrink_sidemenu: ^2.0.0+2-null-safety
   step_progress_indicator: ^1.0.2
+  flutter_staggered_animations: ^1.1.1
+  sliding_up_panel: ^2.0.0+1
+  fluentui_system_icons: ^1.1.200
+  dio: ^5.1.1
+  path_provider: ^2.0.14
+  downloads_path_provider_28: ^0.1.2
   # flutter_launcher_icons: ^0.13.0
 
 dev_dependencies:
