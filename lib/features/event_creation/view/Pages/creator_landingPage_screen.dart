@@ -69,9 +69,9 @@ class CreatorLandingPage extends StatelessWidget {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/neweventtitle');
-              //Navigator.pushNamed(context, '/atendeemanagementhomescreen');
-              // Navigator.pushNamed(
+              //Navigator.pushNamed(context, '/neweventtitle');
+              Navigator.pushNamed(context, '/atendeemanagementhomescreen');
+              // Navigator.pushNamed(6
               //     context, '/atendeemanagementprocessingscreen');
               //Navigator.pushNamed(context, '/neweventlocation');
             },

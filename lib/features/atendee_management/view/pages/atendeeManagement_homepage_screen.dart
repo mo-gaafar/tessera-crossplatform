@@ -113,40 +113,6 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
                       child: Column(
                         children: [
                           RadioListTile(
-                            title: Text("VIP"),
-                            value: "VIP",
-                            groupValue: ticketType,
-                            onChanged: (value) {
-                              setState(() {
-                                ticketType = value.toString();
-                                context
-                                    .read<AtendeeManagementCubit>()
-                                    .atendeeModel
-                                    .ticketTierName = ticketType;
-                              });
-                            },
-                          ),
-                          RadioListTile(
-                            title: Text("Regular"),
-                            value: "Regular",
-                            groupValue: ticketType,
-                            onChanged: (value) {
-                              setState(() {
-                                ticketType = value.toString();
-                                context
-                                    .read<AtendeeManagementCubit>()
-                                    .atendeeModel
-                                    .ticketTierName = ticketType;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          RadioListTile(
                             title: Text("Free"),
                             value: "Free",
                             groupValue: isTicketsFree,
@@ -198,8 +164,15 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
                         .read<AtendeeManagementCubit>()
                         .atendeeModel
                         .ticketQuantity;
+                    String? ticketTierName = context
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .ticketTierName;
                     if (ticketsQuantity == null) {
                       ticketsQuantity = '0';
+                    }
+                    if (ticketTierName == null) {
+                      ticketTierName = '';
                     }
                     return Column(
                       children: [
@@ -207,7 +180,7 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Text(
-                              'Number of tickets chosen: ${ticketsQuantity}'),
+                              'You chose ${ticketsQuantity} tickets of type ${ticketTierName}'),
                         ),
                       ],
                     );

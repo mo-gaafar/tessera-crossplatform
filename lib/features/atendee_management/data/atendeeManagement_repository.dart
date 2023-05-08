@@ -11,10 +11,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:tessera/core/services/networking/exceptions.dart';
+import 'package:tessera/core/services/networking/networking.dart';
 
 class AtendeeManagementRepository {
-  String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNDUyOTc0LCJleHAiOjE2ODM1MzkzNzR9.bym3bG2pig4Ew4mLOL5TdLlJUv2w1ps6BxFTMSrW714';
   static final Map<String, String> _headers = {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json',
@@ -22,66 +21,53 @@ class AtendeeManagementRepository {
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTc0MjgxLCJleHAiOjE2ODM2NjA2ODF9.cemAiMZ5KxrH188ZWy8PEc8_lWLJu9J9BOSm9gi1ThE'
   };
   Future addAtendee(var data) async {
+    print('data');
+    print(data);
     try {
-      print(data);
-      final response = await getPostApiResponse(
+      final response = await NetworkService.getPostApiResponseOrganizer(
           'https://www.tessera.social/api/manage-attendee/addattendee/6454399919a17b933aed053e',
           data);
-      print(response);
+      return response['message'];
     } catch (e) {
-      print(e.toString());
-      return;
+      return 'Error from the backend';
     }
   }
 
-  /// Returns the response body in JSON format from a GET request.
-  Future getGetApiResponse() async {
-    String url =
-        'https://www.tessera.social/api/event-tickets/retrieve-event-ticket-tier/643d1fd3453ffd14bdb7284d';
+  Future getEventTicketTier() async {
     try {
-      final response = await http.get(
-        Uri.parse(url),
-      );
-      final responseJson = returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet Connection');
-    }
-  }
-
-  /// Returns the response body in JSON format from a POST request.
-  Future getPostApiResponse(String url, dynamic data) async {
-    try {
-      http.Response response = await http
-          .post(
-            Uri.parse(url),
-            headers: _headers,
-            body: data,
-          )
-          .timeout(const Duration(seconds: 10));
-      final responseJson = returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet Connection');
-    }
-  }
-
-  /// Checks the response status code and throws an [AppException] if an error is found.
-  dynamic returnResponse(http.Response response) {
-    switch (response.statusCode) {
-      case 200:
-        return jsonDecode(response.body);
-      case 201:
-        return jsonDecode(response.body);
-      case 400:
-        throw BadRequestException(response.body.toString());
-      case 404:
-        throw BadRequestException(response.body.toString());
-      case 500:
-        throw BadRequestException(response.body.toString());
-      default:
-        throw FetchDataException(
-            "Error accourded while communicating with server with status code ${response.statusCode}");
+      List allEventsTicketTierByuser = [];
+      final response = await NetworkService.getGetApiResponseOrganizer(
+          'https://www.tessera.social/api/event-tickets/retrieve-event-ticket-tier/643d1fd3453ffd14bdb7284d');
+      print(response);
+      if (response == null || response['ticketTiers'].length == 0) {
+        return 'No Events';
+      } else {
+        if (response['success'] == true) {
+          for (int i = 0; i < response['ticketTiers'].length; i++) {
+            String? currency;
+            String? price;
+            if (response['ticketTiers'][i]['price'].contains('\$')) {
+              currency = response['ticketTiers'][i]['price'].substring(0, 1);
+              price = response['ticketTiers'][i]['price']
+                  .substring(1, response['ticketTiers'][i]['price'].length);
+            } else {
+              currency = '';
+              price = response['ticketTiers'][i]['price'];
+            }
+            allEventsTicketTierByuser.add([
+              response['ticketTiers'][i]['tierName'],
+              response['ticketTiers'][i]['maxCapacity'],
+              price,
+              currency
+            ]);
+          }
+          print(allEventsTicketTierByuser);
+          return allEventsTicketTierByuser;
+        }
+        return 'Network Error';
+      }
+    } catch (e) {
+      return 'Network Error';
     }
   }
 }

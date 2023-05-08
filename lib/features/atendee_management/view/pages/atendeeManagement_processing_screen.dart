@@ -89,10 +89,15 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                       colourBackground: AppColors.primary,
                       colourText: Colors.white,
                       onTap: () async {
-                        AtendeeManagementRepository().addAtendee(context
-                            .read<AtendeeManagementCubit>()
-                            .atendeeModel
-                            .toJson());
+                        final message = await AtendeeManagementRepository()
+                            .addAtendee(context
+                                .read<AtendeeManagementCubit>()
+                                .atendeeModel
+                                .toJson());
+                        SnackBar(
+                          content: Text(message),
+                          duration: const Duration(seconds: 2),
+                        );
                       },
                     ),
                   ),

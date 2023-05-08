@@ -91,6 +91,8 @@ class NetworkService {
 
 /// Checks the response status code and throws an [AppException] if an error is found.
 dynamic returnResponse(http.Response response) {
+  print(response.statusCode);
+  print(response.body.toString());
   switch (response.statusCode) {
     case 200:
       return jsonDecode(response.body);

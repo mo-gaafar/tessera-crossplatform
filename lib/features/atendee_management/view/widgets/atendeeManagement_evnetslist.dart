@@ -21,26 +21,12 @@ class _AtendeeEventsListState extends State<AtendeeEventsList> {
   Future<dynamic> jsonBodyToEventTicketTierList() async {
     late final response;
     try {
-      response = await AtendeeManagementRepository().getGetApiResponse();
-
-      if (response == null || response['ticketTiers'].length == 0) {
-        return 'No Events';
-      } else {
-        if (response['success'] == true) {
-          for (int i = 0; i < response['ticketTiers'].length; i++) {
-            String? currency = response['ticketTiers'][i]['price'].substring(0,1);
-            String? price = response['ticketTiers'][i]['price']
-                .substring(1, response['ticketTiers'][i]['price'].length);
-            print(price);
-            widget.allEventsTicketTierByuser.add([
-              response['ticketTiers'][i]['tierName'],
-              response['ticketTiers'][i]['maxCapacity'],
-              price,
-              currency
-            ]);
-          }
-        }
+      response = await AtendeeManagementRepository().getEventTicketTier();
+      if (response == 'Network Error' || response == 'No Events') {
         return response;
+      } else {
+        widget.allEventsTicketTierByuser = response;
+        return widget.allEventsTicketTierByuser;
       }
     } catch (e) {
       return 'Network Error';
@@ -84,9 +70,15 @@ class _AtendeeEventsListState extends State<AtendeeEventsList> {
                     subtitle: Text(
                         'Maximum of ${widget.allEventsTicketTierByuser[index][1].toString()} per order'),
                     onTap: () {
-                      print(widget
-                                .allEventsTicketTierByuser[index][3]
-                                .toString());
+                      context
+                              .read<AtendeeManagementCubit>()
+                              .atendeeModel
+                              .ticketTierName =
+                          widget.allEventsTicketTierByuser[index][0].toString();
+                      print(context
+                          .read<AtendeeManagementCubit>()
+                          .atendeeModel
+                          .ticketTierName);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
