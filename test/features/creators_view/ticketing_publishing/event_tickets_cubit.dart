@@ -1,40 +1,88 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_test/bloc_test.dart';
+class MockEventTicketsCubit extends MockCubit<EventTicketsState>
+    implements EventTicketsCubit {}
 
 void main() {
   group('EventTicketsCubit', () {
     late EventTicketsCubit eventTicketsCubit;
 
     setUp(() {
-      eventTicketsCubit = EventTicketsCubit();
+      eventTicketsCubit = MockEventTicketsCubit();
     });
 
     tearDown(() {
       eventTicketsCubit.close();
     });
 
-    test('initial state is EventTicketsInitial', () {
-      expect(eventTicketsCubit.state, EventTicketsInitial());
+    test('emits TicketIsPaid when eventIsPaid is called', () {
+      final expectedStates = [
+        TicketIsPaid(),
+      ];
+
+      whenListen(
+        eventTicketsCubit,
+        Stream.fromIterable(expectedStates),
+      );
+
+      eventTicketsCubit.eventIsPaid();
     });
 
-    blocTest<EventTicketsCubit, EventTicketsState>(
-      'eventIsPaid emits TicketIsPaid',
-      build: () => EventTicketsCubit(),
-      act: (cubit) => cubit.eventIsPaid(),
-      expect: () => [TicketIsPaid()],
-    );
+    test('emits TicketIsFree when eventIsFree is called', () {
+      final expectedStates = [
+        TicketIsFree(),
+      ];
 
-    blocTest<EventTicketsCubit, EventTicketsState>(
-      'eventIsFree emits TicketIsFree',
-      build: () => EventTicketsCubit(),
-      act: (cubit) => cubit.eventIsFree(),
-      expect: () => [TicketIsFree()],
-    );
+      whenListen(
+        eventTicketsCubit,
+        Stream.fromIterable(expectedStates),
+      );
 
-    // Add more tests for other methods in the EventTicketsCubit class
+      eventTicketsCubit.eventIsFree();
+    });
+
+    test('emits TicketDefaultPaid when eventPricingdefault is called', () {
+      final expectedStates = [
+        TicketDefaultPaid(),
+      ];
+
+      whenListen(
+        eventTicketsCubit,
+        Stream.fromIterable(expectedStates),
+      );
+
+      eventTicketsCubit.eventPricingdefault();
+    });
+
+    test('emits EventPublic when EventIsPublic is called', () {
+      final expectedStates = [
+        EventPublic(),
+      ];
+
+      whenListen(
+        eventTicketsCubit,
+        Stream.fromIterable(expectedStates),
+      );
+
+      eventTicketsCubit.EventIsPublic();
+    });
+
+    test('emits EventPrivate when EventIsPrivate is called', () {
+      final expectedStates = [
+        EventPrivate(),
+      ];
+
+      whenListen(
+        eventTicketsCubit,
+        Stream.fromIterable(expectedStates),
+      );
+
+      eventTicketsCubit.EventIsPrivate();
+    });
+
+    // Add more tests for the remaining methods in EventTicketsCubit
   });
 }

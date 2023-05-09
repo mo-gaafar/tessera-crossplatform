@@ -90,9 +90,32 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                       colourBackground: AppColors.primary,
                       colourText: Colors.white,
                       onTap: () async {
+                        context
+                                .read<AtendeeManagementCubit>()
+                                .atendeeModel
+                                .organiserEmail =
+                            context.read<AuthCubit>().currentUser.email; //email
+                        String? text =
+                            context.read<AuthCubit>().currentUser.username;
+                        List<String> words;
+                        if (text != null) {
+                          words = text.split(' ');
+                          context
+                              .read<AtendeeManagementCubit>()
+                              .atendeeModel
+                              .organiserfirstName = words[0];
+                          context
+                              .read<AtendeeManagementCubit>()
+                              .atendeeModel
+                              .organiserlasteName = words[1];
+                        }
+
                         final message = await AtendeeManagementRepository()
                             .addAtendee(
-                                '6454399919a17b933aed053e',
+                                context
+                                    .read<CreateEventCubit>()
+                                    .currentEvent
+                                    .eventID!,
                                 context
                                     .read<AtendeeManagementCubit>()
                                     .atendeeModel
