@@ -13,7 +13,8 @@ class AddAtendeeModel {
   String? atendeeEmail;
   String? ticketTierName;
   String? ticketQuantity;
-  String? ticketPrice; //should be initialized from the ticket tier cubit
+  String? totalTicketsPrice; //should be initialized from the ticket tier cubit
+  String? pricePerTicket;
   bool ticketisFree = false; //should be initialized from the ticket tier cubit
 
   /// Returns a [Map] representation of the [AddAtendeeModel].
@@ -42,8 +43,7 @@ class AddAtendeeModel {
         {
           "tierName": ticketTierName.toString(),
           "quantity": int.parse(ticketQuantity.toString()),
-          "price":
-              (ticketisFree == true) ? 0 : int.parse(ticketPrice.toString()),
+          "price": pricePerTicket,
           "tickets": listOFAtendees.toList()
         }
       ]
@@ -56,6 +56,6 @@ class AddAtendeeModel {
   /// Returns a [String] representation of the [AddAtendeeModel].
   @override
   String toString() {
-    return 'AddAtendeeModel(organiserfirstName: $organiserfirstName, organiserlasteName: $organiserlasteName, organiserEmail: $organiserEmail, atendeeFirstName: $atendeeFirstName, atendeeLastName: $atendeeLastName, ticketTierName: $ticketTierName,ticketQuantity: $ticketQuantity,ticketPrice: $ticketPrice)';
+    return 'AddAtendeeModel(organiserfirstName: $organiserfirstName, organiserlasteName: $organiserlasteName, organiserEmail: $organiserEmail, atendeeFirstName: $atendeeFirstName, atendeeLastName: $atendeeLastName, ticketTierName: $ticketTierName,ticketQuantity: $ticketQuantity,totalTicketsPrice: $totalTicketsPrice)';
   }
 }

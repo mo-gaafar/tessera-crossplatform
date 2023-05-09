@@ -22,6 +22,6 @@ class AtendeeManagementCubit extends Cubit<AtendeeManagementState> {
   void updateAtendeeInfo({String? ticketsTotalPrice}) {
     emit(AtendeeManagementInitial());
     emit(AtendeeManagementInfo(ticketsTotalPrice: ticketsTotalPrice));
-    atendeeModel.ticketPrice = ticketsTotalPrice!;
+    atendeeModel.totalTicketsPrice = ticketsTotalPrice!;
   }
 }

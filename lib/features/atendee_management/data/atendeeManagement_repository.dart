@@ -27,6 +27,9 @@ class AtendeeManagementRepository {
       final response = await NetworkService.getPostApiResponseOrganizer(
           'https://www.tessera.social/api/manage-attendee/addattendee/6454399919a17b933aed053e',
           data);
+      if (response['success'] == true) {
+        return 'Attendee Added successfully';
+      }
       return response['message'];
     } catch (e) {
       return 'Error from the backend';
@@ -34,39 +37,96 @@ class AtendeeManagementRepository {
   }
 
   Future getEventTicketTier() async {
-    try {
-      List allEventsTicketTierByuser = [];
-      final response = await NetworkService.getGetApiResponseOrganizer(
-          'https://www.tessera.social/api/event-tickets/retrieve-event-ticket-tier/643d1fd3453ffd14bdb7284d');
-      print(response);
-      if (response == null || response['ticketTiers'].length == 0) {
-        return 'No Events';
-      } else {
-        if (response['success'] == true) {
-          for (int i = 0; i < response['ticketTiers'].length; i++) {
-            String? currency;
-            String? price;
-            if (response['ticketTiers'][i]['price'].contains('\$')) {
-              currency = response['ticketTiers'][i]['price'].substring(0, 1);
-              price = response['ticketTiers'][i]['price']
-                  .substring(1, response['ticketTiers'][i]['price'].length);
-            } else {
-              currency = '';
-              price = response['ticketTiers'][i]['price'];
-            }
-            allEventsTicketTierByuser.add([
-              response['ticketTiers'][i]['tierName'],
-              response['ticketTiers'][i]['maxCapacity'],
-              price,
-              currency
-            ]);
+    //   try {
+    //     List allEventsTicketTierByuser = [];
+    //     final response = await NetworkService.getGetApiResponseOrganizer(
+    //         'https://www.tessera.social/api/event-tickets/retrieve-event-ticket-tier/64560b5b36af37a7a313b0d6');
+    //     print(response);
+    //     if (response == null || response['ticketTiers'].length == 0) {
+    //       return 'No Events';
+    //     } else {
+    //       if (response['success'] == true) {
+    //         for (int i = 0; i < response['ticketTiers'].length; i++) {
+    //           String? currency;
+    //           String? price;
+    //           int? availableTickets;
+    //           String? tempQuantitySold;
+    //           if (response['ticketTiers'][i]['price'].contains('\$')) {
+    //             currency = response['ticketTiers'][i]['price'].substring(0, 1);
+    //             price = response['ticketTiers'][i]['price']
+    //                 .substring(1, response['ticketTiers'][i]['price'].length);
+    //           } else {
+    //             currency = '';
+    //             price = response['ticketTiers'][i]['price'];
+    //           }
+    //           print('maxCapacity ${i}: ' +
+    //               '${int.parse(response['ticketTiers'][i]["maxCapacity"].toString())}');
+    //           if (response['ticketTiers'][i]["percentageSold"] == null) {
+    //             tempQuantitySold = response['ticketTiers'][i]["maxCapacity"];
+    //           } else {
+    //             tempQuantitySold = '0';
+    //           }
+    //           print('tempQuantitySold ${i}: ' + '${tempQuantitySold}');
+    //           availableTickets = int.parse(
+    //                   response['ticketTiers'][i]["maxCapacity"].toString()) -
+    //               int.parse(tempQuantitySold!);
+    //           allEventsTicketTierByuser.add([
+    //             response['ticketTiers'][i]['tierName'],
+    //             availableTickets.toString(),
+    //             price,
+    //             currency
+    //           ]);
+    //         }
+    //         print(allEventsTicketTierByuser);
+    //         return allEventsTicketTierByuser;
+    //       }
+    //       return 'Network Error';
+    //     }
+    //   } catch (e) {
+    //     return 'Network Error';
+    //   }
+
+    List allEventsTicketTierByuser = [];
+    final response = await NetworkService.getGetApiResponseOrganizer(
+        'https://www.tessera.social/api/event-tickets/retrieve-event-ticket-tier/64560b5b36af37a7a313b0d6');
+    print(response);
+    if (response == null || response['ticketTiers'].length == 0) {
+      return 'No Events';
+    } else {
+      if (response['success'] == true) {
+        for (int i = 0; i < response['ticketTiers'].length; i++) {
+          String? currency;
+          String? price;
+          int? availableTickets;
+          String? tempQuantitySold;
+          if (response['ticketTiers'][i]['price'].contains('\$')) {
+            currency = response['ticketTiers'][i]['price'].substring(0, 1);
+            price = response['ticketTiers'][i]['price']
+                .substring(1, response['ticketTiers'][i]['price'].length);
+          } else {
+            currency = '';
+            price = response['ticketTiers'][i]['price'];
           }
-          print(allEventsTicketTierByuser);
-          return allEventsTicketTierByuser;
+
+          if (response['ticketTiers'][i]["percentageSold"] == null) {
+            tempQuantitySold = '0';
+          } else {
+            tempQuantitySold =
+                response['ticketTiers'][i]["quantitySold"].toString();
+          }
+          availableTickets =
+              int.parse(response['ticketTiers'][i]["maxCapacity"].toString()) -
+                  int.parse(tempQuantitySold);
+          allEventsTicketTierByuser.add([
+            response['ticketTiers'][i]['tierName'],
+            availableTickets.toString(),
+            price,
+            currency
+          ]);
         }
-        return 'Network Error';
+        print(allEventsTicketTierByuser);
+        return allEventsTicketTierByuser;
       }
-    } catch (e) {
       return 'Network Error';
     }
   }

@@ -37,6 +37,7 @@ class _AtendeeEventsListState extends State<AtendeeEventsList> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
+      height: 400,
       child: FutureBuilder(
         future: jsonBodyToEventTicketTierList(),
         builder: (context, snapshot) {
@@ -75,10 +76,11 @@ class _AtendeeEventsListState extends State<AtendeeEventsList> {
                               .atendeeModel
                               .ticketTierName =
                           widget.allEventsTicketTierByuser[index][0].toString();
-                      print(context
-                          .read<AtendeeManagementCubit>()
-                          .atendeeModel
-                          .ticketTierName);
+                      context
+                              .read<AtendeeManagementCubit>()
+                              .atendeeModel
+                              .pricePerTicket =
+                          widget.allEventsTicketTierByuser[index][2].toString();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

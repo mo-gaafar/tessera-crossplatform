@@ -39,16 +39,17 @@ class _MyCustomizedNumpadState extends State<MyCustomizedNumpad> {
                     .atendeeModel
                     .ticketQuantity = code;
                 context
-                    .read<AtendeeManagementCubit>()
-                    .atendeeModel
-                    .ticketPrice = (int.parse((code == null) ? '0' : code) *
-                        double.parse(widget.priceOfTheTicketSelected!))
-                    .toString();
+                        .read<AtendeeManagementCubit>()
+                        .atendeeModel
+                        .totalTicketsPrice =
+                    (int.parse((code == null) ? '0' : code) *
+                            double.parse(widget.priceOfTheTicketSelected!))
+                        .toString();
                 context.read<AtendeeManagementCubit>().updateAtendeeInfo(
                     ticketsTotalPrice: context
                         .read<AtendeeManagementCubit>()
                         .atendeeModel
-                        .ticketPrice);
+                        .totalTicketsPrice);
                 Navigator.pop(context);
               },
             ),

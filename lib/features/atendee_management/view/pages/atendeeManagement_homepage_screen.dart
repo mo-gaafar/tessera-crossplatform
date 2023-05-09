@@ -87,7 +87,7 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
                               context
                                   .read<AtendeeManagementCubit>()
                                   .atendeeModel
-                                  .ticketPrice!,
+                                  .totalTicketsPrice!,
                               style: const TextStyle(
                                   fontSize: 48, fontWeight: FontWeight.bold),
                             );
@@ -138,13 +138,13 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
                                   totalPrice = (context
                                               .read<AtendeeManagementCubit>()
                                               .atendeeModel
-                                              .ticketPrice ==
+                                              .totalTicketsPrice ==
                                           null)
                                       ? "0"
                                       : context
                                           .read<AtendeeManagementCubit>()
                                           .atendeeModel
-                                          .ticketPrice!;
+                                          .totalTicketsPrice!;
                                   context
                                       .read<AtendeeManagementCubit>()
                                       .atendeeModel

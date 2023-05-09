@@ -78,7 +78,7 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                              'Total Paid ${(context.read<AtendeeManagementCubit>().atendeeModel.ticketisFree == true) ? '0' : context.read<AtendeeManagementCubit>().atendeeModel.ticketPrice}'),
+                              'Total Paid ${(context.read<AtendeeManagementCubit>().atendeeModel.ticketisFree == true) ? '0' : context.read<AtendeeManagementCubit>().atendeeModel.totalTicketsPrice}'),
                           Text('No change due'),
                         ],
                       )),
@@ -94,10 +94,11 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                                 .read<AtendeeManagementCubit>()
                                 .atendeeModel
                                 .toJson());
-                        SnackBar(
-                          content: Text(message),
-                          duration: const Duration(seconds: 2),
-                        );
+                        print(message);
+                        if (message == 'Attendee Added successfully') {
+                          Navigator.pushNamed(
+                              context, '/atendeeaddedsuccessfullyscreen');
+                        }
                       },
                     ),
                   ),

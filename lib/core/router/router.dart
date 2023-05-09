@@ -18,7 +18,7 @@ import 'package:tessera/features/event_creation/view/Pages/newevent_description_
 import 'package:tessera/features/event_creation/view/Pages/newevent_setdate_screen.dart';
 import 'package:tessera/features/event_creation/view/Pages/newevent_receipt_screen.dart';
 import 'package:tessera/features/atendee_management/view/Pages/atendeeManagement_processing_screen.dart';
-import 'package:tessera/features/atendee_management/view/Pages/atendeeManagement_sendEmail_screen.dart';
+import 'package:tessera/features/atendee_management/view/pages/atendeeManagement_atendeeAddedSuccesfully_screen.dart';
 import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 import 'package:tessera/features/atendee_management/view/widgets/my_customized_numpad.dart';
@@ -106,9 +106,9 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AtendeeManagementProcessingPage(),
         );
-      case '/sendemailtoatendeescreen':
+      case '/atendeeaddedsuccessfullyscreen':
         return MaterialPageRoute(
-          builder: (_) => SendEmailToAtendee(),
+          builder: (_) => AtendeeAddedSuccessfully(),
         );
       case '/addatendeedetails':
         return MaterialPageRoute(
