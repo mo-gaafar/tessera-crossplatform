@@ -22,9 +22,9 @@ String getTheSmallestPrice(List tiers) {
     if (tiers[i]['price'] == 'Free') {
       return 'Free';
     }
-    prices.add(int.parse(tiers[i]['price']));
+    prices.add(double.parse(tiers[i]['price']));
   }
-  int price = prices.reduce((curr, next) => curr < next ? curr : next);
+  double price = prices.reduce((curr, next) => curr < next ? curr : next);
   return price.toString();
 }
 
@@ -222,6 +222,14 @@ class _EventPageState extends State<EventPage> {
                                     print(response);
                                     if (response['success'] == true) {
                                       disc = response['discout'] as double;
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        duration: Duration(seconds: 2),
+                                        content: Text(
+                                            response['message'].toString()),
+                                        shape: StadiumBorder(),
+                                        behavior: SnackBarBehavior.floating,
+                                      ));
                                     } else {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
@@ -264,25 +272,20 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
-                                        print((double.parse(teirsSplitting(
-                                                ticketsOfEvent[k]
-                                                    ['nameAndPrice'])[1]) *
-                                            disc));
+                                       
                                         tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
                                                         ['nameAndPrice'])[0],
                                                 quantity: ticketsOfEvent[k][
-                                                    'ticketsNumber'], //price should be sent as int
+                                                    'ticketsNumber'], //price should be sent as String
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
-                                                price: (double.parse(teirsSplitting(
+                                                price: teirsSplitting(
                                                                 ticketsOfEvent[
                                                                         k]
                                                                     [
                                                                     'nameAndPrice'])[
-                                                            1]) *
-                                                        disc)
-                                                    .toString())
+                                                            1])
                                             .toMap());
                                       }
                                     }

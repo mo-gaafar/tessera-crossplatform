@@ -226,7 +226,7 @@ class _AddTicketsState extends State<AddTickets> {
                                 return 'Price is required.';
                               }
                               return formValidator
-                                  .numberValidty(value); //should be number
+                                  .priceValidty(value); //should be number
                             },
                           );
                         } else {

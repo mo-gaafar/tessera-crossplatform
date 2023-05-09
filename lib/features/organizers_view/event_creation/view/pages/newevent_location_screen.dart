@@ -69,6 +69,10 @@ class _NewEventLocationState extends State<NewEventLocation> {
                       onChanged: (value) {
                         setState(() {
                           selectedValue = value.toString();
+                          context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .eventStatus = value;
                           if (selectedValue == 'Venue') {
                             visabilty = true;
                           } else {
@@ -103,7 +107,6 @@ class _NewEventLocationState extends State<NewEventLocation> {
                     onChanged: (val) async {
                       setState(() {
                         value = val;
-                        context.read<CreateEventCubit>().currentEvent.eventStatus=value;
                       });
                     },
                   ),
@@ -228,7 +231,20 @@ class _NewEventLocationState extends State<NewEventLocation> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/neweventreceipt');
+          if (visabilty == true) {
+            if (context
+                    .read<CreateEventCubit>()
+                    .currentEvent
+                    .eventLocationName !=
+                null) {
+              Navigator.pushNamed(context, '/neweventreceipt');
+            } else {
+              context.read<CreateEventCubit>().displayError(
+                  errormessage: 'Search for the place and choose one please.');
+            }
+          } else {
+            Navigator.pushNamed(context, '/neweventreceipt');
+          }
         },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.arrow_forward_ios),
