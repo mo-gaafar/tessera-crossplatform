@@ -16,11 +16,10 @@ class NetworkService {
   };
 
   /// Returns the response body in JSON format from a GET request.
-  static Future getGetApiResponse(String url) async {
+  static Future getGetApiResponse(String url, {String? token}) async {
     try {
-      final response = await http.get(
-        Uri.parse(url),
-      );
+      final response = await http.get(Uri.parse(url),
+          headers: token != null ? {'Authorization': 'Bearer $token'} : null);
       final responseJson = returnResponse(response);
       return responseJson;
     } on SocketException {
@@ -29,12 +28,17 @@ class NetworkService {
   }
 
   /// Returns the response body in JSON format from a POST request.
-  static Future getPostApiResponse(String url, dynamic data) async {
+  static Future getPostApiResponse(String url, dynamic data,
+      {String? token}) async {
+    Map<String, String> headers = {..._headers};
+    if (token != null) {
+      headers.addAll({'Authorization': 'Bearer $token'});
+    }
     try {
       http.Response response = await http
           .post(
             Uri.parse(url),
-            headers: _headers,
+            headers: headers,
             body: data,
           )
           .timeout(const Duration(seconds: 10));
@@ -43,7 +47,6 @@ class NetworkService {
     } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
-  
   }
 
   /// Returns the response body in JSON format from a POST request.
@@ -62,9 +65,6 @@ class NetworkService {
       throw FetchDataException('No Internet Connection');
     }
   }
-
-
-
 }
 
 /// Checks the response status code and throws an [AppException] if an error is found.

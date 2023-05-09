@@ -11,6 +11,11 @@ import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
 import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_addAtendeeDetails_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_atendeeAddedSuccesfully_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_homepage_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_processing_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/widgets/my_customized_numpad.dart';
 import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tessera/features/organizers_view/dashboard/view/pages/dashboard.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/creator_landingPage_screen.dart';
@@ -105,7 +110,7 @@ class AppRouter {
         );
       case '/neweventtitle':
         return MaterialPageRoute(
-          builder: (_) => const NewEventtitle(),
+          builder: (_) => NewEventtitle(),
         );
       case '/neweventdescription':
         return MaterialPageRoute(
@@ -121,7 +126,7 @@ class AppRouter {
         );
       case '/neweventreceipt':
         return MaterialPageRoute(
-          builder: (_) => const NewEventReceipt(),
+          builder: (_) => NewEventReceipt(),
         );
 
       case '/neweventtickets':
@@ -138,7 +143,28 @@ class AppRouter {
         );*/
       case '/publishPage':
         return MaterialPageRoute(
-          builder: (_) => PublishPage(),
+          builder: (_) => const PublishPage(),
+        );
+
+      case '/numpadscreen':
+        return MaterialPageRoute(
+          builder: (_) => MyCustomizedNumpad(),
+        );
+      case '/atendeemanagementhomescreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeManagementHomePage(),
+        );
+      case '/atendeemanagementprocessingscreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeManagementProcessingPage(),
+        );
+      case '/atendeeaddedsuccessfullyscreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeAddedSuccessfully(),
+        );
+      case '/addatendeedetails':
+        return MaterialPageRoute(
+          builder: (_) => AddAtendeeDetails(),
         );
 
       case '/dashboard':

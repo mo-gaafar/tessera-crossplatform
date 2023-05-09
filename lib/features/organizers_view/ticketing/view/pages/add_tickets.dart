@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
-import 'package:tessera/features/organizers_view/event_creation/view/Widgets/pick_date_time.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
 import '../../../../../core/services/validation/form_validator.dart';
@@ -90,38 +89,33 @@ class _AddTicketsState extends State<AddTickets> {
                               .toMap(),
                           id);
                   if (message == 'successfully added') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 3),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            content: Text(message as String),
-                            shape: StadiumBorder(),
-                            behavior: SnackBarBehavior.floating,
-                          ));
-                          var resp = await context
-                              .read<EventTicketsCubit>()
-                              .getTicketsData(id);
-                          if(resp['success']==true)
-                          {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TicketPage(
-                                      lisofteirs: resp['ticketTiers'] as List,
-                                    )),
-                          );
-
-                          }
-                          else
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 3),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            content: Text(resp['message'] as String),
-                            shape: StadiumBorder(),
-                            behavior: SnackBarBehavior.floating,
-                          ));
-                            
-                          }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                    var resp = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    if (resp['success'] == true) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TicketPage(
+                                  lisofteirs: resp['ticketTiers'] as List,
+                                )),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 3),
+                        // ignore: prefer_interpolation_to_compose_strings
+                        content: Text(resp['message'] as String),
+                        shape: StadiumBorder(),
+                        behavior: SnackBarBehavior.floating,
+                      ));
+                    }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),
@@ -130,7 +124,6 @@ class _AddTicketsState extends State<AddTickets> {
                       shape: StadiumBorder(),
                       behavior: SnackBarBehavior.floating,
                     ));
-                        
                   }
                 }
               },

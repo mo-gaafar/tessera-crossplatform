@@ -207,9 +207,8 @@ class _EventPageState extends State<EventPage> {
                             TextButton(
                               child: const Text("CheckOut"),
                               onPressed: () async {
-                            
                                 if (formKey.currentState!.validate()) {
-                                    if (promo != '') {
+                                  if (promo != '') {
                                     print('da5al promocode');
                                     var response = await context
                                         .read<EventBookCubit>()
@@ -217,16 +216,15 @@ class _EventPageState extends State<EventPage> {
                                     print(response);
                                     if (response['success'] == true) {
                                       disc = response['discout'] as double;
-                                    }
-                                    else{
+                                    } else {
                                       ScaffoldMessenger.of(context)
-                                        .showSnackBar( SnackBar(
-                                      duration: Duration(seconds: 2),
-                                      content: Text(response['message'].toString()),
-                                      shape: StadiumBorder(),
-                                      behavior: SnackBarBehavior.floating,
-                                    ));
-
+                                          .showSnackBar(SnackBar(
+                                        duration: Duration(seconds: 2),
+                                        content: Text(
+                                            response['message'].toString()),
+                                        shape: StadiumBorder(),
+                                        behavior: SnackBarBehavior.floating,
+                                      ));
                                     }
                                   } else {
                                     print('mafesh promocode');
@@ -260,11 +258,10 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
-                                            print((double.parse(teirsSplitting(
-                                                            ticketsOfEvent[k][
-                                                                'nameAndPrice'])[
-                                                        1]) *
-                                                    disc));
+                                        print((double.parse(teirsSplitting(
+                                                ticketsOfEvent[k]
+                                                    ['nameAndPrice'])[1]) *
+                                            disc));
                                         tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
@@ -273,10 +270,13 @@ class _EventPageState extends State<EventPage> {
                                                     'ticketsNumber'], //price should be sent as int
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
                                                 price: (double.parse(teirsSplitting(
-                                                            ticketsOfEvent[k][
-                                                                'nameAndPrice'])[
-                                                        1]) *
-                                                    disc).toInt())
+                                                                ticketsOfEvent[
+                                                                        k]
+                                                                    [
+                                                                    'nameAndPrice'])[
+                                                            1]) *
+                                                        disc)
+                                                    .toInt())
                                             .toMap());
                                       }
                                     }
@@ -393,7 +393,7 @@ class _EventPageState extends State<EventPage> {
                 leading: IconButton(
                     onPressed: () {
                       //back to event page
-                      Navigator.pushNamed(context, '/landingPage');
+                      Navigator.pop(context);
                     },
                     icon: const Icon(Icons.close)),
                 centerTitle: true,

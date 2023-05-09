@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:tessera/constants/app_colors.dart';
-import 'package:tessera/features/organizers_view/event_creation/view/Widgets/pick_date_time.dart';
 import 'package:tessera/features/organizers_view/ticketing/data/edit_tier_model.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
@@ -95,52 +94,53 @@ class _EditTicketsState extends State<EditTickets> {
           IconButton(
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  
                   String message = await context
                       .read<EventTicketsCubit>()
-                      .editTicketData(EditTierModel(desiredTierName: widget.ticketName , ticketTiers: [TierModel(
-                                  tierName: ticketNameEdit,
-                                  maxCapacity: int.parse(quantityEdit),
-                                  price: priceEdit,
-                                  startSelling: changetoIso(
-                                      timeinputStart.text, dateinputStart.text),
-                                  endSelling: changetoIso(
-                                      timeinputEnd.text, dateinputEnd.text)).toMap()]).toMap()
-                          ,
+                      .editTicketData(
+                          EditTierModel(
+                              desiredTierName: widget.ticketName,
+                              ticketTiers: [
+                                TierModel(
+                                        tierName: ticketNameEdit,
+                                        maxCapacity: int.parse(quantityEdit),
+                                        price: priceEdit,
+                                        startSelling: changetoIso(
+                                            timeinputStart.text,
+                                            dateinputStart.text),
+                                        endSelling: changetoIso(
+                                            timeinputEnd.text,
+                                            dateinputEnd.text))
+                                    .toMap()
+                              ]).toMap(),
                           id);
                   if (message == 'successfully edited') {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 3),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            content: Text(message as String),
-                            shape: StadiumBorder(),
-                            behavior: SnackBarBehavior.floating,
-                          ));
-                          var resp = await context
-                              .read<EventTicketsCubit>()
-                              .getTicketsData(id);
-                          if(resp['success']==true)
-                          {
-                            Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TicketPage(
-                                      lisofteirs: resp['ticketTiers'] as List,
-                                    )),
-                          );
-
-                          }
-                          else
-                          {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 3),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            content: Text(resp['message'] as String),
-                            shape: StadiumBorder(),
-                            behavior: SnackBarBehavior.floating,
-                          ));
-                            
-                          }
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 3),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(message as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+                    var resp = await context
+                        .read<EventTicketsCubit>()
+                        .getTicketsData(id);
+                    if (resp['success'] == true) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TicketPage(
+                                  lisofteirs: resp['ticketTiers'] as List,
+                                )),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 3),
+                        // ignore: prefer_interpolation_to_compose_strings
+                        content: Text(resp['message'] as String),
+                        shape: StadiumBorder(),
+                        behavior: SnackBarBehavior.floating,
+                      ));
+                    }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 2),
@@ -240,7 +240,9 @@ class _EditTicketsState extends State<EditTickets> {
                       builder: (context, state) {
                         print(state.toString());
                         if (state is TicketIsPaid ||
-                            state is TicketDefaultPaid ||(state is TicketEventInfoRetrived && widget.price!='Free' )) {
+                            state is TicketDefaultPaid ||
+                            (state is TicketEventInfoRetrived &&
+                                widget.price != 'Free')) {
                           print('hena');
                           return TextFormField(
                             initialValue: widget.price,
@@ -257,7 +259,7 @@ class _EditTicketsState extends State<EditTickets> {
                                   .numberValidty(priceEdit); //should be number
                             },
                           );
-                        } else  {
+                        } else {
                           print('here?');
                           priceEdit = 'Free';
                           return const TextField(

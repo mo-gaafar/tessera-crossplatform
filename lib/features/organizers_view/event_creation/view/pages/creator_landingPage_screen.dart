@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/features/attendees_view/landing_page/view/widgets/side_menu.dart';
-// import 'package:tessera/features/organizers_view/event_creation/data/url_luncher.dart';
-import 'package:tessera/features/organizers_view/event_creation/view/Widgets/no_event_template.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Widgets/my_search_delegated.dart';
+import 'package:tessera/features/organizers_view/event_creation/data/organiser_model.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Widgets/creator_eventsList.dart';
 
 class CreatorLandingPage extends StatelessWidget {
+  var _controller = TextEditingController();
+  OrganiserModel organiserModel =
+      OrganiserModel(email: 'email', accessToken: '6439f95a3d607d6c49e56a1e');
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -11,8 +15,10 @@ class CreatorLandingPage extends StatelessWidget {
       child: CustomSideMenu(
         child: Scaffold(
           appBar: AppBar(
-            bottom: TabBar(
-              tabs: const [
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            bottom: const TabBar(
+              tabs: [
                 Tab(
                   text: 'Live',
                 ),
@@ -23,20 +29,16 @@ class CreatorLandingPage extends StatelessWidget {
                   text: 'Draft',
                 ),
               ],
-              labelColor: Theme.of(context).textTheme.bodyLarge!.color,
-              dividerColor: Theme.of(context).textTheme.bodyLarge!.color,
+              labelColor: Colors.black,
+              dividerColor: Colors.black,
             ),
-            title: const Text(
-              'Events',
-              style: TextStyle(
-                  fontFamily: 'NeuePlak',
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: const Text('Events'),
             actions: <Widget>[
               Center(
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/dashboard'),
+                  onTap: () {
+                    showSearch(context: context, delegate: MySearchDelegated());
+                  },
                   child: const Icon(
                     Icons.search_outlined,
                     color: Colors.grey,
@@ -47,14 +49,24 @@ class CreatorLandingPage extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              NoEvenTemplate('you don\'t have any live events'),
-              NoEvenTemplate('you don\'t have any past events'),
-              NoEvenTemplate('you don\'t have any draft events'),
+              // NoEvenTemplate('you don\'t have any live events'),
+              CreatorEventList(
+                  filterType: 'upcomingevents', organiserModel: organiserModel),
+              CreatorEventList(
+                  filterType: 'pastevents', organiserModel: organiserModel),
+              // NoEvenTemplate('you don\'t have any past events'),
+              // NoEvenTemplate('you don\'t have any draft events'),
+              CreatorEventList(
+                  filterType: 'draft', organiserModel: organiserModel),
             ],
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.pushNamed(context, '/neweventtitle');
+              //Navigator.pushNamed(context, '/atendeemanagementhomescreen');
+              // Navigator.pushNamed(6
+              //     context, '/atendeemanagementprocessingscreen');
+              //Navigator.pushNamed(context, '/neweventlocation');
             },
             backgroundColor: Colors.orange,
             child: const Icon(Icons.add),

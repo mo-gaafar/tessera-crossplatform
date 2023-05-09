@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 class GetSelectedDateAndTime {
   var _selectedDate;
   var _selectedTime;
+  var _timeZoneName;
   Future selectDate(BuildContext context) async {
     final DateTime? date = await showDatePicker(
       //we wait for the dialog to return
@@ -13,9 +14,10 @@ class GetSelectedDateAndTime {
       lastDate: DateTime(2025),
     );
     if (date != null) {
-      _selectedDate = DateFormat.yMMMMd("en_US")
+      _selectedDate = DateFormat('yyyy-MM-dd')
           .format(date); //need to be formated as ISO8601
-          return _selectedDate;
+      _timeZoneName = date.timeZoneName;
+      return _selectedDate;
     } //if the user has selected a date
   }
 
@@ -30,12 +32,22 @@ class GetSelectedDateAndTime {
       initialTime: TimeOfDay.now(),
     );
     if (time != null) {
-      _selectedTime = time.format(context); //need to be formated as ISO8601
-      return _selectedTime;
+      return ConvertTimeToIso(time);
     } //if the user has selected a date
   }
 
+  String ConvertTimeToIso(TimeOfDay time) {
+    String timeString;
+    timeString = time.hour.toString() + ':' + time.minute.toString() + ':00';
+    return timeString;
+  }
+
+  //this will return the non iso format
   getSelectedTime() {
     return _selectedTime;
+  }
+
+  getTimeZoneName() {
+    return _timeZoneName;
   }
 }

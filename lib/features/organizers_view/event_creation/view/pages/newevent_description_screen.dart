@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 
 class NewEventDescription extends StatelessWidget {
   const NewEventDescription({super.key});
@@ -11,25 +13,36 @@ class NewEventDescription extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(
-            children: const [
+            children: [
               Divider(
                 color: Colors.green,
                 thickness: 3,
                 endIndent: 300,
               ),
-              Text(
+              const Text(
                 'Describe your event.',
-                style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
+                style: TextStyle(
+                    color: AppColors.textOnLight,
+                    fontSize: 40.0,
+                    fontFamily: 'NeuePlak'),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 50.0),
-                child: Text(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: const Text(
                   'Enter a brief summary of your event so guests know what to expect',
-                  style: TextStyle(fontSize: 20.0, fontFamily: 'NeuePlak'),
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 20.0,
+                      fontFamily: 'NeuePlak'),
                   textAlign: TextAlign.left,
                 ),
               ),
-              TextField(),
+              TextField(
+                onChanged: (value) {
+                  context.read<CreateEventCubit>().currentEvent.description =
+                      value;
+                },
+              ),
             ],
           ),
         ),
