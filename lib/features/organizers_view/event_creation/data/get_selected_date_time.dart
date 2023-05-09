@@ -38,7 +38,15 @@ class GetSelectedDateAndTime {
 
   String ConvertTimeToIso(TimeOfDay time) {
     String timeString;
-    timeString = time.hour.toString() + ':' + time.minute.toString() + ':00';
+    String hours = time.hour.toString();
+    String minute = time.minute.toString();
+    if (time.hour.toString().length == 1) {
+      hours = '0' + time.hour.toString();
+    }
+    if (time.minute.toString().length == 1) {
+      minute = '0' + time.minute.toString();
+    }
+    timeString = hours + ':' + minute + ':00';
     return timeString;
   }
 
