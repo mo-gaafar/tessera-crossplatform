@@ -290,7 +290,7 @@ class NewEventReceipt extends StatelessWidget {
                         .currentEvent
                         .eventCategory !=
                     null) {
-                      print(context.read<AuthCubit>().currentUser.accessToken!);
+                  print(context.read<AuthCubit>().currentUser.accessToken!);
                   final response =
                       await CreatorRepository.postCreatedEventBasicInfo(
                           context
@@ -303,12 +303,13 @@ class NewEventReceipt extends StatelessWidget {
                   if (response['success']) {
                     context.read<CreateEventCubit>().currentEvent.eventID =
                         response['event_Id'];
+                    print("EVENT ID:");
+                    print(response['event_Id']);
                     Navigator.pushNamed(context, '/neweventtickets');
                   }
                 } else {
                   context.read<CreateEventCubit>().displayError(
-                      errormessage:
-                          'Please add an event category.');
+                      errormessage: 'Please add an event category.');
                 }
               },
             )

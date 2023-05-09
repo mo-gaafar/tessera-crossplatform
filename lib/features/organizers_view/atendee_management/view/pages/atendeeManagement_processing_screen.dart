@@ -95,6 +95,7 @@ class AtendeeManagementProcessingPage extends StatelessWidget {
                                 .atendeeModel
                                 .organiserEmail =
                             context.read<AuthCubit>().currentUser.email; //email
+                            print(context.read<AuthCubit>().currentUser.username);
                         String? text =
                             context.read<AuthCubit>().currentUser.username;
                         List<String> words;
