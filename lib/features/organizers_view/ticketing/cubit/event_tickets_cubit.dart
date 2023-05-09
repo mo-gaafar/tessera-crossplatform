@@ -93,19 +93,21 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
 
   Future<String> editTicketData(var data, String id) async {
     //try {
-      print(data);
-    /*data = {
-      "desiredTierName": "Regular",
+      print(jsonEncode(data));
+      /*data = {
+    "desiredTierName":"kjkj",
       "ticketTiers": [
         {
-          "tierName": "Dol",
+          "tierName": "kjkj",
           "maxCapacity": 10000,
-          "price": "10000",
+          "price": "10",
           "startSelling": "2023-06-01T09:00:00Z",
           "endSelling": "2023-06-30T17:00:00Z"
         }
+      
       ]
     };*/
+    print(jsonEncode(data));
     var response = await TicketsRepository.editEventTicketTier(data, id);
 
     if (response['success'] == true) {
@@ -122,7 +124,7 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
   }
 
   Future<dynamic> getTicketsData(String id) async {
-    try {
+    //try {
       var response = await TicketsRepository.getTicketTiers(id);
 
       if (response['success'] == true) {
@@ -131,9 +133,9 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
       } else {
         return response;
       }
-    } catch (e) {
-      emit(Error());
-      throw Exception('Error when reciving the data');
-    }
+    //} catch (e) {
+      //emit(Error());
+      //throw Exception('Error when reciving the data');
+    //}
   }
 }

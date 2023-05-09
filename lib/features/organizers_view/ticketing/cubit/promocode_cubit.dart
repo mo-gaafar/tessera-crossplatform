@@ -17,8 +17,8 @@ class PromocodeCubit extends Cubit<PromocodeState> {
 
       if (response['success'] == true) {
         emit(PromocodeAdded());
-
-        return 'succussfully added';
+        print(response);
+        return 'succussfully added promocode';
       } else {
         return response['message'];
       }

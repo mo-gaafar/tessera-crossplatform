@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:tessera/core/services/networking/networking.dart';
+import 'package:tessera/core/services/networking/networkingOrg.dart';
 
 /// Repository for all evenr services and API calls to the backend server.
 class PromocodeRepository {
@@ -8,8 +9,8 @@ class PromocodeRepository {
   ///
   /// Returns the event if the event exists.
   static Future addPromocode(var data,String id) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/manage/events/64543c4802a6601619a0a972/promocode/create',
+    final responseBody = await NetworkOrgService.getPostApiResponse(
+        'https://www.tessera.social/api/manage/events/$id/promocode/create',
         jsonEncode(data));
     return responseBody;
   }
@@ -18,9 +19,9 @@ class PromocodeRepository {
   ///
   /// Returns [true] if the booking is done successfully.
   static Future importPromocode(var data,String id) async {
-    final responseBody = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/import-promo/64543c4802a6601619a0a972',
-        jsonEncode(data));
+    final responseBody = await NetworkOrgService.getPostApiResponse(
+        'https://www.tessera.social/api/event-management/import-promo/$id',
+        data);
     return responseBody;
   }
   

@@ -22,7 +22,7 @@ class PromoCode extends StatefulWidget {
 }
 
 class _PromoCodeState extends State<PromoCode> {
-  String id = '6455d7d716fea49283ba6b3d';
+  String id = '64560b5b36af37a7a313b0d6';
   final formKey = GlobalKey<FormState>();
   String dropdownValue = 'Add Promo code';
   late String code;
@@ -50,6 +50,7 @@ class _PromoCodeState extends State<PromoCode> {
               //Navigator.pushNamed(context, '/publishPage');
 
               if (dropdownValue == 'Add Promo code') {
+                print('da5al add promo');
                 if (formKey.currentState!.validate()) {
                   String message = await context
                       .read<PromocodeCubit>()
@@ -60,7 +61,9 @@ class _PromoCodeState extends State<PromoCode> {
                                   discount: int.parse(discount),
                                   limitOfUses: int.parse(limitOfUses))
                               .toMap());
-                  if (message == 'successfully added') {
+                  print('message');
+                  if (message == 'succussfully added promocode') {
+                    print('tmam add promo');
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),
                       content: Text('go to admissiom'),
@@ -78,9 +81,8 @@ class _PromoCodeState extends State<PromoCode> {
                   }
                 }
               } else {
-                if(output!=null)
-                {
-                    String message = await context
+                if (output != null) {
+                  String message = await context
                       .read<PromocodeCubit>()
                       .importPromocode(id, output);
                   if (message == 'succussfully impored') {
@@ -99,16 +101,13 @@ class _PromoCodeState extends State<PromoCode> {
                       behavior: SnackBarBehavior.floating,
                     ));
                   }
-                }
-                else
-                {
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 3),
                     content: Text('you did not upload a file'),
                     shape: StadiumBorder(),
                     behavior: SnackBarBehavior.floating,
                   ));
-
                 }
               }
             },

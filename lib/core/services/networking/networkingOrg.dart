@@ -14,7 +14,7 @@ class NetworkOrgService {
     'Accept-Charset': 'utf-8',
     'Content-Type': 'application/json',
     'Authorization':
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTgxMjc1LCJleHAiOjE2ODM2Njc2NzV9.2HCSJpkapk3-lHNBYijpb9tO2dwc6KiLTxmuAxCeUPI'};
+        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzYTU2NzA2ZjU1ZTkwODVkMTkzZjQ4IiwiaWF0IjoxNjgzNTg5MzMxLCJleHAiOjE2ODM2NzU3MzF9.OvmtBBmWLsKvZmdDDPvQkCuyP97gDQCWZcjPhsYuqZQ'};
 
   /// Returns the response body in JSON format from a GET request.
   static Future getGetApiResponse(String url) async {
@@ -32,8 +32,7 @@ class NetworkOrgService {
   /// Returns the response body in JSON format from a POST request.
   static Future getPostApiResponse(String url, dynamic data) async {
     try {
-      print('JHVFKUTYFIL');
-      print(data);
+      
       http.Response response = await http
           .post(
             Uri.parse(url),
@@ -42,8 +41,6 @@ class NetworkOrgService {
           )
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
-      print('djfiiiii');
-      print(responseJson);
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');
