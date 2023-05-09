@@ -57,7 +57,7 @@ class ContactInformation {
 class TicketTierSelected {
   final String tierName;
   final int quantity;
-  final int price;
+  final String price;
   /// Creates a [TicketTierSelected] from given user data.
   ///
   ///  [tierName] , [quantity] , [price] are required.
@@ -68,7 +68,7 @@ class TicketTierSelected {
     return TicketTierSelected(
       tierName: map['tierName'] as String,
       quantity: map['quantity'] as int,
-      price: map['price'] as int,
+      price: map['price'] as String,
     );
   }
   /// Returns a [Map] representation of the [TicketTierSelected].

@@ -11,7 +11,7 @@ import '../../../../../core/services/validation/form_validator.dart';
 String changetoIso(String time, String date) {
   if ((time == '') && (date == '')) {
     DateTime now = DateTime.now();
-    String formattedDate = now.toIso8601String();
+    String formattedDate = now.toUtc().toIso8601String();
     return formattedDate;
   } else {
     String originalDateString = time + ' ' + date;
@@ -36,8 +36,8 @@ class _PublishPageState extends State<PublishPage> {
   late String Schedule = ''; //publish now or later
   late bool isPublic;
   late bool publishNow;
-  late bool link;
-  late bool password;
+  late bool link = true;
+  late bool password = false;
   late bool alwaysPrivate;
   late bool chosen;
   TextEditingController datePublish = TextEditingController();
@@ -46,7 +46,7 @@ class _PublishPageState extends State<PublishPage> {
   TextEditingController timePublic = TextEditingController();
   final formKey = GlobalKey<FormState>();
   FormValidator formValidator = FormValidator();
-  late String passward;
+  late String genPassward='';
   String dropdownValue = 'Anyone with the Link';
 
   @override
@@ -70,142 +70,187 @@ class _PublishPageState extends State<PublishPage> {
               publishNow = false;
             }
 
-           if (publicly == '') {
+            if (publicly == '') {
               alwaysPrivate = false;
             }
 
-             if ((dropdownValue == 'Anyone with the Link') &&
+            if ((dropdownValue == 'Anyone with the Link') &&
                 (privacy == 'Public')) {
               link = false;
               password = false;
             }
-
             print(PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        privateToPublicDate:
-                            changetoIso(timePublic.text, datePublic.text),
-                        publicDate:
-                            changetoIso(timePublish.text, datePublish.text),
-                        publishNow: publishNow));
+                    alwaysPrivate: alwaysPrivate,
+                    link: link,
+                    isPublic: isPublic,
+                    password: password,
+                    privateToPublicDate:
+                        changetoIso(timePublic.text, datePublic.text),
+                    publicDate: changetoIso(timePublish.text, datePublish.text),
+                    publishNow: publishNow)
+                .toMap());
+            print(chosen);
+            print(privacy);
+            print(dropdownValue);
+            print(publicly);
 
-            if(chosen == true && privacy == 'Public')
-            {
+            if (chosen == true && privacy == 'Public') {
+              print('public and chosen');
+              print(PublishModel(
+                      alwaysPrivate: alwaysPrivate,
+                      link: link,
+                      isPublic: isPublic,
+                      password: password,
+                      publicDate:
+                          changetoIso(timePublish.text, datePublish.text),
+                      publishNow: publishNow)
+                  .toMap());
               List data = await context.read<PublishCubit>().publish(
-                id,
-                PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        publicDate:
-                            changetoIso(timePublish.text, datePublish.text),
-                        publishNow: publishNow)
-                    .toMap());
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 2),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      content: Text(data[0] as String),
-                      shape: StadiumBorder(),
-                      behavior: SnackBarBehavior.floating,
-                    ));
-            Navigator.pushNamed(context, '/creatorlanding');
-            }
-            else if (chosen == true && privacy == 'Private' && publicly == 'Yes')
-            {
-              if(dropdownValue == 'Anyone with the Link')
-              {
-              List data  = await context.read<PublishCubit>().publish(
-                id,
-                PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        privateToPublicDate:
-                            changetoIso(timePublic.text, datePublic.text),
-                        publishNow: publishNow)
-                    .toMap());
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 2),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      content: Text(data[0] as String),
-                      shape: StadiumBorder(),
-                      behavior: SnackBarBehavior.floating,
-                    ));
-            Navigator.pushNamed(context, '/creatorlanding');
-              } else
-              {
-                List data  = await context.read<PublishCubit>().publish(
-                id,
-                PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        privateToPublicDate:
-                            changetoIso(timePublic.text, datePublic.text),
-                        publishNow: publishNow,
-                        generatedPassword:passward)
-                    .toMap());
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 2),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      content: Text(data[0] as String),
-                      shape: StadiumBorder(),
-                      behavior: SnackBarBehavior.floating,
-                    ));
-              Navigator.pushNamed(context, '/creatorlanding');
-
-              }
-            }
-            else if (chosen == true && privacy == 'Private' && publicly == 'no')
-            { if(dropdownValue == 'Anyone with the Link')
-              {
-                List data = await context.read<PublishCubit>().publish(
                   id,
                   PublishModel(
                           alwaysPrivate: alwaysPrivate,
                           link: link,
                           isPublic: isPublic,
                           password: password,
+                          publicDate:
+                              changetoIso(timePublish.text, datePublish.text),
                           publishNow: publishNow)
                       .toMap());
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        duration: Duration(seconds: 2),
-                        // ignore: prefer_interpolation_to_compose_strings
-                        content: Text(data[0] as String),
-                        shape: StadiumBorder(),
-                        behavior: SnackBarBehavior.floating,
-                      ));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: Duration(seconds: 2),
+                // ignore: prefer_interpolation_to_compose_strings
+                content: Text(data[0] as String),
+                shape: StadiumBorder(),
+                behavior: SnackBarBehavior.floating,
+              ));
               Navigator.pushNamed(context, '/creatorlanding');
-            }
-            else
-            {
-              List data = await context.read<PublishCubit>().publish(
-                id,
-                PublishModel(
+            } else if (chosen == true &&
+                privacy == 'Private' &&
+                publicly == 'Yes') {
+              if (dropdownValue == 'Anyone with the Link') {
+                print('Private and Yes and Anyone with the Link');
+                print(PublishModel(
                         alwaysPrivate: alwaysPrivate,
                         link: link,
                         isPublic: isPublic,
                         password: password,
-                        publishNow: publishNow,generatedPassword:passward)
+                        privateToPublicDate:
+                            changetoIso(timePublic.text, datePublic.text),
+                        publishNow: publishNow)
                     .toMap());
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(seconds: 2),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      content: Text(data[0] as String),
-                      shape: StadiumBorder(),
-                      behavior: SnackBarBehavior.floating,
-                    ));
-            Navigator.pushNamed(context, '/creatorlanding');
-
-            }
-
-                
-
+                List data = await context.read<PublishCubit>().publish(
+                    id,
+                    PublishModel(
+                            alwaysPrivate: alwaysPrivate,
+                            link: link,
+                            isPublic: isPublic,
+                            password: password,
+                            privateToPublicDate:
+                                changetoIso(timePublic.text, datePublic.text),
+                            publishNow: publishNow)
+                        .toMap());
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: Duration(seconds: 2),
+                  // ignore: prefer_interpolation_to_compose_strings
+                  content: Text(data[0] as String),
+                  shape: StadiumBorder(),
+                  behavior: SnackBarBehavior.floating,
+                ));
+                Navigator.pushNamed(context, '/creatorlanding');
+              } else {
+                if (formKey.currentState!.validate()) {
+                  print('Private and Yes and Only People With Passward');
+                  print(PublishModel(
+                          alwaysPrivate: alwaysPrivate,
+                          link: link,
+                          isPublic: isPublic,
+                          password: password,
+                          privateToPublicDate:
+                              changetoIso(timePublic.text, datePublic.text),
+                          publishNow: publishNow,generatedPassword: genPassward)
+                      .toMap());
+                  List data = await context.read<PublishCubit>().publish(
+                      id,
+                      PublishModel(
+                              alwaysPrivate: alwaysPrivate,
+                              link: link,
+                              isPublic: isPublic,
+                              password: password,
+                              privateToPublicDate:
+                                  changetoIso(timePublic.text, datePublic.text),
+                              publishNow: publishNow,
+                              generatedPassword: genPassward)
+                          .toMap());
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 2),
+                    // ignore: prefer_interpolation_to_compose_strings
+                    content: Text(data[0] as String),
+                    shape: StadiumBorder(),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                  Navigator.pushNamed(context, '/creatorlanding');
+                }
+              }
+            } else if (chosen == true &&
+                privacy == 'Private' &&
+                publicly == 'No') {
+              if (dropdownValue == 'Anyone with the Link') {
+                print('Private and No and Anyone with the Link');
+                print(PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        publishNow: publishNow)
+                    .toMap());
+                List data = await context.read<PublishCubit>().publish(
+                    id,
+                    PublishModel(
+                            alwaysPrivate: alwaysPrivate,
+                            link: link,
+                            isPublic: isPublic,
+                            password: password,
+                            publishNow: publishNow)
+                        .toMap());
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: Duration(seconds: 2),
+                  // ignore: prefer_interpolation_to_compose_strings
+                  content: Text(data[0] as String),
+                  shape: StadiumBorder(),
+                  behavior: SnackBarBehavior.floating,
+                ));
+                Navigator.pushNamed(context, '/creatorlanding');
+              } else {
+                if (formKey.currentState!.validate()) {
+                  print('Private and No and Only People With Passward');
+                  print(PublishModel(
+                          alwaysPrivate: alwaysPrivate,
+                          link: link,
+                          isPublic: isPublic,
+                          password: password,
+                          generatedPassword: genPassward,
+                          publishNow: publishNow)
+                      .toMap());
+                  List data = await context.read<PublishCubit>().publish(
+                      id,
+                      PublishModel(
+                              alwaysPrivate: alwaysPrivate,
+                              link: link,
+                              isPublic: isPublic,
+                              password: password,
+                              publishNow: publishNow,
+                              generatedPassword: genPassward)
+                          .toMap());
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    duration: Duration(seconds: 2),
+                    // ignore: prefer_interpolation_to_compose_strings
+                    content: Text(data[0] as String),
+                    shape: StadiumBorder(),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                  Navigator.pushNamed(context, '/creatorlanding');
+                }
+              }
             }
           },
           child: Text(
@@ -269,6 +314,7 @@ class _PublishPageState extends State<PublishPage> {
                             publicly = '';
                             datePublic.text = '';
                             timePublic.text = '';
+                            genPassward='';
                             isPublic = true;
                             chosen = true;
                             context.read<EventTicketsCubit>().EventIsPublic();
@@ -299,6 +345,7 @@ class _PublishPageState extends State<PublishPage> {
                             Schedule = ''; //publish now or later
                             datePublish.text = '';
                             timePublish.text = '';
+                            
                             context.read<EventTicketsCubit>().EventIsPrivate();
                           });
                         }),
@@ -518,7 +565,7 @@ class _PublishPageState extends State<PublishPage> {
                                       .EventIsPrivateAndWithLink();
                                 } else if (dropdownValue ==
                                     'Only People With Passward') {
-                                      link = false;
+                                  link = false;
                                   password = true;
                                   context
                                       .read<EventTicketsCubit>()
@@ -540,12 +587,12 @@ class _PublishPageState extends State<PublishPage> {
                                       labelText: 'Password *',
                                       helperText: 'Required'),
                                   validator: (value) {
-                                    passward = value!;
-                                    if (passward.trim().isEmpty) {
+                                    password = true;
+                                    genPassward = value!;
+                                    if (genPassward.trim().isEmpty) {
                                       return 'Password is required.';
                                     }
-                                    return formValidator.passowrdValidty(
-                                        passward); //not more than 50 characters
+                                    return null; 
                                   },
                                 );
                               } else {

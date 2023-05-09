@@ -1,4 +1,6 @@
 import 'package:expandable/expandable.dart';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +19,9 @@ String getTheSmallestPrice(List tiers) {
   List prices = [];
 
   for (var i = 0; i < tiers.length; i++) {
+    if (tiers[i]['price'] == 'Free') {
+      return 'Free';
+    }
     prices.add(int.parse(tiers[i]['price']));
   }
   int price = prices.reduce((curr, next) => curr < next ? curr : next);
@@ -277,7 +282,7 @@ class _EventPageState extends State<EventPage> {
                                                                     'nameAndPrice'])[
                                                             1]) *
                                                         disc)
-                                                    .toInt())
+                                                    .toString())
                                             .toMap());
                                       }
                                     }
