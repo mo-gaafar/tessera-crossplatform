@@ -41,6 +41,7 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return CustomSideMenu(
+      viewMode: 'Organize',
       sideMenuKey: _sideMenuKey,
       child: Scaffold(
         backgroundColor: Colors.black,

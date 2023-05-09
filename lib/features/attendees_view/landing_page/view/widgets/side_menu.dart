@@ -4,10 +4,15 @@ import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 import 'package:tessera/features/attendees_view/landing_page/view/widgets/side_menu_components.dart';
 
 class CustomSideMenu extends StatelessWidget {
-  CustomSideMenu({super.key, required this.child, required this.sideMenuKey});
+  CustomSideMenu(
+      {super.key,
+      required this.child,
+      required this.sideMenuKey,
+      required this.viewMode});
 
   final GlobalKey<SideMenuState> sideMenuKey;
   final Widget child;
+  final String viewMode;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class CustomSideMenu extends StatelessWidget {
           background: Theme.of(context).appBarTheme.backgroundColor,
           closeIcon: null,
           key: sideMenuKey,
-          menu: const CustomSideMenuComponents(),
+          menu: CustomSideMenuComponents(viewMode: viewMode),
           type: SideMenuType.slideNRotate,
           child: GestureDetector(
               onHorizontalDragUpdate: (details) {

@@ -5,9 +5,10 @@ import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/authentication/data/user_model.dart';
 
 class CustomSideMenuComponents extends StatelessWidget {
-  const CustomSideMenuComponents({super.key});
+  const CustomSideMenuComponents({super.key, required this.viewMode});
 
   final fontColor = Colors.white;
+  final String viewMode;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,7 @@ class CustomSideMenuComponents extends StatelessWidget {
               size: 20.0,
               color: Theme.of(context).iconTheme.color,
             ),
-            title: const Text('Organize'),
+            title: Text(viewMode),
             dense: true,
           ),
         ],
