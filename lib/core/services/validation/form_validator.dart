@@ -107,7 +107,7 @@ class FormValidator {
   String? numberValidty(String name) {
     RegExp lowerCaseRegExp = RegExp(r'[a-z]');
     RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~.]');
     RegExp numberRegExp = RegExp(r'[0-9]');
 
     if (specialCharRegExp.hasMatch(name) == true) {

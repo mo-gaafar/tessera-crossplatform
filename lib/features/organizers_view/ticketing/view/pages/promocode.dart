@@ -32,12 +32,15 @@ class _PromoCodeState extends State<PromoCode> {
   late dynamic output;
 
   Future<dynamic> loadCSV() async {
+    //type: FileType.custom, allowedExtensions: ['csv']
     final result = await FilePicker.platform
-        .pickFiles(type: FileType.custom, allowedExtensions: ['csv', 'xlsx']);
-    final file = result!.files.single.path;
-    final filefinal = File(file!);
-    final input = await filefinal.readAsString();
-    return input;
+        .pickFiles();
+      if (result != null) {
+        String? filePath = result.files.single.path;
+        // Do something with the file path
+        
+        return filePath;
+      }
   }
 
   @override
@@ -81,6 +84,7 @@ class _PromoCodeState extends State<PromoCode> {
                   }
                 }
               } else {
+                output=loadCSV();
                 if (output != null) {
                   String message = await context
                       .read<PromocodeCubit>()

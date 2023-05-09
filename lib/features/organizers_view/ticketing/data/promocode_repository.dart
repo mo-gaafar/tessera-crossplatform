@@ -18,10 +18,8 @@ class PromocodeRepository {
   /// Sends the booking basic information to the database.
   ///
   /// Returns [true] if the booking is done successfully.
-  static Future importPromocode(var data,String id) async {
-    final responseBody = await NetworkOrgService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/import-promo/$id',
-        data);
+  static Future importPromocode(String id,var filePath) async {
+    final responseBody = await NetworkOrgService.uploadFile('https://www.tessera.social/api/event-management/import-promo/$id', filePath);
     return responseBody;
   }
   
