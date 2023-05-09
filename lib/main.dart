@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:tessera/core/router/router.dart';
 import 'package:tessera/core/theme/app_theme.dart';
@@ -7,6 +6,13 @@ import 'package:tessera/core/theme/cubit/theme_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/attendees_view/events/cubit/event_book_cubit.dart';
+import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.dart';
+import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_store_cubit.dart';
+
+import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
+import 'features/organizers_view/ticketing/cubit/tickets_store_cubit.dart';
 
 void main() {
   DartPluginRegistrant.ensureInitialized();
@@ -32,6 +38,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => EventBookCubit(),
         ),
+        BlocProvider(
+          create: (context) => EventTicketsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => MyCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PromocodeCubit(),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
@@ -49,11 +64,6 @@ class MyApp extends StatelessWidget {
                   }
                 },
               ),
-              // BlocListener<EventsFilterCubit, EventsFilterState>(
-              //   listener: (context, state) {
-              //     // TODO: implement listener
-              //   },
-              // ),
             ],
             child: MaterialApp(
               scaffoldMessengerKey: snackbarKey,

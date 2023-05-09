@@ -18,9 +18,18 @@ import 'package:tessera/features/organizers_view/event_creation/view/Pages/newev
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_receipt_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_setdate_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_title_screen.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/ticket_default.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/add_tickets.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
 import 'package:tessera/features/attendees_view/landing_page/view/pages/landing_page.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/make_sure.dart';
+import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/event_screen.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/check_out.dart';
+
+import '../../features/organizers_view/ticketing/view/pages/publishing.dart';
+import '../../features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
 /// Acts as the main router for the app. Contains all possible routes.
 
@@ -66,6 +75,19 @@ class AppRouter {
             child: const LandingPage(),
           ),
         );
+      case '/eventPage':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => EventPage(eventData: args[0],iD:args[1]));
+      case '/checkOut':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) =>
+                CheckOut(charge: args[0], ticketTier: args[1], data: args[2], id: args[3], promocode: args[4],));
+      case '/makeSure':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => MakeSure(dataEvent: args[0], id: args[1],));
       case '/creatorlanding':
         return MaterialPageRoute(
           builder: (_) => CreatorLandingPage(),
@@ -90,6 +112,23 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const NewEventReceipt(),
         );
+
+      case '/neweventtickets':
+        return MaterialPageRoute(
+          builder: (_) => const TicketDefault(),
+        );
+      case '/addtickets':
+        return MaterialPageRoute(
+          builder: (_) => AddTickets(),
+        );
+      /*case '/ticketseditpromo':
+        return MaterialPageRoute(
+          builder: (_) => TicketPage(lisofteirs: [],),
+        );*/
+      case '/publishPage':
+        return MaterialPageRoute(
+          builder: (_) => PublishPage(),
+
       case '/dashboard':
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

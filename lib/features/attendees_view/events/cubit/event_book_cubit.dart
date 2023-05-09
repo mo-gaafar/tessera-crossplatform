@@ -15,33 +15,60 @@ part 'event_book_state.dart';
 class EventBookCubit extends Cubit<EventBookState> {
   EventBookCubit() : super(EventInitial());
 
+
   /// Returns the[EventModel] basic info
   // basic info is added to the event model
   Future<EventModel> getEventData(String id) async {
     emit(EventLoading());
-    var eventinfo = await EventRepository.eventBasicInfo(id);
-    EventModel event = EventModel.fromMap(eventinfo);
-
-    emit(
-      EventChosen(),
-    );
-    return event;
+    try {
+      var eventinfo = await EventRepository.eventBasicInfo(id);
+      EventModel event = EventModel.fromMap(eventinfo);
+      emit(EventChosen());
+      return event;
+    } catch (e) {
+      emit(Error());
+      throw Exception('Error when reciving the data');
+    }
   }
 
   ///Sends the [BookingModel] data to the backend.
   ///
   ///Returns  True if successfully booked and false otherwise
-  Future<bool> postBookingData(var data) async {
-    var response = await EventRepository.bookingTicketInfo(jsonEncode(data));
+  Future<bool> postBookingData(var data,String id) async {
+    //try {
+      
+      var response = await EventRepository.bookingTicketInfo(data,id);
 
-    if (response['success'] == true) {
-      emit(
-        EventSuccessfullyBooked(),
-      );
+      if (response['success'] == true) {
+        emit(EventSuccessfullyBooked());
 
-      return true;
-    } else {
-      return false;
-    }
+        return true;
+      } else {
+        return false;
+      }
+    //} catch (e) {
+      //emit(Error());
+      //throw Exception('Error when reciving the data');
+    //}
+    
+  }
+
+  Future<dynamic> promocodeValidity(var data,String id) async {
+    //try {
+      
+      var response = await EventRepository.promocodeAvailable(data,id);
+
+      if (response['success'] == true) {
+        emit(PromocodeProcessing());
+
+        return response;
+      } else {
+        return response;
+      }
+    //} catch (e) {
+      //emit(Error());
+      //throw Exception('Error when reciving the data');
+    //}
+    
   }
 }

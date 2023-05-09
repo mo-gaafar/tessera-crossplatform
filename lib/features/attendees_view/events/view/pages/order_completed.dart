@@ -15,7 +15,7 @@ class OrderComplete extends StatelessWidget {
                 //back to event page
                 Navigator.pushNamed(context, '/second');
               },
-              icon: Icon(Icons.close)),
+              icon: const Icon(Icons.close)),
           elevation: 3,
           backgroundColor: AppColors.primary,
         ),
@@ -29,7 +29,7 @@ class OrderComplete extends StatelessWidget {
                   onTap: () {
                     //back to landing page
                     Navigator.pushNamed(context, '/');
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       duration: Duration(seconds: 2),
                       content: Text('Your E-Ticket Was Sent Via Email'),
                       shape: StadiumBorder(),
@@ -42,6 +42,7 @@ class OrderComplete extends StatelessWidget {
           child: Center(
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            // ignore: prefer_const_literals_to_create_immutables
             children: [
               const Text(
                 'Order Completed',

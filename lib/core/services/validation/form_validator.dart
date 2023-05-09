@@ -33,7 +33,7 @@ class FormValidator {
     //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
     RegExp lowerCaseRegExp = RegExp(r'[a-z]');
     RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~+-]');
     RegExp numberRegExp = RegExp(r'[0-9]');
 
     if (specialCharRegExp.hasMatch(name) == true) {
@@ -101,6 +101,61 @@ class FormValidator {
     } else if (upperCaseRegExp.hasMatch(data) == true) {
       return 'No uppercase letters  is allowed.';
     } else {
+      return null;
+    }
+  }
+  String? numberValidty(String name) {
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~.]');
+    RegExp numberRegExp = RegExp(r'[0-9]');
+
+    if (specialCharRegExp.hasMatch(name) == true) {
+      return 'No special character is allowed.';
+    } else if (lowerCaseRegExp.hasMatch(name) == true) {
+      return 'no charachters is allowed.';
+    } 
+    else if (upperCaseRegExp.hasMatch(name) == true) {
+      return 'no charachters is allowed.';
+    }else {
+      return null;
+    }
+  }
+  String? ticketNameValidty(String name) {
+    // String pattern =
+    //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~+-]');
+    RegExp numberRegExp = RegExp(r'[0-9]');
+    if (name.length > 50) {
+      return 'ticket name must at most 50 character.';
+    }
+
+    if (specialCharRegExp.hasMatch(name) == true) {
+      return 'No special character is allowed.';
+    } else if (numberRegExp.hasMatch(name) == true) {
+      return 'No numbers is allowed.';
+    } else {
+      return null;
+    }
+  }
+  String? codeValidty(String name) {
+    // String pattern =
+    //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~+-]');
+    RegExp numberRegExp = RegExp(r'[0-9]');
+    if (name.length > 50) {
+      return 'promocode must at most 50 character.';
+    }
+    if (name.contains(' ')) {
+      return 'promocode must not have any space character.';
+    }
+    if (specialCharRegExp.hasMatch(name) == true) {
+      return 'No special character is allowed.';
+    }  else {
       return null;
     }
   }
