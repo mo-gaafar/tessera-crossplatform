@@ -52,97 +52,90 @@ class CheckOut extends StatelessWidget {
             },
             icon: const Icon(Icons.close)),
         elevation: 0,
-        backgroundColor: AppColors.lightBackground,
         title: const Text(
           'Check Out Information',
           textAlign: TextAlign.left,
-          style: TextStyle(
-              fontFamily: 'NeuePlak',
-              color: AppColors.textOnLight,
-              fontSize: 25),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
         //backgroundColor: AppColors.primary,
       ),
       bottomNavigationBar: BottomAppBar(
-          color: AppColors.lightBackground,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: CircularCountDownTimer(
-                    width: 60,
-                    height: 60,
-                    duration: _duration,
-                    fillColor: AppColors.secondary,
-                    ringColor: AppColors.primary,
-                    onComplete: () {
-                      //back to event page
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        duration: Duration(seconds: 2),
-                        content: Text('TIME OUT'),
-                        shape: StadiumBorder(),
-                        behavior: SnackBarBehavior.floating,
-                      ));
-                    },
-                  ),
-                ),
-                Expanded(
-                    flex: 3,
-                    child: EmailButton(
-                      buttonText: 'CheckOut',
-                      colourBackground: AppColors.primary,
-                      colourText: Colors.white,
-                      onTap: () async {
-                        if (formKey.currentState!.validate()) {
-                          ContactInformation info = ContactInformation(
-                              firstName: firstCheckOut,
-                              lastName: lastCheckOut,
-                              email: inputEmailCheckOut);
-
-                          if (promocode == '') {
-                            book = BookingModel(
-                                contactInformation: info.toMap(),
-                                ticketTierSelected: ticketTier);
-                          } else {
-                            book = BookingModel(
-                                contactInformation: info.toMap(),
-                                promocode: promocode,
-                                ticketTierSelected: ticketTier);
-                          }
-                          // ignore: avoid_print
-                          print(jsonEncode(book.toMap()));
-                          bool output = await context
-                              .read<EventBookCubit>()
-                              .postBookingData(book.toMap(), id);
-                          if (output == true) {
-                            Navigator.pushReplacementNamed(
-                                context, '/landingPage');
-                            print('done');
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              duration: Duration(seconds: 2),
-                              content: Text('Successfully booked'),
-                              shape: StadiumBorder(),
-                              behavior: SnackBarBehavior.floating,
-                            ));
-                          } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
-                              duration: Duration(seconds: 2),
-                              content: Text('Error in booking'),
-                              shape: StadiumBorder(),
-                              behavior: SnackBarBehavior.floating,
-                            ));
-                          }
-                        }
-                      },
-                    )),
-              ],
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: CircularCountDownTimer(
+                width: 60,
+                height: 60,
+                duration: _duration,
+                fillColor: AppColors.secondary,
+                ringColor: AppColors.primary,
+                onComplete: () {
+                  //back to event page
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    duration: Duration(seconds: 2),
+                    content: Text('TIME OUT'),
+                    shape: StadiumBorder(),
+                    behavior: SnackBarBehavior.floating,
+                  ));
+                },
+              ),
             ),
-          )),
-      backgroundColor: AppColors.lightBackground,
+            Expanded(
+                flex: 3,
+                child: EmailButton(
+                  buttonText: 'CheckOut',
+                  colourBackground: AppColors.primary,
+                  colourText: Colors.white,
+                  onTap: () async {
+                    if (formKey.currentState!.validate()) {
+                      ContactInformation info = ContactInformation(
+                          firstName: firstCheckOut,
+                          lastName: lastCheckOut,
+                          email: inputEmailCheckOut);
+
+                      if (promocode == '') {
+                        book = BookingModel(
+                            contactInformation: info.toMap(),
+                            ticketTierSelected: ticketTier);
+                      } else {
+                        book = BookingModel(
+                            contactInformation: info.toMap(),
+                            promocode: promocode,
+                            ticketTierSelected: ticketTier);
+                      }
+                      // ignore: avoid_print
+                      print(jsonEncode(book.toMap()));
+                      bool output = await context
+                          .read<EventBookCubit>()
+                          .postBookingData(book.toMap(), id);
+                      if (output == true) {
+                        Navigator.pushReplacementNamed(context, '/landingPage');
+                        print('done');
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Successfully booked'),
+                          shape: StadiumBorder(),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text('Error in booking'),
+                          shape: StadiumBorder(),
+                          behavior: SnackBarBehavior.floating,
+                        ));
+                      }
+                    }
+                  },
+                )),
+          ],
+        ),
+      )),
       body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
@@ -153,10 +146,7 @@ class CheckOut extends StatelessWidget {
                 children: [
                   const Text(
                     'Your tickets',
-                    style: TextStyle(
-                        fontFamily: 'NeuePlak',
-                        color: AppColors.textOnLight,
-                        fontSize: 30),
+                    style: TextStyle(fontFamily: 'NeuePlak', fontSize: 30),
                   ),
                   const SizedBox(
                     height: 20,
@@ -179,26 +169,20 @@ class CheckOut extends StatelessWidget {
                                     'Tier: ' +
                                         ticketTier[i]['tierName'].toString(),
                                     style: TextStyle(
-                                        fontFamily: 'NeuePlak',
-                                        color: AppColors.lightBackground,
-                                        fontSize: 30),
+                                        fontFamily: 'NeuePlak', fontSize: 30),
                                   ),
                                   Text(
                                     // ignore: prefer_interpolation_to_compose_strings
                                     'Number of Ticket: ' +
                                         ticketTier[i]['quantity'].toString(),
                                     style: TextStyle(
-                                        fontFamily: 'NeuePlak',
-                                        color: AppColors.lightBackground,
-                                        fontSize: 30),
+                                        fontFamily: 'NeuePlak', fontSize: 30),
                                   ),
                                   Text(
                                     'Price: ' +
                                         ticketTier[i]['price'].toString(),
                                     style: TextStyle(
-                                        fontFamily: 'NeuePlak',
-                                        color: AppColors.lightBackground,
-                                        fontSize: 30),
+                                        fontFamily: 'NeuePlak', fontSize: 30),
                                   ),
                                   const Divider(
                                     color: AppColors.primary,
@@ -220,10 +204,7 @@ class CheckOut extends StatelessWidget {
                   ),
                   const Text(
                     'Billing Basic Information', //APP BAR EVENT NAME
-                    style: TextStyle(
-                        fontFamily: 'NeuePlak',
-                        color: AppColors.textOnLight,
-                        fontSize: 29),
+                    style: TextStyle(fontFamily: 'NeuePlak', fontSize: 29),
                   ),
                   Row(
                     children: [
@@ -292,10 +273,8 @@ class CheckOut extends StatelessWidget {
                       children: [
                         const Text(
                           'pay with',
-                          style: TextStyle(
-                              fontFamily: 'NeuePlak',
-                              color: AppColors.textOnLight,
-                              fontSize: 20),
+                          style:
+                              TextStyle(fontFamily: 'NeuePlak', fontSize: 20),
                         ),
                         const SizedBox(
                           height: 20,
