@@ -14,6 +14,7 @@ import 'package:tessera/features/organizers_view/event_creation/cubit/createEven
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_state.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_store_cubit.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
 
 import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 import 'features/organizers_view/ticketing/cubit/tickets_store_cubit.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AtendeeManagementCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PublishCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
