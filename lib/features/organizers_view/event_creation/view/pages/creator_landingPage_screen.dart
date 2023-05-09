@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 import 'package:tessera/features/attendees_view/landing_page/view/widgets/side_menu.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/my_search_delegated.dart';
 import 'package:tessera/features/organizers_view/event_creation/data/organiser_model.dart';
@@ -8,14 +9,29 @@ class CreatorLandingPage extends StatelessWidget {
   var _controller = TextEditingController();
   OrganiserModel organiserModel =
       OrganiserModel(email: 'email', accessToken: '6439f95a3d607d6c49e56a1e');
+  final GlobalKey<SideMenuState> _sideMenuKey = GlobalKey<SideMenuState>();
+
+  void toggleSideMenu() {
+    if (_sideMenuKey.currentState!.isOpened) {
+      _sideMenuKey.currentState!.closeSideMenu();
+    } else {
+      _sideMenuKey.currentState!.openSideMenu();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: CustomSideMenu(
+        sideMenuKey: _sideMenuKey,
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            leading: IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => toggleSideMenu(),
+            ),
             backgroundColor: Colors.white,
             bottom: const TabBar(
               tabs: [

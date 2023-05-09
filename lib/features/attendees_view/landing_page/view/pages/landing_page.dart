@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shrink_sidemenu/shrink_sidemenu.dart';
 import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
 import 'dart:math';
 
@@ -17,6 +18,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   late Image headerImage;
+  final GlobalKey<SideMenuState> _sideMenuKey = GlobalKey<SideMenuState>();
 
   @override
   void initState() {
@@ -27,10 +29,19 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
+  void toggleSideMenu() {
+    if (_sideMenuKey.currentState!.isOpened) {
+      _sideMenuKey.currentState!.closeSideMenu();
+    } else {
+      _sideMenuKey.currentState!.openSideMenu();
+    }
+  }
+
   // final userLocation = 'New York, ;
   @override
   Widget build(BuildContext context) {
     return CustomSideMenu(
+      sideMenuKey: _sideMenuKey,
       child: Scaffold(
         backgroundColor: Colors.black,
         body: CustomScrollView(
@@ -38,6 +49,10 @@ class _LandingPageState extends State<LandingPage> {
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => toggleSideMenu(),
+              ),
               elevation: 0,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
