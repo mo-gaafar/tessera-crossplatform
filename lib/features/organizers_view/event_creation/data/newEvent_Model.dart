@@ -20,6 +20,7 @@ class NewEventModel {
   String? endDate;
   String? endTime;
   String? eventStatus = 'live';
+  String? eventID;
   String? eventCategory;
   String? eventLocationName;
   String? timeZoneName;

@@ -73,7 +73,7 @@ class NewEventReceipt extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              MyImagePicker(),
+              //MyImagePicker(),
               ReceiptSection(
                 sectionIcon: const Icon(Icons.rtt),
                 sectionChild: Column(
@@ -273,6 +273,7 @@ class NewEventReceipt extends StatelessWidget {
                   ],
                 ),
               ),
+              Spacer(),
               EmailButton(
                 buttonText: 'Create event and continue to ticketing',
                 colourBackground: AppColors.buttonColor,
@@ -287,6 +288,11 @@ class NewEventReceipt extends StatelessWidget {
                           context.read<AuthCubit>().currentUser.accessToken!);
                   context.read<CreateEventCubit>().displayError(
                       errormessage: response['message'].toString());
+                  if (response['success']) {
+                    context.read<CreateEventCubit>().currentEvent.eventID =
+                        response['event_Id'];
+                    Navigator.pushNamed(context, '/additionaleventdetails');
+                  }
                 },
               )
             ],

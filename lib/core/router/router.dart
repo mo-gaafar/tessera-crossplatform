@@ -24,6 +24,7 @@ import 'package:tessera/features/organizers_view/event_creation/view/Pages/newev
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_receipt_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_setdate_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_title_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/pages/newevent_additionalDetails_screen.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/ticket_default.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/add_tickets.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
@@ -166,7 +167,10 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => AddAtendeeDetails(),
         );
-
+      case '/additionaleventdetails':
+        return MaterialPageRoute(
+          builder: (_) => AdditionalDetailsPage(),
+        );
       case '/dashboard':
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

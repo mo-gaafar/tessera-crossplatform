@@ -17,7 +17,6 @@ class LogIn extends StatelessWidget {
   LogIn({super.key});
 
   final formkey = GlobalKey<FormState>();
-  String password = '';
   final FormValidator formValidator = FormValidator();
 
   @override
@@ -83,13 +82,15 @@ class LogIn extends StatelessWidget {
                       onTap: () async {
                         if (formkey.currentState!.validate()) {
                           //* Attempt email sign in
+                          print(context.read<AuthCubit>().currentUser.email);
+                          print(context.read<AuthCubit>().currentUser.password);
                           await context.read<AuthCubit>().signIn(
                                 EmailAuthService.withData(
                                     email: context
                                         .read<AuthCubit>()
                                         .currentUser
                                         .email,
-                                    password: password),
+                                    password: context.read<AuthCubit>().currentUser.password!),
                                 LocationService(),
                               );
 

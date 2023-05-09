@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => MyCubit(),
         ),
-        BlocProvider(
-          create: (context) => PromocodeCubit(),
-        ),
+        BlocProvider(create: (context) => PromocodeCubit()),
         BlocProvider(
           create: (context) => CreateEventCubit(),
         ),
