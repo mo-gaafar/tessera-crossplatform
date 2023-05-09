@@ -84,7 +84,7 @@ class _PromoCodeState extends State<PromoCode> {
                   }
                 }
               } else {
-                output=loadCSV();
+
                 if (output != null) {
                   String message = await context
                       .read<PromocodeCubit>()
@@ -160,7 +160,7 @@ class _PromoCodeState extends State<PromoCode> {
                   if (state is TicketUploadPromocode) {
                     return TextButton(
                       onPressed: () async {
-                        output = loadCSV();
+                        output = await loadCSV();
                       },
                       child: Text(
                         'upload promocode',

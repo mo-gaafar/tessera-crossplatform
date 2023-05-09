@@ -115,6 +115,8 @@ class _PublishPageState extends State<PublishPage> {
             }
             else if (chosen == true && privacy == 'Private' && publicly == 'Yes')
             {
+              if(dropdownValue == 'Anyone with the Link')
+              {
               List data  = await context.read<PublishCubit>().publish(
                 id,
                 PublishModel(
@@ -134,8 +136,53 @@ class _PublishPageState extends State<PublishPage> {
                       behavior: SnackBarBehavior.floating,
                     ));
             Navigator.pushNamed(context, '/creatorlanding');
+              } else
+              {
+                List data  = await context.read<PublishCubit>().publish(
+                id,
+                PublishModel(
+                        alwaysPrivate: alwaysPrivate,
+                        link: link,
+                        isPublic: isPublic,
+                        password: password,
+                        privateToPublicDate:
+                            changetoIso(timePublic.text, datePublic.text),
+                        publishNow: publishNow,
+                        generatedPassword:passward)
+                    .toMap());
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      duration: Duration(seconds: 2),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      content: Text(data[0] as String),
+                      shape: StadiumBorder(),
+                      behavior: SnackBarBehavior.floating,
+                    ));
+              Navigator.pushNamed(context, '/creatorlanding');
+
+              }
             }
             else if (chosen == true && privacy == 'Private' && publicly == 'no')
+            { if(dropdownValue == 'Anyone with the Link')
+              {
+                List data = await context.read<PublishCubit>().publish(
+                  id,
+                  PublishModel(
+                          alwaysPrivate: alwaysPrivate,
+                          link: link,
+                          isPublic: isPublic,
+                          password: password,
+                          publishNow: publishNow)
+                      .toMap());
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        duration: Duration(seconds: 2),
+                        // ignore: prefer_interpolation_to_compose_strings
+                        content: Text(data[0] as String),
+                        shape: StadiumBorder(),
+                        behavior: SnackBarBehavior.floating,
+                      ));
+              Navigator.pushNamed(context, '/creatorlanding');
+            }
+            else
             {
               List data = await context.read<PublishCubit>().publish(
                 id,
@@ -144,7 +191,7 @@ class _PublishPageState extends State<PublishPage> {
                         link: link,
                         isPublic: isPublic,
                         password: password,
-                        publishNow: publishNow)
+                        publishNow: publishNow,generatedPassword:passward)
                     .toMap());
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 2),
@@ -154,6 +201,8 @@ class _PublishPageState extends State<PublishPage> {
                       behavior: SnackBarBehavior.floating,
                     ));
             Navigator.pushNamed(context, '/creatorlanding');
+
+            }
 
                 
 
