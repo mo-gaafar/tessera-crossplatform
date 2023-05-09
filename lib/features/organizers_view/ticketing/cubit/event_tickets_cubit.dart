@@ -70,12 +70,12 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
     emit(TicketUploadPromocode());
   }
 
-  Future<String> addTicketData(var data, String id) async {
+  Future<String> addTicketData(var data, String id,String token) async {
     //
     //try {
     print('IN THE EVENT CUBIT ADD TICKET');
     //print(jsonEncode(data));
-    var response = await TicketsRepository.addEventTicketTier(data, id);
+    var response = await TicketsRepository.addEventTicketTier(data, id,token);
     print('response of add ticket tier');
     print(response);
     if (response['success'] == true) {
@@ -91,7 +91,7 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
     //}
   }
 
-  Future<String> editTicketData(var data, String id) async {
+  Future<String> editTicketData(var data, String id,String token) async {
     //try {
       print(jsonEncode(data));
       /*data = {
@@ -108,7 +108,7 @@ class EventTicketsCubit extends Cubit<EventTicketsState> {
       ]
     };*/
     print(jsonEncode(data));
-    var response = await TicketsRepository.editEventTicketTier(data, id);
+    var response = await TicketsRepository.editEventTicketTier(data, id,token);
 
     if (response['success'] == true) {
       emit(Ticketedited());

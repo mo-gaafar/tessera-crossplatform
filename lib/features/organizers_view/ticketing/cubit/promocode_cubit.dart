@@ -9,10 +9,10 @@ part 'promocode_state.dart';
 class PromocodeCubit extends Cubit<PromocodeState> {
   PromocodeCubit() : super(PromocodeInitial());
 
-  Future<String> addPromocode(String id, var data) async {
+  Future<String> addPromocode(String id, var data,String token) async {
     //try {
 
-    var response = await PromocodeRepository.addPromocode(data, id);
+    var response = await PromocodeRepository.addPromocode(data, id,token);
 
     if (response['success'] == true) {
       emit(PromocodeAdded());

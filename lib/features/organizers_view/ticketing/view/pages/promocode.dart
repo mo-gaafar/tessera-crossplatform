@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
@@ -63,7 +63,7 @@ class _PromoCodeState extends State<PromoCode> {
                                   code: code,
                                   discount: int.parse(discount),
                                   limitOfUses: int.parse(limitOfUses))
-                              .toMap());
+                              .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
                   print('message');
                   if (message == 'succussfully added promocode') {
                     print('tmam add promo');

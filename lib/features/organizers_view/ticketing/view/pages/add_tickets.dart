@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
-
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import '../../../../../core/services/validation/form_validator.dart';
 import '../../cubit/event_tickets_cubit.dart';
 import '../../cubit/tickets_store_cubit.dart';
@@ -88,7 +88,7 @@ class _AddTicketsState extends State<AddTickets> {
                                   endSelling: changetoIso(
                                       timeinputEnd.text, dateinputEnd.text))
                               .toMap(),
-                          id);
+                          id,context.read<AuthCubit>().currentUser.accessToken!);
                   if (message == 'successfully added') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),

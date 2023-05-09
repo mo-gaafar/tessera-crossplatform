@@ -50,16 +50,39 @@ class NetworkService {
   }
 
   /// Returns the response body in JSON format from a POST request.
-  static Future getPutApiResponse(String url, dynamic data) async {
+  static Future getPutApiResponse(String url, dynamic data,{String? token}) async {
+    Map<String, String> headers = {..._headers};
+    if (token != null) {
+      headers.addAll({'Authorization': 'Bearer $token'});
+    }
     try {
       http.Response response = await http
           .post(
             Uri.parse(url),
-            headers: _headers,
+            headers: headers,
             body: data,
           )
           .timeout(const Duration(seconds: 10));
       final responseJson = returnResponse(response);
+      return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+  }
+  static Future uploadFile(String url, String filePath) async {
+    try {
+      var postUri = Uri.parse(url);
+      http.MultipartRequest request = http.MultipartRequest("POST", postUri);
+
+      http.MultipartFile multipartFile =
+          await http.MultipartFile.fromPath('csvFile', filePath);
+
+      request.files.add(multipartFile);
+
+      http.StreamedResponse response = await request.send();
+
+      var responseJson = await response.stream.bytesToString();
+      print(responseJson);
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection');

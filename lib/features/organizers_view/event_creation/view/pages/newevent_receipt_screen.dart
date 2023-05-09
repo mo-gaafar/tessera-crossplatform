@@ -290,6 +290,7 @@ class NewEventReceipt extends StatelessWidget {
                         .currentEvent
                         .eventCategory !=
                     null) {
+                      print(context.read<AuthCubit>().currentUser.accessToken!);
                   final response =
                       await CreatorRepository.postCreatedEventBasicInfo(
                           context

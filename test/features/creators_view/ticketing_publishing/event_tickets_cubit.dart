@@ -1,60 +1,40 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 
-class MockGoalRepository extends Mock implements GoalRepository {}
+import 'package:flutter_test/flutter_test.dart';
+import 'package:bloc_test/bloc_test.dart';
 
 void main() {
-  late MockGoalRepository mockGoalRepository;
-  late GoalListCubit goalListCubit;
+  group('EventTicketsCubit', () {
+    late EventTicketsCubit eventTicketsCubit;
 
-  setUp(() {
-    mockGoalRepository = MockGoalRepository();
-    goalListCubit = GoalListCubit(goalRepository: mockGoalRepository);
-  });
+    setUp(() {
+      eventTicketsCubit = EventTicketsCubit();
+    });
 
-  group('fetchGoals()', () {
-    const List<Goal> tGoals = [
-      Goal(title: 'Goal 1', description: 'Description 1'),
-      Goal(title: 'Goal 2', description: 'Description 2'),
-      Goal(title: 'Goal 3', description: 'Description 3'),
-    ];
+    tearDown(() {
+      eventTicketsCubit.close();
+    });
 
-    final Exception tException = Exception('Failed to fetch goals.');
+    test('initial state is EventTicketsInitial', () {
+      expect(eventTicketsCubit.state, EventTicketsInitial());
+    });
 
-    blocTest<GoalListCubit, GoalListState>(
-      'emits [GoalListStatus.loading, GoalListStatus.success] when '
-      'fetchGoals() is called successfully.',
-      setUp: () => when(() => mockGoalRepository.fetchGoals())
-          .thenAnswer((_) async => tGoals),
-      build: () => goalListCubit,
-      act: (cubit) => cubit.fetchGoals(),
-      expect: () => <GoalListState>[
-        const GoalListState(status: GoalListStatus.loading),
-        const GoalListState(
-          status: GoalListStatus.success,
-          goals: tGoals,
-        ),
-      ],
-      verify: (_) async {
-        verify(() => mockGoalRepository.fetchGoals()).called(1);
-      },
+    blocTest<EventTicketsCubit, EventTicketsState>(
+      'eventIsPaid emits TicketIsPaid',
+      build: () => EventTicketsCubit(),
+      act: (cubit) => cubit.eventIsPaid(),
+      expect: () => [TicketIsPaid()],
     );
 
-    blocTest<GoalListCubit, GoalListState>(
-      'emits [GoalListStatus.loading, GoalListStatus.failure] when '
-      'fetchGoals() failed.',
-      setUp: () =>
-          when(() => mockGoalRepository.fetchGoals()).thenThrow(tException),
-      build: () => goalListCubit,
-      act: (cubit) => cubit.fetchGoals(),
-      expect: () => <GoalListState>[
-        const GoalListState(status: GoalListStatus.loading),
-        GoalListState(status: GoalListStatus.failure, exception: tException),
-      ],
-      verify: (_) async {
-        verify(() => mockGoalRepository.fetchGoals()).called(1);
-      },
+    blocTest<EventTicketsCubit, EventTicketsState>(
+      'eventIsFree emits TicketIsFree',
+      build: () => EventTicketsCubit(),
+      act: (cubit) => cubit.eventIsFree(),
+      expect: () => [TicketIsFree()],
     );
+
+    // Add more tests for other methods in the EventTicketsCubit class
   });
 }

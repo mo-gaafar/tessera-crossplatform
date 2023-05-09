@@ -11,10 +11,10 @@ class PublishCubit extends Cubit<PublishState> {
 
 
 
-  Future<dynamic> publish(String id, var data) async {
+  Future<dynamic> publish(String id, var data,String token) async {
     try {
       
-      var response = await PublishRepository.publishEvent(jsonEncode(data),id);
+      var response = await PublishRepository.publishEvent(data,id,token);
       if (response['success'] == true) {
         emit(EventPublished());
 

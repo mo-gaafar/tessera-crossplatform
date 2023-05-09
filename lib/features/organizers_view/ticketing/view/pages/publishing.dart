@@ -7,7 +7,7 @@ import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.d
 import 'package:tessera/features/organizers_view/ticketing/data/publish_data.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import '../../../../../core/services/validation/form_validator.dart';
-
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 String changetoIso(String time, String date) {
   if ((time == '') && (date == '')) {
     DateTime now = DateTime.now();
@@ -116,7 +116,7 @@ class _PublishPageState extends State<PublishPage> {
                           publicDate:
                               changetoIso(timePublish.text, datePublish.text),
                           publishNow: publishNow)
-                      .toMap());
+                      .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 duration: Duration(seconds: 2),
                 // ignore: prefer_interpolation_to_compose_strings
@@ -149,7 +149,7 @@ class _PublishPageState extends State<PublishPage> {
                             privateToPublicDate:
                                 changetoIso(timePublic.text, datePublic.text),
                             publishNow: publishNow)
-                        .toMap());
+                        .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   duration: Duration(seconds: 2),
                   // ignore: prefer_interpolation_to_compose_strings
@@ -181,7 +181,7 @@ class _PublishPageState extends State<PublishPage> {
                                   changetoIso(timePublic.text, datePublic.text),
                               publishNow: publishNow,
                               generatedPassword: genPassward)
-                          .toMap());
+                          .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 2),
                     // ignore: prefer_interpolation_to_compose_strings
@@ -212,7 +212,7 @@ class _PublishPageState extends State<PublishPage> {
                             isPublic: isPublic,
                             password: password,
                             publishNow: publishNow)
-                        .toMap());
+                        .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   duration: Duration(seconds: 2),
                   // ignore: prefer_interpolation_to_compose_strings
@@ -241,7 +241,7 @@ class _PublishPageState extends State<PublishPage> {
                               password: password,
                               publishNow: publishNow,
                               generatedPassword: genPassward)
-                          .toMap());
+                          .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 2),
                     // ignore: prefer_interpolation_to_compose_strings
