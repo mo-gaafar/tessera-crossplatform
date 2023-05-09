@@ -70,233 +70,241 @@ class NewEventReceipt extends StatelessWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              //MyImagePicker(),
-              ReceiptSection(
-                sectionIcon: const Icon(Icons.rtt),
-                sectionChild: Column(
-                  children: [
-                    MyEditabelText(
-                      title: context
-                          .read<CreateEventCubit>()
-                          .currentEvent
-                          .eventName
-                          .toString(),
-                      textStyle: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+        body: Column(
+          children: [
+            //MyImagePicker(),
+            ReceiptSection(
+              sectionIcon: const Icon(Icons.rtt),
+              sectionChild: Column(
+                children: [
+                  MyEditabelText(
+                    title: context
+                        .read<CreateEventCubit>()
+                        .currentEvent
+                        .eventName
+                        .toString(),
+                    textStyle: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                  MyEditabelText(
+                    title: "by Unnamed organizer",
+                    textStyle: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  MyEditabelText(
+                    title: (context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .description ==
+                            null)
+                        ? "Event description"
+                        : context
+                            .read<CreateEventCubit>()
+                            .currentEvent
+                            .description
+                            .toString(),
+                    textStyle:
+                        TextStyle(fontSize: 18, color: Colors.grey.shade700),
+                  ),
+                ],
+              ),
+            ),
+            ReceiptSection(
+              sectionIcon: const Icon(Icons.calendar_month),
+              sectionChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Event starts',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(
+                      children: [
+                        MyEditabelDateAndTimeText(
+                            text: context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .startDate!,
+                            dateOrTime: 'date',
+                            fromOrTo: 'from'),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        MyEditabelDateAndTimeText(
+                            text: context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .startTime!,
+                            dateOrTime: 'time',
+                            fromOrTo: 'from'),
+                      ],
                     ),
-                    MyEditabelText(
-                      title: "by Unnamed organizer",
-                      textStyle: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                  const Text(
+                    'Event ends',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(
+                      children: [
+                        MyEditabelDateAndTimeText(
+                            text: context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .endDate!,
+                            dateOrTime: 'date',
+                            fromOrTo: 'to'),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        MyEditabelDateAndTimeText(
+                            text: context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .endTime!,
+                            dateOrTime: 'time',
+                            fromOrTo: 'to'),
+                      ],
                     ),
-                    MyEditabelText(
-                      title: (context
+                  ),
+                ],
+              ),
+            ),
+            ReceiptSection(
+              sectionIcon: const Icon(
+                Icons.pin_drop_outlined,
+                color: Colors.grey,
+              ),
+              sectionChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MyDropDownMenu(
+                    myList: locationList,
+                    type: 'location',
+                  ),
+                  Text(((context
                                   .read<CreateEventCubit>()
                                   .currentEvent
-                                  .description ==
+                                  .eventLocationName ==
                               null)
-                          ? "Event description"
+                          ? context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .eventStatus
                           : context
                               .read<CreateEventCubit>()
                               .currentEvent
-                              .description
-                              .toString(),
-                      textStyle:
-                          TextStyle(fontSize: 18, color: Colors.grey.shade700),
-                    ),
-                  ],
-                ),
+                              .eventLocationName)
+                      .toString()),
+                ],
               ),
-              ReceiptSection(
-                sectionIcon: const Icon(Icons.calendar_month),
-                sectionChild: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Event starts',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Row(
-                        children: [
-                          MyEditabelDateAndTimeText(
-                              text: context
-                                  .read<CreateEventCubit>()
-                                  .currentEvent
-                                  .startDate!,
-                              dateOrTime: 'date',
-                              fromOrTo: 'from'),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                          MyEditabelDateAndTimeText(
-                              text: context
-                                  .read<CreateEventCubit>()
-                                  .currentEvent
-                                  .startTime!,
-                              dateOrTime: 'time',
-                              fromOrTo: 'from'),
-                        ],
-                      ),
-                    ),
-                    const Text(
-                      'Event ends',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Row(
-                        children: [
-                          MyEditabelDateAndTimeText(
-                              text: context
-                                  .read<CreateEventCubit>()
-                                  .currentEvent
-                                  .endDate!,
-                              dateOrTime: 'date',
-                              fromOrTo: 'to'),
-                          const SizedBox(
-                            width: 30,
-                          ),
-                          MyEditabelDateAndTimeText(
-                              text: context
-                                  .read<CreateEventCubit>()
-                                  .currentEvent
-                                  .endTime!,
-                              dateOrTime: 'time',
-                              fromOrTo: 'to'),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ReceiptSection(
-                sectionIcon: const Icon(
-                  Icons.pin_drop_outlined,
-                  color: Colors.grey,
-                ),
-                sectionChild: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    MyDropDownMenu(
-                      myList: locationList,
-                      type: 'location',
-                    ),
-                    Text(context
-                        .read<CreateEventCubit>()
-                        .currentEvent
-                        .eventLocationName
-                        .toString()),
-                  ],
-                ),
-              ),
-              ReceiptSection(
-                sectionIcon: const Icon(Icons.sell_outlined),
-                sectionChild: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Event category'),
-                    GestureDetector(
-                      child: BlocBuilder<CreateEventCubit, CreateEventState>(
-                        builder: (context, state) {
-                          if (state is CreateEventBasicInfo) {
-                            if (state.eventCategory != null) {
-                              return Text(
-                                state.eventCategory!,
-                                style: TextStyle(color: Colors.grey),
-                              );
-                            } else {
-                              return Text(
-                                'Select a Category',
-                                style: TextStyle(color: Colors.grey),
-                              );
-                            }
+            ),
+            ReceiptSection(
+              sectionIcon: const Icon(Icons.sell_outlined),
+              sectionChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Event category'),
+                  GestureDetector(
+                    child: BlocBuilder<CreateEventCubit, CreateEventState>(
+                      builder: (context, state) {
+                        if (state is CreateEventBasicInfo) {
+                          if (state.eventCategory != null) {
+                            return Text(
+                              state.eventCategory!,
+                              style: TextStyle(color: Colors.grey),
+                            );
                           } else {
                             return Text(
                               'Select a Category',
                               style: TextStyle(color: Colors.grey),
                             );
                           }
-                        },
-                      ),
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Select Event Category'),
-                            content: PopupMenu(selectEvent: 'Category'),
-                          ),
-                        );
+                        } else {
+                          return Text(
+                            'Select a Category',
+                            style: TextStyle(color: Colors.grey),
+                          );
+                        }
                       },
                     ),
-                  ],
-                ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Select Event Category'),
+                          content: PopupMenu(selectEvent: 'Category'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-              // ReceiptSection(
-              //   sectionIcon: Transform.rotate(
-              //       angle: 90 * math.pi / 180,
-              //       child: const Icon(Icons.confirmation_number_outlined)),
-              //   sectionChild: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       const Text('Ticket'),
-              //       GestureDetector(
-              //         child: const Text(
-              //           'Add ticket',
-              //           style: TextStyle(color: Colors.grey),
-              //         ),
-              //       ),
-              //       MyDropDownMenu(
-              //         myList: ticketList,
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              ReceiptSection(
-                sectionIcon: const Icon(Icons.local_activity_outlined),
-                sectionChild: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Privacy',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    MyDropDownMenu(
-                      myList: privacyList,
-                      type: 'Privacy',
-                    ),
-                  ],
-                ),
+            ),
+            // ReceiptSection(
+            //   sectionIcon: Transform.rotate(
+            //       angle: 90 * math.pi / 180,
+            //       child: const Icon(Icons.confirmation_number_outlined)),
+            //   sectionChild: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       const Text('Ticket'),
+            //       GestureDetector(
+            //         child: const Text(
+            //           'Add ticket',
+            //           style: TextStyle(color: Colors.grey),
+            //         ),
+            //       ),
+            //       MyDropDownMenu(
+            //         myList: ticketList,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            ReceiptSection(
+              sectionIcon: const Icon(Icons.local_activity_outlined),
+              sectionChild: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Privacy',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                  MyDropDownMenu(
+                    myList: privacyList,
+                    type: 'Privacy',
+                  ),
+                ],
               ),
-              Spacer(),
-              EmailButton(
-                buttonText: 'Create event and continue to ticketing',
-                colourBackground: AppColors.buttonColor,
-                colourText: AppColors.lightBackground,
-                onTap: () async {
-                  final response =
-                      await CreatorRepository.postCreatedEventBasicInfo(
-                          context
-                              .read<CreateEventCubit>()
-                              .currentEvent
-                              .basicInfoToJson(),
-                          context.read<AuthCubit>().currentUser.accessToken!);
-                  context.read<CreateEventCubit>().displayError(
-                      errormessage: response['message'].toString());
-                  if (response['success']) {
-                    context.read<CreateEventCubit>().currentEvent.eventID =
-                        response['event_Id'];
-                    Navigator.pushNamed(context, '/additionaleventdetails');
-                  }
-                },
-              )
-            ],
-          ),
+            ),
+            Spacer(),
+            EmailButton(
+              buttonText: 'Create event and continue to ticketing',
+              colourBackground: AppColors.buttonColor,
+              colourText: AppColors.lightBackground,
+              onTap: () async {
+                final response =
+                    await CreatorRepository.postCreatedEventBasicInfo(
+                        context
+                            .read<CreateEventCubit>()
+                            .currentEvent
+                            .basicInfoToJson(),
+                        context.read<AuthCubit>().currentUser.accessToken!);
+                context
+                    .read<CreateEventCubit>()
+                    .displayError(errormessage: response['message'].toString());
+                if (response['success']) {
+                  context.read<CreateEventCubit>().currentEvent.eventID =
+                      response['event_Id'];
+                  Navigator.pushNamed(context, '/additionaleventdetails');
+                }
+              },
+            )
+          ],
         ),
       ),
     );
