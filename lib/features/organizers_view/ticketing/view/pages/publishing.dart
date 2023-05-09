@@ -5,7 +5,7 @@ import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/data/publish_data.dart';
-
+import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import '../../../../../core/services/validation/form_validator.dart';
 
 String changetoIso(String time, String date) {
@@ -30,7 +30,7 @@ class PublishPage extends StatefulWidget {
 }
 
 class _PublishPageState extends State<PublishPage> {
-  String id = '64560b5b36af37a7a313b0d6';
+  late String id;
   late String privacy = ''; //event is public or private
   late String publicly = ''; //will ever be public later
   late String Schedule = ''; //publish now or later
@@ -65,6 +65,7 @@ class _PublishPageState extends State<PublishPage> {
       bottomNavigationBar: BottomAppBar(
         child: TextButton(
           onPressed: () async {
+            id=context.read<CreateEventCubit>().currentEvent.eventID!;
             //to  publishing
             if (Schedule == '') {
               publishNow = false;

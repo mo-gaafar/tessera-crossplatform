@@ -302,7 +302,7 @@ class NewEventReceipt extends StatelessWidget {
                   if (response['success']) {
                     context.read<CreateEventCubit>().currentEvent.eventID =
                         response['event_Id'];
-                    Navigator.pushNamed(context, '/additionaleventdetails');
+                    Navigator.pushNamed(context, '/neweventtickets');
                   }
                 } else {
                   context.read<CreateEventCubit>().displayError(

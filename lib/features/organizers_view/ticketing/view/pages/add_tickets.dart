@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-
+import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -38,7 +38,7 @@ class _AddTicketsState extends State<AddTickets> {
   TextEditingController dateinputEnd = TextEditingController();
   TextEditingController timeinputEnd = TextEditingController();
   FormValidator formValidator = FormValidator();
-  String id = '64560b5b36af37a7a313b0d6';
+  late String id;
 
   @override
   void initState() {
@@ -74,6 +74,7 @@ class _AddTicketsState extends State<AddTickets> {
           IconButton(
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
+                  id = context.read<CreateEventCubit>().currentEvent.eventID!;
                   print('trying to add');
                   String message = await context
                       .read<EventTicketsCubit>()
