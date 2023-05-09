@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/order_completed.dart';
 
 //screens
 import 'package:tessera/features/authentication/view/pages/login_signup_screen.dart';
@@ -78,16 +79,26 @@ class AppRouter {
       case '/eventPage':
         final args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (context) => EventPage(eventData: args[0],iD:args[1]));
+            builder: (context) => EventPage(eventData: args[0], iD: args[1]));
       case '/checkOut':
         final args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (context) =>
-                CheckOut(charge: args[0], ticketTier: args[1], data: args[2], id: args[3], promocode: args[4],));
+            builder: (context) => CheckOut(
+                  charge: args[0],
+                  ticketTier: args[1],
+                  data: args[2],
+                  id: args[3],
+                  promocode: args[4],
+                ));
+      case '/orderCompleted':
+        return MaterialPageRoute(builder: (context) => const OrderComplete());
       case '/makeSure':
         final args = settings.arguments as List;
         return MaterialPageRoute(
-            builder: (context) => MakeSure(dataEvent: args[0], id: args[1],));
+            builder: (context) => MakeSure(
+                  dataEvent: args[0],
+                  id: args[1],
+                ));
       case '/creatorlanding':
         return MaterialPageRoute(
           builder: (_) => CreatorLandingPage(),
@@ -128,6 +139,7 @@ class AppRouter {
       case '/publishPage':
         return MaterialPageRoute(
           builder: (_) => PublishPage(),
+        );
 
       case '/dashboard':
         return MaterialPageRoute(

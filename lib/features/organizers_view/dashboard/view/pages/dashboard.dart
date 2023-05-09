@@ -16,15 +16,14 @@ import 'package:tessera/features/organizers_view/dashboard/view/widgets/percenta
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
 
-  // final String eventId = '';
+  final String eventId = '64560b5b36af37a7a313b0d6';
   late List<Widget> dashboardItems = [];
   EventModel? eventModel;
   final PanelController _panelController = PanelController();
 
   @override
   Widget build(BuildContext context) {
-    context.select(
-        (DashboardCubit cubit) => cubit.eventId = '64560b5b36af37a7a313b0d6');
+    context.select((DashboardCubit cubit) => cubit.eventId = eventId);
     return BlocBuilder<DashboardCubit, DashboardState>(
       bloc: BlocProvider.of<DashboardCubit>(context)..getDashboardData(),
       builder: (context, state) {
@@ -286,7 +285,10 @@ class Dashboard extends StatelessWidget {
                   current is DashboardLoading,
               builder: (context, state) {
                 if (state is DashboardPreviewEvent && eventModel != null) {
-                  return EventPage(eventData: eventModel!);
+                  return EventPage(
+                    eventData: eventModel!,
+                    iD: eventId,
+                  );
                 }
 
                 return Material(

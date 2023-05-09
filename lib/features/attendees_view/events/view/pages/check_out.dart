@@ -47,7 +47,7 @@ class CheckOut extends StatelessWidget {
               Navigator.pushNamed(
                 context,
                 '/makeSure',
-                arguments: [data,id], //GIVING THE PRICE AS Int
+                arguments: [data, id], //GIVING THE PRICE AS Int
               );
             },
             icon: const Icon(Icons.close)),
@@ -117,7 +117,8 @@ class CheckOut extends StatelessWidget {
                               .read<EventBookCubit>()
                               .postBookingData(book.toMap(), id);
                           if (output == true) {
-                            Navigator.pushNamed(context, '/third');
+                            Navigator.pushReplacementNamed(
+                                context, '/landingPage');
                             print('done');
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
