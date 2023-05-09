@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/core/widgets/app_scaffold.dart';
+import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
+import 'package:tessera/features/organizers_view/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/constants/constants.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:tessera/features/organizers_view/atendee_management/cubit/atendeeManagement_cubit.dart';
@@ -53,8 +55,12 @@ class _AdditionalDetailsPageState extends State<AdditionalDetailsPage> {
               buttonText: 'Add the data',
               colourBackground: AppColors.buttonColor,
               colourText: AppColors.lightBackground,
-              onTap: () {
-                print('is it added');
+              onTap: () async {
+                final response = await CreatorRepository.updateEventImage(
+                    context.read<CreateEventCubit>().currentEvent.eventImage,
+                    context.read<CreateEventCubit>().currentEvent.eventID,
+                    context.read<AuthCubit>().currentUser.accessToken);
+                print(response);
               },
             )
           ],
