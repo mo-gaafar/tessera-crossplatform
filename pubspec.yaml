@@ -71,6 +71,7 @@ dependencies:
   numpad: ^0.0.2
   image_picker: ^0.8.7+4
   uuid: ^3.0.7
+  expandable: ^5.0.1
 
   # flutter_launcher_icons: ^0.13.0
 

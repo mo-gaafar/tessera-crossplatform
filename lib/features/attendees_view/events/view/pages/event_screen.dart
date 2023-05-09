@@ -1,3 +1,4 @@
+import 'package:expandable/expandable.dart';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -681,69 +682,49 @@ class _EventPageState extends State<EventPage> {
                             ),
                           ),
                         ],
-                      const Text(
-                        'About',
-                        style: TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: AppColors.textOnLight,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w100),
-                      ),
-                      //desciption
-                      Text(
-                        _eventData.filteredEvents[0]['summary'],
-                        style: const TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: AppColors.textOnLight,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w100),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          //Navigator.pushNamed(context, '/third');
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SeeMore(
-                                title: _eventData.filteredEvents[0]['basicInfo']
-                                    ['eventName'],
-                                date: splitting(_eventData.filteredEvents[0]
-                                    ['basicInfo']['startDateTime'])[0],
-                                time: splitting(_eventData.filteredEvents[0]
-                                    ['basicInfo']['startDateTime'])[1],
-                                details: _eventData.filteredEvents[0]
-                                    ['description'],
-                                image: _eventData.filteredEvents[0]['basicInfo']
-                                    ['eventImage'],
-                              ),
+                      ExpandablePanel(
+                        header: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'About',
+                              style: TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: AppColors.textOnLight,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w100),
                             ),
-                          );
-                        },
-                        // ignore: sort_child_properties_last
-                        child: const Text(
-                          'see more',
-                          style: TextStyle(
-                              color: AppColors.secondary, fontSize: 20),
+                            Text(
+                              _eventData.filteredEvents[0]['summary'],
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: AppColors.textOnLight,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w100),
+                            ),
+                          ],
                         ),
-                        style: ButtonStyle(
-                            overlayColor:
-                                MaterialStateProperty.resolveWith<Color?>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.hovered)) {
-                                  return AppColors.textOnLight
-                                      .withOpacity(0.04);
-                                }
-                                if (states.contains(MaterialState.focused) ||
-                                    states.contains(MaterialState.pressed)) {
-                                  return AppColors.textOnLight
-                                      .withOpacity(0.12);
-                                }
-                                return null; // Defer to the widget's default.
-                              },
+                        collapsed: const SizedBox.shrink(),
+                        expanded: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //seemore text
+                            Text(
+                              _eventData.filteredEvents[0]['description'],
+                              style: const TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: AppColors.textOnLight,
+                                  fontSize: 20),
                             ),
-                            padding: MaterialStateProperty.all<EdgeInsets>(
-                                const EdgeInsets.all(0))),
+                          ],
+                        ),
                       ),
+
+                      //desciption
+
                       const SizedBox(
                         height: 10,
                       ),

@@ -182,10 +182,6 @@ class NewEventReceipt extends StatelessWidget {
               sectionChild: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MyDropDownMenu(
-                    myList: locationList,
-                    type: 'location',
-                  ),
                   Text(((context
                                   .read<CreateEventCubit>()
                                   .currentEvent
@@ -287,20 +283,29 @@ class NewEventReceipt extends StatelessWidget {
               colourBackground: AppColors.buttonColor,
               colourText: AppColors.lightBackground,
               onTap: () async {
-                final response =
-                    await CreatorRepository.postCreatedEventBasicInfo(
-                        context
-                            .read<CreateEventCubit>()
-                            .currentEvent
-                            .basicInfoToJson(),
-                        context.read<AuthCubit>().currentUser.accessToken!);
-                context
-                    .read<CreateEventCubit>()
-                    .displayError(errormessage: response['message'].toString());
-                if (response['success']) {
-                  context.read<CreateEventCubit>().currentEvent.eventID =
-                      response['event_Id'];
-                  Navigator.pushNamed(context, '/additionaleventdetails');
+                if (context
+                        .read<CreateEventCubit>()
+                        .currentEvent
+                        .eventCategory !=
+                    null) {
+                  final response =
+                      await CreatorRepository.postCreatedEventBasicInfo(
+                          context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .basicInfoToJson(),
+                          context.read<AuthCubit>().currentUser.accessToken!);
+                  context.read<CreateEventCubit>().displayError(
+                      errormessage: response['message'].toString());
+                  if (response['success']) {
+                    context.read<CreateEventCubit>().currentEvent.eventID =
+                        response['event_Id'];
+                    Navigator.pushNamed(context, '/additionaleventdetails');
+                  }
+                } else {
+                  context.read<CreateEventCubit>().displayError(
+                      errormessage:
+                          'Please add an event category.');
                 }
               },
             )

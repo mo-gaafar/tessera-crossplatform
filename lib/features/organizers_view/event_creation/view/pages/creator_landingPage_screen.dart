@@ -24,6 +24,7 @@ class CreatorLandingPage extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: CustomSideMenu(
+        viewMode: 'Attend',
         sideMenuKey: _sideMenuKey,
         child: Scaffold(
           appBar: AppBar(
