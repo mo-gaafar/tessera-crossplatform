@@ -108,28 +108,29 @@ class CheckOut extends StatelessWidget {
                       }
                       // ignore: avoid_print
                       print(jsonEncode(book.toMap()));
-                      bool output = await context
-                          .read<EventBookCubit>()
-                          .postBookingData(book.toMap(), id);
-                      if (output == true) {
-                        Navigator.pushReplacementNamed(context, '/landingPage');
-                        print('done');
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Successfully booked'),
-                          shape: StadiumBorder(),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text('Error in booking'),
-                          shape: StadiumBorder(),
-                          behavior: SnackBarBehavior.floating,
-                        ));
-                      }
+                      String output = await context
+                              .read<EventBookCubit>()
+                              .postBookingData(book.toMap(), id);
+                          if (output == 'Booked successfully') {
+                            Navigator.pushReplacementNamed(
+                                context, '/landingPage');
+                            print('done');
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text('Successfully booked'),
+                              shape: StadiumBorder(),
+                              behavior: SnackBarBehavior.floating,
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar( SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text(output),
+                              shape: StadiumBorder(),
+                              behavior: SnackBarBehavior.floating,
+                            ));
+                          }
                     }
                   },
                 )),
