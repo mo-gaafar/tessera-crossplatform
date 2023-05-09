@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
-
+import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import '../../cubit/event_tickets_cubit.dart';
 import '../../cubit/promocode_store_cubit.dart';
 import '../../data/promocode_data.dart';
@@ -22,7 +22,7 @@ class PromoCode extends StatefulWidget {
 }
 
 class _PromoCodeState extends State<PromoCode> {
-  String id = '64560b5b36af37a7a313b0d6';
+  late String id;
   final formKey = GlobalKey<FormState>();
   String dropdownValue = 'Add Promo code';
   late String code;
@@ -51,7 +51,7 @@ class _PromoCodeState extends State<PromoCode> {
             onPressed: () async {
               //to  publishing
               //Navigator.pushNamed(context, '/publishPage');
-
+              id=context.read<CreateEventCubit>().currentEvent.eventID!;
               if (dropdownValue == 'Add Promo code') {
                 print('da5al add promo');
                 if (formKey.currentState!.validate()) {

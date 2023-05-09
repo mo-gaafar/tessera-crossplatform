@@ -64,7 +64,7 @@ class NewEventModel {
         'eventName': eventName,
         'startDateTime': startDateAndTime,
         'endDateTime': endDateAndTime,
-        'eventImage': "https://example.com/image.jpg",
+        'eventImage': null,
         'categories': eventCategory,
         'location': eventGeoLocation
       },

@@ -1,6 +1,7 @@
-
 import 'package:tessera/core/services/networking/networking.dart';
 import 'package:uuid/uuid.dart';
+
+import 'dart:io';
 
 class CreatorRepository {
   static Future<dynamic> getAllEvents(String filterType, String token) async {
@@ -16,6 +17,16 @@ class CreatorRepository {
     Future<String> predections;
     final response = await NetworkService.getGetApiResponse(
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=address&language=en&key=$apiKey&sessiontoken=$sessionToken',
+        token: token);
+    return response;
+  }
+
+  static Future<dynamic> updateEventImage(
+      File? eventImage, String? eventId, String? token) async {
+        print(eventImage);
+    final response = await NetworkService.getPostApiResponse(
+        'https://www.tessera.social/api/event-management/upload-image/${eventId}',
+        'image=@"${eventImage}"',
         token: token);
     return response;
   }

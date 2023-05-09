@@ -5,7 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
+import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/data/edit_tier_model.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
@@ -51,7 +51,7 @@ class EditTickets extends StatefulWidget {
 }
 
 class _EditTicketsState extends State<EditTickets> {
-  String id = '64560b5b36af37a7a313b0d6';
+  late String id;
   final formKey = GlobalKey<FormState>();
   TextEditingController dateinputStart = TextEditingController();
   TextEditingController timeinputStart = TextEditingController();
@@ -93,6 +93,7 @@ class _EditTicketsState extends State<EditTickets> {
         actions: [
           IconButton(
               onPressed: () async {
+                id=context.read<CreateEventCubit>().currentEvent.eventID!;
                 if (formKey.currentState!.validate()) {
                   String message = await context
                       .read<EventTicketsCubit>()
