@@ -10,6 +10,7 @@ import 'package:tessera/features/attendees_view/events/cubit/event_data_cubit.da
 import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 import 'package:tessera/features/organizers_view/atendee_management/cubit/atendeeManagement_cubit.dart';
 import 'package:tessera/features/organizers_view/atendee_management/cubit/atendeeManagement_state.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_state.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PublishCubit(),
+        ),
+        BlocProvider(
+          create: (context) => DashboardCubit(),
         ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(

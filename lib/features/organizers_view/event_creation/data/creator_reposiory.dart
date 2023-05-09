@@ -23,12 +23,11 @@ class CreatorRepository {
 
   static Future<dynamic> updateEventImage(
       File? eventImage, String? eventId, String? token) async {
-        print(eventImage);
-    final response = await NetworkService.getPostApiResponse(
-        'https://www.tessera.social/api/event-management/upload-image/${eventId}',
-        'image=@"${eventImage}"',
-        token: token);
-    return response;
+    await NetworkService.uploadFile(
+      'https://www.tessera.social/api/event-management/upload-image/$eventId',
+      eventImage!.path,
+      'image',
+    );
   }
 
   static Future<dynamic> postCreatedEventBasicInfo(

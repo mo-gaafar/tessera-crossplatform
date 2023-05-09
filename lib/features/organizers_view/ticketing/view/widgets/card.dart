@@ -11,7 +11,8 @@ class TicketCard extends StatelessWidget {
       required this.tierName,
       required this.saleSchedule,
       required this.tierPrice,
-      required this.availableQuantity, this.onTap});
+      required this.availableQuantity,
+      this.onTap});
   final String tierName;
   final String saleSchedule;
   final String tierPrice;
@@ -41,7 +42,7 @@ class TicketCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontFamily: 'NeuePlak',
-                      color: AppColors.textOnLight,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                       fontSize: 25),
                 ),
                 Spacer(),
@@ -70,7 +71,7 @@ class TicketCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontFamily: 'NeuePlak',
-                      color: AppColors.textOnLight,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                       fontSize: 25),
                 ),
                 Spacer(),
@@ -79,7 +80,7 @@ class TicketCard extends StatelessWidget {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontFamily: 'NeuePlak',
-                      color: AppColors.textOnLight,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                       fontSize: 25),
                 ),
               ],
@@ -98,7 +99,7 @@ class TicketCard extends StatelessWidget {
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontFamily: 'NeuePlak',
-                  color: AppColors.textOnLight,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 25),
             ),
             SizedBox(

@@ -93,7 +93,7 @@ class _EditTicketsState extends State<EditTickets> {
         actions: [
           IconButton(
               onPressed: () async {
-                id=context.read<CreateEventCubit>().currentEvent.eventID!;
+                id = context.read<CreateEventCubit>().currentEvent.eventID!;
                 if (formKey.currentState!.validate()) {
                   String message = await context
                       .read<EventTicketsCubit>()
@@ -113,7 +113,8 @@ class _EditTicketsState extends State<EditTickets> {
                                             dateinputEnd.text))
                                     .toMap()
                               ]).toMap(),
-                          id,context.read<AuthCubit>().currentUser.accessToken!);
+                          id,
+                          context.read<AuthCubit>().currentUser.accessToken!);
                   if (message == 'successfully edited') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),

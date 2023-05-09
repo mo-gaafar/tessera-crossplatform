@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/data/publish_data.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import '../../../../../core/services/validation/form_validator.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+
 String changetoIso(String time, String date) {
   if ((time == '') && (date == '')) {
     DateTime now = DateTime.now();
@@ -46,7 +48,7 @@ class _PublishPageState extends State<PublishPage> {
   TextEditingController timePublic = TextEditingController();
   final formKey = GlobalKey<FormState>();
   FormValidator formValidator = FormValidator();
-  late String genPassward='';
+  late String genPassward = '';
   String dropdownValue = 'Anyone with the Link';
 
   @override
@@ -65,7 +67,7 @@ class _PublishPageState extends State<PublishPage> {
       bottomNavigationBar: BottomAppBar(
         child: TextButton(
           onPressed: () async {
-            id=context.read<CreateEventCubit>().currentEvent.eventID!;
+            id = context.read<CreateEventCubit>().currentEvent.eventID!;
             //to  publishing
             if (Schedule == '') {
               publishNow = false;
@@ -80,32 +82,8 @@ class _PublishPageState extends State<PublishPage> {
               link = false;
               password = false;
             }
-            print(PublishModel(
-                    alwaysPrivate: alwaysPrivate,
-                    link: link,
-                    isPublic: isPublic,
-                    password: password,
-                    privateToPublicDate:
-                        changetoIso(timePublic.text, datePublic.text),
-                    publicDate: changetoIso(timePublish.text, datePublish.text),
-                    publishNow: publishNow)
-                .toMap());
-            print(chosen);
-            print(privacy);
-            print(dropdownValue);
-            print(publicly);
 
             if (chosen == true && privacy == 'Public') {
-              print('public and chosen');
-              print(PublishModel(
-                      alwaysPrivate: alwaysPrivate,
-                      link: link,
-                      isPublic: isPublic,
-                      password: password,
-                      publicDate:
-                          changetoIso(timePublish.text, datePublish.text),
-                      publishNow: publishNow)
-                  .toMap());
               List data = await context.read<PublishCubit>().publish(
                   id,
                   PublishModel(
@@ -116,7 +94,8 @@ class _PublishPageState extends State<PublishPage> {
                           publicDate:
                               changetoIso(timePublish.text, datePublish.text),
                           publishNow: publishNow)
-                      .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
+                      .toMap(),
+                  context.read<AuthCubit>().currentUser.accessToken!);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 duration: Duration(seconds: 2),
                 // ignore: prefer_interpolation_to_compose_strings
@@ -124,21 +103,12 @@ class _PublishPageState extends State<PublishPage> {
                 shape: StadiumBorder(),
                 behavior: SnackBarBehavior.floating,
               ));
-              Navigator.pushNamed(context, '/creatorlanding');
+              context.read<DashboardCubit>().eventId = id;
+              Navigator.pushNamed(context, '/dashboard');
             } else if (chosen == true &&
                 privacy == 'Private' &&
                 publicly == 'Yes') {
               if (dropdownValue == 'Anyone with the Link') {
-                print('Private and Yes and Anyone with the Link');
-                print(PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        privateToPublicDate:
-                            changetoIso(timePublic.text, datePublic.text),
-                        publishNow: publishNow)
-                    .toMap());
                 List data = await context.read<PublishCubit>().publish(
                     id,
                     PublishModel(
@@ -149,7 +119,8 @@ class _PublishPageState extends State<PublishPage> {
                             privateToPublicDate:
                                 changetoIso(timePublic.text, datePublic.text),
                             publishNow: publishNow)
-                        .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
+                        .toMap(),
+                    context.read<AuthCubit>().currentUser.accessToken!);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   duration: Duration(seconds: 2),
                   // ignore: prefer_interpolation_to_compose_strings
@@ -157,19 +128,11 @@ class _PublishPageState extends State<PublishPage> {
                   shape: StadiumBorder(),
                   behavior: SnackBarBehavior.floating,
                 ));
-                Navigator.pushNamed(context, '/creatorlanding');
+                context.read<DashboardCubit>().eventId = id;
+
+                Navigator.pushNamed(context, '/dashboard');
               } else {
                 if (formKey.currentState!.validate()) {
-                  print('Private and Yes and Only People With Passward');
-                  print(PublishModel(
-                          alwaysPrivate: alwaysPrivate,
-                          link: link,
-                          isPublic: isPublic,
-                          password: password,
-                          privateToPublicDate:
-                              changetoIso(timePublic.text, datePublic.text),
-                          publishNow: publishNow,generatedPassword: genPassward)
-                      .toMap());
                   List data = await context.read<PublishCubit>().publish(
                       id,
                       PublishModel(
@@ -181,7 +144,8 @@ class _PublishPageState extends State<PublishPage> {
                                   changetoIso(timePublic.text, datePublic.text),
                               publishNow: publishNow,
                               generatedPassword: genPassward)
-                          .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
+                          .toMap(),
+                      context.read<AuthCubit>().currentUser.accessToken!);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 2),
                     // ignore: prefer_interpolation_to_compose_strings
@@ -189,21 +153,15 @@ class _PublishPageState extends State<PublishPage> {
                     shape: StadiumBorder(),
                     behavior: SnackBarBehavior.floating,
                   ));
-                  Navigator.pushNamed(context, '/creatorlanding');
+                  context.read<DashboardCubit>().eventId = id;
+
+                  Navigator.pushNamed(context, '/dashboard');
                 }
               }
             } else if (chosen == true &&
                 privacy == 'Private' &&
                 publicly == 'No') {
               if (dropdownValue == 'Anyone with the Link') {
-                print('Private and No and Anyone with the Link');
-                print(PublishModel(
-                        alwaysPrivate: alwaysPrivate,
-                        link: link,
-                        isPublic: isPublic,
-                        password: password,
-                        publishNow: publishNow)
-                    .toMap());
                 List data = await context.read<PublishCubit>().publish(
                     id,
                     PublishModel(
@@ -212,7 +170,8 @@ class _PublishPageState extends State<PublishPage> {
                             isPublic: isPublic,
                             password: password,
                             publishNow: publishNow)
-                        .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
+                        .toMap(),
+                    context.read<AuthCubit>().currentUser.accessToken!);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   duration: Duration(seconds: 2),
                   // ignore: prefer_interpolation_to_compose_strings
@@ -220,18 +179,11 @@ class _PublishPageState extends State<PublishPage> {
                   shape: StadiumBorder(),
                   behavior: SnackBarBehavior.floating,
                 ));
-                Navigator.pushNamed(context, '/creatorlanding');
+                context.read<DashboardCubit>().eventId = id;
+
+                Navigator.pushNamed(context, '/dashboard');
               } else {
                 if (formKey.currentState!.validate()) {
-                  print('Private and No and Only People With Passward');
-                  print(PublishModel(
-                          alwaysPrivate: alwaysPrivate,
-                          link: link,
-                          isPublic: isPublic,
-                          password: password,
-                          generatedPassword: genPassward,
-                          publishNow: publishNow)
-                      .toMap());
                   List data = await context.read<PublishCubit>().publish(
                       id,
                       PublishModel(
@@ -241,7 +193,8 @@ class _PublishPageState extends State<PublishPage> {
                               password: password,
                               publishNow: publishNow,
                               generatedPassword: genPassward)
-                          .toMap(),context.read<AuthCubit>().currentUser.accessToken!);
+                          .toMap(),
+                      context.read<AuthCubit>().currentUser.accessToken!);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     duration: Duration(seconds: 2),
                     // ignore: prefer_interpolation_to_compose_strings
@@ -249,7 +202,9 @@ class _PublishPageState extends State<PublishPage> {
                     shape: StadiumBorder(),
                     behavior: SnackBarBehavior.floating,
                   ));
-                  Navigator.pushNamed(context, '/creatorlanding');
+                  context.read<DashboardCubit>().eventId = id;
+
+                  Navigator.pushNamed(context, '/dashboard');
                 }
               }
             }
@@ -258,7 +213,7 @@ class _PublishPageState extends State<PublishPage> {
             'Publish',
             style: TextStyle(
                 fontFamily: 'NeuePlak',
-                color: AppColors.secondaryTextOnLight,
+                color: Theme.of(context).colorScheme.onTertiaryContainer,
                 fontSize: 25),
           ),
         ),
@@ -267,10 +222,7 @@ class _PublishPageState extends State<PublishPage> {
         title: const Text(
           'Publishing',
           textAlign: TextAlign.left,
-          style: TextStyle(
-              fontFamily: 'NeuePlak',
-              color: AppColors.textOnLight,
-              fontSize: 25),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
         leading: IconButton(
             onPressed: () {
@@ -286,7 +238,6 @@ class _PublishPageState extends State<PublishPage> {
               icon: const Icon(Icons.done)),
         ],
         elevation: 3,
-        backgroundColor: AppColors.lightBackground,
       ),
       body: SafeArea(
           child: Padding(
@@ -301,7 +252,7 @@ class _PublishPageState extends State<PublishPage> {
                   'who can see your event?',
                   style: TextStyle(
                       fontFamily: 'NeuePlak',
-                      color: AppColors.secondaryTextOnLight,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
                       fontSize: 25),
                 ),
                 Row(
@@ -315,7 +266,7 @@ class _PublishPageState extends State<PublishPage> {
                             publicly = '';
                             datePublic.text = '';
                             timePublic.text = '';
-                            genPassward='';
+                            genPassward = '';
                             isPublic = true;
                             chosen = true;
                             context.read<EventTicketsCubit>().EventIsPublic();
@@ -328,7 +279,8 @@ class _PublishPageState extends State<PublishPage> {
                       'Public',
                       style: TextStyle(
                           fontFamily: 'NeuePlak',
-                          color: AppColors.secondaryTextOnLight,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
                           fontSize: 25),
                     ),
                   ],
@@ -346,7 +298,7 @@ class _PublishPageState extends State<PublishPage> {
                             Schedule = ''; //publish now or later
                             datePublish.text = '';
                             timePublish.text = '';
-                            
+
                             context.read<EventTicketsCubit>().EventIsPrivate();
                           });
                         }),
@@ -357,7 +309,8 @@ class _PublishPageState extends State<PublishPage> {
                       'Private',
                       style: TextStyle(
                           fontFamily: 'NeuePlak',
-                          color: AppColors.secondaryTextOnLight,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
                           fontSize: 25),
                     ),
                   ],
@@ -373,7 +326,9 @@ class _PublishPageState extends State<PublishPage> {
                             'When should we publish your event',
                             style: TextStyle(
                                 fontFamily: 'NeuePlak',
-                                color: AppColors.secondaryTextOnLight,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 fontSize: 25),
                           ),
                           Row(
@@ -397,7 +352,9 @@ class _PublishPageState extends State<PublishPage> {
                                 'Publish Now',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.secondaryTextOnLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 25),
                               ),
                             ],
@@ -423,7 +380,9 @@ class _PublishPageState extends State<PublishPage> {
                                 'Publish Later',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.secondaryTextOnLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 25),
                               ),
                             ],
@@ -458,22 +417,17 @@ class _PublishPageState extends State<PublishPage> {
                                                   lastDate: DateTime(2101));
 
                                           if (pickedDate != null) {
-                                            print(
-                                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                            //pickedDate output format => 2021-03-10 00:00:00.000
                                             String formattedDate =
                                                 DateFormat('yyyy-MM-dd')
                                                     .format(pickedDate);
-                                            print(
-                                                formattedDate); //formatted date output using intl package =>  2021-03-16
+                                            //formatted date output using intl package =>  2021-03-16
                                             //you can implement different kind of Date Format here according to your requirement
                                             setState(() {
                                               datePublish.text =
                                                   formattedDate; //set output date to TextField value.
                                             });
-                                          } else {
-                                            print(
-                                                "Publish  Date is not selected");
-                                          }
+                                          } else {}
                                         },
                                       ),
                                     ),
@@ -501,16 +455,13 @@ class _PublishPageState extends State<PublishPage> {
                                         );
 
                                         if (pickedTime != null) {
-                                          print(pickedTime.format(context));
                                           setState(() {
                                             timePublish.text = pickedTime
                                                 .format(context)
                                                 .toString();
                                             //formattedTime; //set the value of text field.
                                           });
-                                        } else {
-                                          print("Publish Time is not selected");
-                                        }
+                                        } else {}
                                       },
                                     ))
                                   ],
@@ -535,7 +486,9 @@ class _PublishPageState extends State<PublishPage> {
                             'Choose Your Audiance',
                             style: TextStyle(
                                 fontFamily: 'NeuePlak',
-                                color: AppColors.secondaryTextOnLight,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 fontSize: 25),
                           ),
                           DropdownButton<String>(
@@ -593,7 +546,7 @@ class _PublishPageState extends State<PublishPage> {
                                     if (genPassward.trim().isEmpty) {
                                       return 'Password is required.';
                                     }
-                                    return null; 
+                                    return null;
                                   },
                                 );
                               } else {
@@ -605,7 +558,9 @@ class _PublishPageState extends State<PublishPage> {
                             'Will this event ever be public?',
                             style: TextStyle(
                                 fontFamily: 'NeuePlak',
-                                color: AppColors.secondaryTextOnLight,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onTertiaryContainer,
                                 fontSize: 25),
                           ),
                           Row(
@@ -637,7 +592,9 @@ class _PublishPageState extends State<PublishPage> {
                                 'No, Keep it Private',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.secondaryTextOnLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 25),
                               ),
                             ],
@@ -671,7 +628,9 @@ class _PublishPageState extends State<PublishPage> {
                                 'Yes, Schedule to share Publicly',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.secondaryTextOnLight,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 25),
                               ),
                             ],
@@ -711,22 +670,17 @@ class _PublishPageState extends State<PublishPage> {
                                                   lastDate: DateTime(2101));
 
                                           if (pickedDate != null) {
-                                            print(
-                                                pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                                            //pickedDate output format => 2021-03-10 00:00:00.000
                                             String formattedDate =
                                                 DateFormat('yyyy-MM-dd')
                                                     .format(pickedDate);
-                                            print(
-                                                formattedDate); //formatted date output using intl package =>  2021-03-16
+                                            //formatted date output using intl package =>  2021-03-16
                                             //you can implement different kind of Date Format here according to your requirement
                                             setState(() {
                                               datePublic.text =
                                                   formattedDate; //set output date to TextField value.
                                             });
-                                          } else {
-                                            print(
-                                                "Public release Date is not selected");
-                                          }
+                                          } else {}
                                         },
                                       ),
                                     ),
@@ -754,16 +708,13 @@ class _PublishPageState extends State<PublishPage> {
                                         );
 
                                         if (pickedTime != null) {
-                                          print(pickedTime.format(context));
                                           setState(() {
                                             timePublic.text = pickedTime
                                                 .format(context)
                                                 .toString();
                                             //formattedTime; //set the value of text field.
                                           });
-                                        } else {
-                                          print("Public Time is not selected");
-                                        }
+                                        } else {}
                                       },
                                     ))
                                   ],

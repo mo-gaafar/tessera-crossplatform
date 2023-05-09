@@ -9,23 +9,19 @@ part 'publish_state.dart';
 class PublishCubit extends Cubit<PublishState> {
   PublishCubit() : super(PublishInitial());
 
-
-
-  Future<dynamic> publish(String id, var data,String token) async {
+  Future<dynamic> publish(String id, var data, String token) async {
     try {
-      
-      var response = await PublishRepository.publishEvent(data,id,token);
+      var response = await PublishRepository.publishEvent(data, id, token);
       if (response['success'] == true) {
         emit(EventPublished());
 
-        return ['succussfully published',response['url']];
+        return ['succussfully published', response['url']];
       } else {
-        return [response['message'],response['url']] ;
+        return [response['message'], response['url']];
       }
     } catch (e) {
       emit(Error());
-      throw Exception('Error when reciving the data');
+      throw Exception(e.toString());
     }
-    
   }
 }

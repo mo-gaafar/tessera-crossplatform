@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import 'package:tessera/features/organizers_view/atendee_management/cubit/atendeeManagement_cubit.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/no_event_template.dart';
 import 'package:tessera/features/organizers_view/atendee_management/view/widgets/my_customized_numpad.dart';
 import 'package:tessera/features/organizers_view/atendee_management/data/atendeeManagement_repository.dart';
@@ -16,11 +17,11 @@ class AtendeeEventsList extends StatefulWidget {
 }
 
 class _AtendeeEventsListState extends State<AtendeeEventsList> {
-  Future<dynamic> jsonBodyToEventTicketTierList(String token) async {
+  Future<dynamic> jsonBodyToEventTicketTierList(String id, String token) async {
     late final response;
     try {
-      response = await AtendeeManagementRepository()
-          .getEventTicketTier('6454399919a17b933aed053e', token);
+      response =
+          await AtendeeManagementRepository().getEventTicketTier(id, token);
       if (response == 'Network Error' || response == 'No Events') {
         return response;
       } else {
@@ -39,6 +40,7 @@ class _AtendeeEventsListState extends State<AtendeeEventsList> {
       height: 400,
       child: FutureBuilder(
         future: jsonBodyToEventTicketTierList(
+            context.select((DashboardCubit dashboard) => dashboard.eventId),
             context.select((AuthCubit auth) => auth.currentUser.accessToken!)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

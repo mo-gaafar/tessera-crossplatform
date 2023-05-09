@@ -173,10 +173,7 @@ class AppRouter {
         );
       case '/dashboard':
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => DashboardCubit(),
-            child: Dashboard(),
-          ),
+          builder: (_) => Dashboard(),
         );
       default:
         return MaterialPageRoute(

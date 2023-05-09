@@ -184,7 +184,9 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
           location: filteredEvents[index]['basicInfo']['location']
                   ['venueName'] ??
               'Online',
-          image: Image.network(filteredEvents[index]['basicInfo']['eventImage'],
+          image: Image.network(
+              filteredEvents[index]['basicInfo']['eventImage'] ??
+                  'assets/images/placeholder.jpg',
               errorBuilder: (context, error, stackTrace) =>
                   Image.asset('assets/images/placeholder.jpg'),
               fit: BoxFit.cover),

@@ -15,15 +15,17 @@ class DashboardRepository {
   static Future<Either<String, Map>> requestTicketsSold(
       String id, String all, String tierName) async {
     try {
+      print(
+          'https://www.tessera.social/api/dashboard/eventsoldtickets/events/$id?allTiers=$all&tierName=$tierName');
       var response = await NetworkService.getGetApiResponse(
           'https://www.tessera.social/api/dashboard/eventsoldtickets/events/$id?allTiers=$all&tierName=$tierName');
 
       if (response['success'] == true) {
         return Right({
           'tier': tierName,
-          'sold': response.values.toList()[2],
-          'total': response.values.toList()[3],
-          'percentage': response.values.toList()[4]
+          'sold': response.values.toList()[2] ?? 0,
+          'total': response.values.toList()[3] ?? 0,
+          'percentage': response.values.toList()[4] ?? 0
         });
       } else {
         return Left(response['message']);
@@ -40,7 +42,7 @@ class DashboardRepository {
           'https://www.tessera.social/api/dashboard/eventsales/events/$id?allTiers=$all&tierName=$tierName');
 
       if (response['success'] == true) {
-        return Right(response.values.last);
+        return Right(response.values.last ?? 0);
       } else {
         return Left(response['message']);
       }

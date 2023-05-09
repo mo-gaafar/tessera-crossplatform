@@ -16,14 +16,14 @@ import 'package:tessera/features/organizers_view/dashboard/view/widgets/percenta
 class Dashboard extends StatelessWidget {
   Dashboard({super.key});
 
-  final String eventId = '64560b5b36af37a7a313b0d6';
+  String eventId = '';
   late List<Widget> dashboardItems = [];
   EventModel? eventModel;
   final PanelController _panelController = PanelController();
 
   @override
   Widget build(BuildContext context) {
-    context.select((DashboardCubit cubit) => cubit.eventId = eventId);
+    eventId = context.select((DashboardCubit cubit) => cubit.eventId);
     return BlocBuilder<DashboardCubit, DashboardState>(
       bloc: BlocProvider.of<DashboardCubit>(context)..getDashboardData(),
       builder: (context, state) {
@@ -31,9 +31,8 @@ class Dashboard extends StatelessWidget {
           dashboardItems = [
             GestureDetector(
               onTap: () async {
-                eventModel = await context
-                    .read<EventBookCubit>()
-                    .getEventData('6455d7d716fea49283ba6b3d');
+                eventModel =
+                    await context.read<EventBookCubit>().getEventData(eventId);
                 context.read<DashboardCubit>().previewEvent();
                 _panelController.open();
               },
@@ -213,7 +212,8 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () => Navigator.pushNamed(
+                      context, '/atendeemanagementhomescreen'),
                   child: DashboardItem(
                     padding: 15,
                     child: Column(
@@ -288,6 +288,7 @@ class Dashboard extends StatelessWidget {
                   return EventPage(
                     eventData: eventModel!,
                     iD: eventId,
+                    isPreview: true,
                   );
                 }
 

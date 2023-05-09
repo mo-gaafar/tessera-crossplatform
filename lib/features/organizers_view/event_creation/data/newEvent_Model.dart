@@ -3,17 +3,17 @@ import 'dart:io';
 
 class NewEventModel {
   String? eventName;
-  Map? eventGeoLocation={
-        "longitude": null,
-        "latitude": null,
-        "placeId": null,
-        "venueName": null,
-        "streetNumber": null,
-        "route": null,
-        "administrativeAreaLevel1": null,
-        "country": null,
-        "city": null
-      };
+  Map? eventGeoLocation = {
+    "longitude": null,
+    "latitude": null,
+    "placeId": null,
+    "venueName": null,
+    "streetNumber": null,
+    "route": null,
+    "administrativeAreaLevel1": null,
+    "country": null,
+    "city": null
+  };
   String? description;
   String? startDate;
   String? startTime;

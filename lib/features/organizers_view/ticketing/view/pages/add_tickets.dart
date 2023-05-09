@@ -60,14 +60,10 @@ class _AddTicketsState extends State<AddTickets> {
             },
             icon: const Icon(Icons.chevron_left)),
         elevation: 0,
-        backgroundColor: AppColors.lightBackground,
         title: const Text(
           'Add Tickets',
           textAlign: TextAlign.left,
-          style: TextStyle(
-              fontFamily: 'NeuePlak',
-              color: AppColors.textOnLight,
-              fontSize: 25),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
         //backgroundColor: AppColors.primary,
         actions: [
@@ -88,7 +84,8 @@ class _AddTicketsState extends State<AddTickets> {
                                   endSelling: changetoIso(
                                       timeinputEnd.text, dateinputEnd.text))
                               .toMap(),
-                          id,context.read<AuthCubit>().currentUser.accessToken!);
+                          id,
+                          context.read<AuthCubit>().currentUser.accessToken!);
                   if (message == 'successfully added') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),
@@ -147,11 +144,14 @@ class _AddTicketsState extends State<AddTickets> {
                           onPressed: () {
                             context.read<EventTicketsCubit>().eventIsPaid();
                           },
-                          child: const Text(
+                          child: Text(
                             'Paid',
                             style: TextStyle(
                                 fontFamily: 'NeuePlak',
-                                color: AppColors.textOnLight,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color,
                                 fontSize: 20),
                           ),
                         )),
@@ -163,11 +163,14 @@ class _AddTicketsState extends State<AddTickets> {
                           onPressed: () {
                             context.read<EventTicketsCubit>().eventIsFree();
                           },
-                          child: const Text(
+                          child: Text(
                             'Free',
                             style: TextStyle(
                                 fontFamily: 'NeuePlak',
-                                color: AppColors.textOnLight,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .color,
                                 fontSize: 20),
                           ),
                         )),
@@ -247,11 +250,12 @@ class _AddTicketsState extends State<AddTickets> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Text(
+                    Text(
                       'Select when the tickets will be available.',
                       style: TextStyle(
                           fontFamily: 'NeuePlak',
-                          color: AppColors.secondaryTextOnLight,
+                          color:
+                              Theme.of(context).colorScheme.onTertiaryContainer,
                           fontSize: 16),
                     ),
                     const SizedBox(

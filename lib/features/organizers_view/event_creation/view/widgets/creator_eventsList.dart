@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/features/organizers_view/event_creation/data/organiser_model.dart';
@@ -24,6 +25,7 @@ class _CreatorEventListState extends State<CreatorEventList> {
     late final response;
     try {
       response = await CreatorRepository.getAllEvents(widget.filterType, token);
+      print(response);
       widget.filteredEvents = response['filteredEvents'];
       widget.gross = response['gross'];
 
@@ -86,7 +88,6 @@ class _CreatorEventListState extends State<CreatorEventList> {
                         child: Text('Refresh'))
                   ],
                 );
-                ;
               } else if (snapshot.data == 'No Events') {
                 return NoEvenTemplate(
                     'you don\'t have any ${widget.filterType} events');
@@ -111,7 +112,10 @@ class _CreatorEventListState extends State<CreatorEventList> {
                             '${widget.filteredEvents[index]["basicInfo"]['startDateTime'].toString()} \n ${widget.eventSoldTicketsPercentageToString[index]}'),
                         isThreeLine: true,
                         onTap: () {
-                          print('navigator push to dashboard to the ID page');
+                          print(widget.filteredEvents[index]);
+                          context.read<DashboardCubit>().eventId =
+                              widget.filteredEvents[index]['eventId']; //! check
+                          Navigator.pushNamed(context, '/dashboard');
                         },
                         trailing: Text("£${widget.gross[index].toString()}"),
                       );

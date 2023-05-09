@@ -28,11 +28,11 @@ class TicketPage extends StatelessWidget {
               ),
             ],
           ),
-          title: const Text(
+          title: Text(
             'Tickets',
             style: TextStyle(
                 fontFamily: 'NeuePlak',
-                color: AppColors.textOnLight,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
                 fontSize: 25),
           ),
         ),
@@ -40,7 +40,12 @@ class TicketPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TabBarView(
-              children: [Admission(ticketTiersList:lisofteirs ,), PromoCode()],
+              children: [
+                Admission(
+                  ticketTiersList: lisofteirs,
+                ),
+                PromoCode()
+              ],
             ),
           ),
         ),

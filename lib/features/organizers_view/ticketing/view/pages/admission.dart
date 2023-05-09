@@ -35,7 +35,7 @@ class Admission extends StatelessWidget {
               'Next',
               style: TextStyle(
                   fontFamily: 'NeuePlak',
-                  color: AppColors.secondaryTextOnLight,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 25),
             ),
           ),
@@ -53,20 +53,24 @@ class Admission extends StatelessWidget {
                             tierName: ticketTiersList[i]['tierName'],
                             saleSchedule: scheduling(ticketTiersList[i]),
                             tierPrice: ticketTiersList[i]['price'],
-                            availableQuantity: ticketTiersList[i]['maxCapacity'],
+                            availableQuantity: ticketTiersList[i]
+                                ['maxCapacity'],
                             onTap: () {
                               //to  edit
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditTickets(
-                                          ticketName: ticketTiersList[i]['tierName'],
-                                          quantity: ticketTiersList[i]['maxCapacity'],
-                                          price: ticketTiersList[i]['price'],
-                                          datetimestart: ticketTiersList[i]['startSelling'],
-                                          datetimeend: ticketTiersList[i]['endSelling'])),
+                                        ticketName: ticketTiersList[i]
+                                            ['tierName'],
+                                        quantity: ticketTiersList[i]
+                                            ['maxCapacity'],
+                                        price: ticketTiersList[i]['price'],
+                                        datetimestart: ticketTiersList[i]
+                                            ['startSelling'],
+                                        datetimeend: ticketTiersList[i]
+                                            ['endSelling'])),
                               );
-                             
                             }),
                     ],
                   );
@@ -84,7 +88,7 @@ class Admission extends StatelessWidget {
                   'Add Tickets',
                   style: TextStyle(
                       fontFamily: 'NeuePlak',
-                      color: AppColors.secondaryTextOnLight,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
                       fontSize: 25),
                 ),
               )
