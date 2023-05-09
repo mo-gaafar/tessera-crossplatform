@@ -10,6 +10,8 @@ import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
 import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
+import 'package:tessera/features/organizers_view/dashboard/view/pages/dashboard.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/creator_landingPage_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_description_screen.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_location_screen.dart';
@@ -110,6 +112,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const NewEventReceipt(),
         );
+
       case '/neweventtickets':
         return MaterialPageRoute(
           builder: (_) => const TicketDefault(),
@@ -125,6 +128,13 @@ class AppRouter {
       case '/publishPage':
         return MaterialPageRoute(
           builder: (_) => PublishPage(),
+
+      case '/dashboard':
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => DashboardCubit(),
+            child: Dashboard(),
+          ),
         );
       default:
         return MaterialPageRoute(

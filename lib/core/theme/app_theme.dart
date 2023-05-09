@@ -9,8 +9,10 @@ class AppTheme {
       primary: AppColors.primary,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
+      // primaryContainer: Colors.white,
       onSecondaryContainer: Colors.black,
       onTertiaryContainer: AppColors.secondaryTextOnLight,
+      inversePrimary: AppColors.secondary.withOpacity(0.3),
     ),
     textTheme: ThemeData.light().textTheme.apply(
           fontFamily: 'NeuePlak',
@@ -44,9 +46,11 @@ class AppTheme {
     colorScheme: const ColorScheme.dark().copyWith(
       surface: AppColors.primary,
       primary: AppColors.primary,
-      secondary: AppColors.secondary,
+      secondary: Colors.white,
+      // primaryContainer: Colors.black,
       onSecondaryContainer: const Color(0xfff2f2f2),
       onTertiaryContainer: Colors.grey,
+      inversePrimary: Colors.grey.shade900,
     ),
     appBarTheme: lightTheme.appBarTheme.copyWith(
       foregroundColor: Colors.white,
