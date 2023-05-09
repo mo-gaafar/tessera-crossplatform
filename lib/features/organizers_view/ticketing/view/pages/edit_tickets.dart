@@ -256,7 +256,7 @@ class _EditTicketsState extends State<EditTickets> {
                                 return 'Price is required.';
                               }
                               return formValidator
-                                  .numberValidty(priceEdit); //should be number
+                                  .priceValidty(priceEdit); //should be number
                             },
                           );
                         } else {

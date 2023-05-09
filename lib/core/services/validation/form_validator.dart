@@ -140,6 +140,23 @@ class FormValidator {
       return null;
     }
   }
+  String? priceValidty(String name) {
+    RegExp lowerCaseRegExp = RegExp(r'[a-z]');
+    RegExp upperCaseRegExp = RegExp(r'[A-Z]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp numberRegExp = RegExp(r'[0-9]');
+
+    if (specialCharRegExp.hasMatch(name) == true) {
+      return 'No special character is allowed.';
+    } else if (lowerCaseRegExp.hasMatch(name) == true) {
+      return 'no charachters is allowed.';
+    } 
+    else if (upperCaseRegExp.hasMatch(name) == true) {
+      return 'no charachters is allowed.';
+    }else {
+      return null;
+    }
+  }
   String? codeValidty(String name) {
     // String pattern =
     //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
