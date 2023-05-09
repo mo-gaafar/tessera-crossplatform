@@ -113,10 +113,10 @@ class CheckOut extends StatelessWidget {
                           }
                           // ignore: avoid_print
                           print(jsonEncode(book.toMap()));
-                          bool output = await context
+                          String output = await context
                               .read<EventBookCubit>()
                               .postBookingData(book.toMap(), id);
-                          if (output == true) {
+                          if (output == 'Booked successfully') {
                             Navigator.pushReplacementNamed(
                                 context, '/landingPage');
                             print('done');
@@ -129,9 +129,9 @@ class CheckOut extends StatelessWidget {
                             ));
                           } else {
                             ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
+                                .showSnackBar( SnackBar(
                               duration: Duration(seconds: 2),
-                              content: Text('Error in booking'),
+                              content: Text(output),
                               shape: StadiumBorder(),
                               behavior: SnackBarBehavior.floating,
                             ));
