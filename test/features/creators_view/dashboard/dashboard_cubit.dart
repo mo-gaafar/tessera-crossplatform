@@ -1,95 +1,67 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
-import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_state.dart';
-import 'package:tessera/features/organizers_view/dashboard/data/dashboard_repository.dart';
+import 'package:tessera/features/organizers_view/dashboard/data/dashboard_model.dart';
 
 void main() {
   group('DashboardCubit', () {
     late DashboardCubit dashboardCubit;
-    late MockDashboardRepository mockDashboardRepository;
 
     setUp(() {
-      mockDashboardRepository = MockDashboardRepository();
-      dashboardCubit = DashboardCubit(mockDashboardRepository);
+      dashboardCubit = DashboardCubit();
     });
 
     tearDown(() {
       dashboardCubit.close();
     });
 
-    test('initial state is correct', () {
-      expect(dashboardCubit.state, DashboardInitial());
+    test('initial state is DashboardInitial', () {
+      print('Running initial state test');
+      expect(dashboardCubit.state, equals(DashboardInitial()));
     });
 
-    blocTest<DashboardCubit, DashboardState>(
-      'emits correct states when previewing event',
-      build: () => dashboardCubit,
-      act: (cubit) => cubit.previewEvent(),
-      expect: () => [
+    group('previewEvent', () {
+      final expectedStates = [
         DashboardPreviewEvent(),
-      ],
-    );
+      ];
 
-    blocTest<DashboardCubit, DashboardState>(
-      'emits correct states when getting dashboard data successfully',
-      build: () => dashboardCubit,
-      act: (cubit) async {
-        cubit.eventId = 'event_id';
-        cubit.ticketTiers = ['Tier A', 'Tier B'];
-        await cubit.getDashboardData();
-      },
-      expect: () => [
+      blocTest<DashboardCubit, DashboardState>(
+        'emits DashboardPreviewEvent when previewEvent is called',
+        build: () => dashboardCubit,
+        act: (cubit) => cubit.previewEvent(),
+        expect: () {
+          print('Expecting states: $expectedStates');
+          return expectedStates;
+        },
+      );
+    });
+
+    group('getDashboardData', () {
+      final dashboardModel = DashBoardModel(
+        salesByTier: [],
+        ticketTiersSold: [],
+        totalSales: '1000',
+        totalTicketsSold: {'tier1': 10, 'tier2': 20},
+      );
+
+      final expectedStates = [
         DashboardLoading(),
-        RetrievedDashboardData(
-          DashBoardModel(
-            salesByTier: [
-              {'tier': 'Tier A', 'amount': '100'},
-              {'tier': 'Tier B', 'amount': '200'},
-            ],
-            ticketTiersSold: [
-              {'tier': 'Tier A', 'tickets': '50'},
-              {'tier': 'Tier B', 'tickets': '100'},
-            ],
-            totalSales: '300',
-            totalTicketsSold: {'total': '150'},
-          ),
-        ),
-      ],
-    );
+        RetrievedDashboardData(dashboardModel),
+      ];
 
-    // Other test cases for the remaining methods...
+      blocTest<DashboardCubit, DashboardState>(
+        'emits DashboardLoading and RetrievedDashboardData when getDashboardData is called successfully',
+        build: () => dashboardCubit,
+        act: (cubit) async {
+          await cubit.getDashboardData();
+        },
+        expect: () {
+          print('Expecting states: $expectedStates');
+          return expectedStates;
+        },
+      );
+    });
 
+    // Add more tests for other methods in DashboardCubit
   });
 }
-
-class MockDashboardRepository extends Mock implements DashboardRepository {
-  @override
-  Future<String?> requestEventSales(String eventId, String returnAll, String tier) {
-    if (eventId == 'event_id' && returnAll == 'true' && tier == '') {
-      return Future.value('300');
-    } else if (eventId == 'event_id' && returnAll == 'false' && tier == 'Tier A') {
-      return Future.value('100');
-    } else if (eventId == 'event_id' && returnAll == 'false' && tier == 'Tier B') {
-      return Future.value('200');
-    } else {
-      return Future.error('Unknown request');
-    }
-  }
-
-  @override
-  Future<Map?> requestTicketsSold(String eventId, String returnAll, String tier) {
-    if (eventId == 'event_id' && returnAll == 'true' && tier == '') {
-      return Future.value({'total': '150'});
-    } else if (eventId == 'event_id' && returnAll == 'false' && tier == 'Tier A') {
-      return Future.value({'tier': 'Tier A', 'tickets': '50'});
-    } else if (eventId == 'event_id' && returnAll == 'false' && tier == 'Tier B') {
-      return Future.value({'tier': 'Tier B', 'tickets': '100'});
-    } else {
-      return Future.error('Unknown request');
-    }
-  }
-
-  // Implement other mock methods from the DashboardRepository
-}
-``
