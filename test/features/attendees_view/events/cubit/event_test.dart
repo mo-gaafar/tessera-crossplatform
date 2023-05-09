@@ -15,7 +15,8 @@ void main() {
   void arrangeAuthAndPrefsMocks() {
     when(() => eventBookCubit.getEventData('123'))
         .thenAnswer((_) async => eventModel);
-    when(() => eventBookCubit.postBookingData(bookingModel))
+    when(() => eventBookCubit.postBookingData(
+            bookingModel, '6455d31b359468bbdb1aeeee'))
         .thenAnswer((_) async => true);
   }
 
@@ -118,7 +119,8 @@ void main() {
     "should emit EventLoading state when getEventData() is called",
     () async {
       // Act
-      await eventBookCubit.postBookingData(bookingModel);
+      await eventBookCubit.postBookingData(
+          bookingModel, '6455d31b359468bbdb1aeeee');
       // Assert
       expect(eventBookCubit.state, EventSuccessfullyBooked());
     },

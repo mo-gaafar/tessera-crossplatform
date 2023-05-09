@@ -103,6 +103,7 @@ class _NewEventLocationState extends State<NewEventLocation> {
                     onChanged: (val) async {
                       setState(() {
                         value = val;
+                        context.read<CreateEventCubit>().currentEvent.eventStatus=value;
                       });
                     },
                   ),
