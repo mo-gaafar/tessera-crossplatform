@@ -33,7 +33,6 @@ class CreatorLandingPage extends StatelessWidget {
               icon: const Icon(Icons.menu),
               onPressed: () => toggleSideMenu(),
             ),
-            backgroundColor: Colors.white,
             bottom: const TabBar(
               tabs: [
                 Tab(
@@ -46,7 +45,6 @@ class CreatorLandingPage extends StatelessWidget {
                   text: 'Draft',
                 ),
               ],
-              labelColor: Colors.black,
               dividerColor: Colors.black,
             ),
             title: const Text('Events'),
