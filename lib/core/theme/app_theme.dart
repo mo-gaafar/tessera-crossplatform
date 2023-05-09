@@ -36,6 +36,10 @@ class AppTheme {
             fontFamily: 'NeuePlak',
           ),
         ),
+    tabBarTheme: ThemeData.light().tabBarTheme.copyWith(
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.grey.shade400,
+        ),
     iconTheme: ThemeData.light().iconTheme.copyWith(
           color: AppColors.textOnLight,
         ),
@@ -52,13 +56,21 @@ class AppTheme {
       onTertiaryContainer: Colors.grey,
       inversePrimary: Colors.grey.shade900,
     ),
-    appBarTheme: lightTheme.appBarTheme.copyWith(
-      foregroundColor: Colors.white,
-      color: Colors.black,
-      titleTextStyle: const TextStyle(
-        color: AppColors.primary,
-      ),
-    ),
+    appBarTheme: ThemeData.dark().appBarTheme.copyWith(
+          foregroundColor: Colors.white,
+          color: Colors.black,
+          elevation: 0,
+          toolbarHeight: 65,
+          titleTextStyle: const TextStyle(
+            color: AppColors.primary,
+            fontSize: 25,
+            fontFamily: 'NeuePlak',
+          ),
+        ),
+    tabBarTheme: ThemeData.dark().tabBarTheme.copyWith(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.grey.shade400,
+        ),
     textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'NeuePlak'),
     cardColor: Colors.grey.shade900,
     scaffoldBackgroundColor: AppColors.darkBackground,

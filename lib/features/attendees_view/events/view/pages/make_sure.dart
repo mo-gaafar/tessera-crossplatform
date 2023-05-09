@@ -21,7 +21,8 @@ import 'package:tessera/features/attendees_view/events/data/event_data.dart';
 class MakeSure extends StatelessWidget {
   final EventModel dataEvent;
   final String id;
-  const MakeSure({Key? key, required this.dataEvent, required this.id}) : super(key: key);
+  const MakeSure({Key? key, required this.dataEvent, required this.id})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +31,12 @@ class MakeSure extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: AppColors.lightBackground,
         title: const Text(
           'Are you sure?',
           textAlign: TextAlign.left,
-          style: TextStyle(
-              fontFamily: 'NeuePlak',
-              color: AppColors.textOnLight,
-              fontSize: 25),
+          style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
       ),
-      backgroundColor: AppColors.lightBackground,
       body: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Column(
@@ -49,18 +45,12 @@ class MakeSure extends StatelessWidget {
               const Text(
                 'Leaving check out?',
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontFamily: 'NeuePlak',
-                    color: AppColors.secondaryTextOnLight,
-                    fontSize: 25),
+                style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
               ),
               const Text(
                 'Are you sure you want to go back to the Event Page?   the items you selected might not be available later.',
                 textAlign: TextAlign.left,
-                style: TextStyle(
-                    fontFamily: 'NeuePlak',
-                    color: AppColors.secondaryTextOnLight,
-                    fontSize: 25),
+                style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
               ),
               Row(
                 children: [
@@ -71,11 +61,12 @@ class MakeSure extends StatelessWidget {
                         colourText: AppColors.lightBackground,
                         onTap: () {
                           print(dataEvent.toMap());
-                          Navigator.pushNamed(
+                          Navigator.pushReplacementNamed(
                             context,
                             '/eventPage',
                             arguments: [
-                              dataEvent,id
+                              dataEvent,
+                              id
                             ], //GIVING THE PRICE AS Int
                           );
                         }),

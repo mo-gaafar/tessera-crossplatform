@@ -55,9 +55,14 @@ List<Map> ticketModels(List tiers, List capacity) {
 }
 
 class EventPage extends StatefulWidget {
-  const EventPage({super.key, required this.eventData, required this.iD});
+  const EventPage(
+      {super.key,
+      required this.eventData,
+      required this.iD,
+      this.isPreview = false});
   final EventModel eventData;
   final String iD;
+  final bool isPreview;
 
   @override
   State<EventPage> createState() => _EventPageState();
@@ -272,7 +277,6 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
-                                       
                                         tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
@@ -281,11 +285,8 @@ class _EventPageState extends State<EventPage> {
                                                     'ticketsNumber'], //price should be sent as String
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
                                                 price: teirsSplitting(
-                                                                ticketsOfEvent[
-                                                                        k]
-                                                                    [
-                                                                    'nameAndPrice'])[
-                                                            1])
+                                                    ticketsOfEvent[k]
+                                                        ['nameAndPrice'])[1])
                                             .toMap());
                                       }
                                     }
@@ -344,52 +345,47 @@ class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.lightBackground,
         bottomNavigationBar: BottomAppBar(
             //INCLUDES THE TICKET AND PRICE
-            color: AppColors.lightBackground,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      smallestPrice,
-                      style: TextStyle(
-                          fontFamily: 'NeuePlak',
-                          color: AppColors.textOnLight,
-                          fontSize: 30),
-                    ),
-                  ),
-                  Expanded(
-                      flex: 3,
-                      child: EmailButton(
-                          buttonText: 'Ticket',
-                          colourBackground: AppColors.primary,
-                          colourText: AppColors.lightBackground,
-                          //ticket
-                          onTap: () async {
-                            if (context.mounted) {
-                              //String ticketTierName = _eventData.filteredEvents[0].ticketTiers[tierIndex].tierName;
-                              if (_eventData.isEventCapacityFull == true) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  duration: Duration(seconds: 2),
-                                  content: Text(
-                                      'Unfourntly The event is fully booked'),
-                                  shape: StadiumBorder(),
-                                  behavior: SnackBarBehavior.floating,
-                                ));
-                              } else {
-                                //free or charged
-                                await showInformationDialog(context);
-                              }
-                            }
-                          })),
-                ],
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  smallestPrice,
+                  style: TextStyle(fontFamily: 'NeuePlak', fontSize: 30),
+                ),
               ),
-            )),
+              Expanded(
+                  flex: 3,
+                  child: EmailButton(
+                      buttonText: 'Ticket',
+                      colourBackground: AppColors.primary,
+                      colourText: AppColors.lightBackground,
+                      //ticket
+                      onTap: () async {
+                        if (context.mounted && widget.isPreview == false) {
+                          //String ticketTierName = _eventData.filteredEvents[0].ticketTiers[tierIndex].tierName;
+                          if (_eventData.isEventCapacityFull == true) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              duration: Duration(seconds: 2),
+                              content: Text(
+                                  'Unfortunatly The event is fully booked'),
+                              shape: StadiumBorder(),
+                              behavior: SnackBarBehavior.floating,
+                            ));
+                          } else {
+                            //free or charged
+                            await showInformationDialog(context);
+                          }
+                        }
+                      })),
+            ],
+          ),
+        )),
         body: Scaffold(
           body: CustomScrollView(
             slivers: <Widget>[
@@ -455,9 +451,7 @@ class _EventPageState extends State<EventPage> {
                       Text(
                         _eventData.filteredEvents[0]['basicInfo']['eventName'],
                         style: const TextStyle(
-                            fontFamily: 'NeuePlak',
-                            color: AppColors.textOnLight,
-                            fontSize: 30),
+                            fontFamily: 'NeuePlak', fontSize: 30),
                       ),
                       const SizedBox(
                         height: 10,
@@ -469,7 +463,6 @@ class _EventPageState extends State<EventPage> {
                           const Icon(
                             Icons.calendar_today,
                             size: 25,
-                            color: AppColors.textOnLight,
                           ),
                           const SizedBox(
                             width: 20,
@@ -481,9 +474,11 @@ class _EventPageState extends State<EventPage> {
                               Text(
                                 splitting(_eventData.filteredEvents[0]
                                     ['basicInfo']['startDateTime'])[0],
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: Color.fromARGB(255, 44, 42, 42),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               ),
@@ -496,9 +491,11 @@ class _EventPageState extends State<EventPage> {
                                 ' To ' +
                                     splitting(_eventData.filteredEvents[0]
                                         ['basicInfo']['endDateTime'])[0],
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: Color.fromARGB(255, 44, 42, 42),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onTertiaryContainer,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               ),
@@ -516,7 +513,6 @@ class _EventPageState extends State<EventPage> {
                           const Icon(
                             FontAwesomeIcons.clock,
                             size: 25,
-                            color: AppColors.textOnLight,
                           ),
                           const SizedBox(
                             width: 20,
@@ -530,7 +526,6 @@ class _EventPageState extends State<EventPage> {
                                     ['basicInfo']['startDateTime'])[1],
                                 style: const TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.textOnLight,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               ),
@@ -545,7 +540,6 @@ class _EventPageState extends State<EventPage> {
                                         ['basicInfo']['endDateTime'])[1],
                                 style: const TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.textOnLight,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               ),
@@ -563,7 +557,6 @@ class _EventPageState extends State<EventPage> {
                           const Icon(
                             Icons.location_on,
                             size: 25,
-                            color: AppColors.textOnLight,
                           ),
                           const SizedBox(
                             width: 20,
@@ -578,7 +571,6 @@ class _EventPageState extends State<EventPage> {
                                   'Online',
                                   style: TextStyle(
                                       fontFamily: 'NeuePlak',
-                                      color: AppColors.textOnLight,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w100),
                                 ),
@@ -588,7 +580,6 @@ class _EventPageState extends State<EventPage> {
                                       'Click here to get to your event live ',
                                       style: TextStyle(
                                           fontFamily: 'NeuePlak',
-                                          color: AppColors.textOnLight,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w100),
                                     ))
@@ -597,7 +588,6 @@ class _EventPageState extends State<EventPage> {
                                   'Offline',
                                   style: TextStyle(
                                       fontFamily: 'NeuePlak',
-                                      color: AppColors.textOnLight,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w100),
                                 ),
@@ -606,7 +596,6 @@ class _EventPageState extends State<EventPage> {
                                       ['location']!['city'],
                                   style: const TextStyle(
                                       fontFamily: 'NeuePlak',
-                                      color: AppColors.textOnLight,
                                       fontSize: 20,
                                       fontWeight: FontWeight.w100),
                                 )
@@ -625,7 +614,6 @@ class _EventPageState extends State<EventPage> {
                           const Icon(
                             FontAwesomeIcons.dollarSign,
                             size: 25,
-                            color: AppColors.textOnLight,
                           ),
                           const SizedBox(
                             width: 20,
@@ -637,7 +625,6 @@ class _EventPageState extends State<EventPage> {
                                 'Refund policy',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.textOnLight,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               ),
@@ -645,7 +632,6 @@ class _EventPageState extends State<EventPage> {
                                 'Tessera\'s fee is non-refundabe',
                                 style: TextStyle(
                                     fontFamily: 'NeuePlak',
-                                    color: AppColors.textOnLight,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w100),
                               )
@@ -690,7 +676,6 @@ class _EventPageState extends State<EventPage> {
                               'About',
                               style: TextStyle(
                                   fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w100),
                             ),
@@ -701,7 +686,6 @@ class _EventPageState extends State<EventPage> {
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w100),
                             ),
@@ -715,9 +699,7 @@ class _EventPageState extends State<EventPage> {
                             Text(
                               _eventData.filteredEvents[0]['description'],
                               style: const TextStyle(
-                                  fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
-                                  fontSize: 20),
+                                  fontFamily: 'NeuePlak', fontSize: 20),
                             ),
                           ],
                         ),
@@ -735,7 +717,6 @@ class _EventPageState extends State<EventPage> {
                           'NO KNOWN ORGANIZER',
                           style: TextStyle(
                               fontFamily: 'NeuePlak',
-                              color: AppColors.textOnLight,
                               fontSize: 20,
                               fontWeight: FontWeight.w100),
                         ),
@@ -745,7 +726,6 @@ class _EventPageState extends State<EventPage> {
                             const Icon(
                               FontAwesomeIcons.addressCard,
                               size: 25,
-                              color: AppColors.textOnLight,
                             ),
                             const SizedBox(
                               width: 10,
@@ -759,7 +739,6 @@ class _EventPageState extends State<EventPage> {
                                       ['lastName'],
                               style: const TextStyle(
                                   fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w100),
                             ),
@@ -782,9 +761,7 @@ class _EventPageState extends State<EventPage> {
                             child: Text(
                               'this event is Free !',
                               style: TextStyle(
-                                  fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
-                                  fontSize: 20),
+                                  fontFamily: 'NeuePlak', fontSize: 20),
                             ),
                           ),
                         ),
@@ -800,9 +777,7 @@ class _EventPageState extends State<EventPage> {
                             child: Text(
                               'Dont miss and check the available tiers !',
                               style: TextStyle(
-                                  fontFamily: 'NeuePlak',
-                                  color: AppColors.textOnLight,
-                                  fontSize: 20),
+                                  fontFamily: 'NeuePlak', fontSize: 20),
                             ),
                           ),
                         ),

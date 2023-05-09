@@ -21,10 +21,7 @@ class NewEventDescription extends StatelessWidget {
               ),
               const Text(
                 'Describe your event.',
-                style: TextStyle(
-                    color: AppColors.textOnLight,
-                    fontSize: 40.0,
-                    fontFamily: 'NeuePlak'),
+                style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),

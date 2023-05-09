@@ -23,10 +23,7 @@ class NewEventSetDate extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
                   'Set the date of your event.',
-                  style: TextStyle(
-                      color: AppColors.textOnLight,
-                      fontSize: 40.0,
-                      fontFamily: 'NeuePlak'),
+                  style: TextStyle(fontSize: 40.0, fontFamily: 'NeuePlak'),
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -34,10 +31,7 @@ class NewEventSetDate extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
                   'From:',
-                  style: TextStyle(
-                      color: AppColors.textOnLight,
-                      fontSize: 25.0,
-                      fontFamily: 'NeuePlak'),
+                  style: TextStyle(fontSize: 25.0, fontFamily: 'NeuePlak'),
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -59,10 +53,7 @@ class NewEventSetDate extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
                   'To:',
-                  style: TextStyle(
-                      color: AppColors.textOnLight,
-                      fontSize: 25.0,
-                      fontFamily: 'NeuePlak'),
+                  style: TextStyle(fontSize: 25.0, fontFamily: 'NeuePlak'),
                   textAlign: TextAlign.left,
                 ),
               ),

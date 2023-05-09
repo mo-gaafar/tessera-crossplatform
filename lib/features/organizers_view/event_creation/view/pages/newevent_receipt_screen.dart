@@ -83,14 +83,16 @@ class NewEventReceipt extends StatelessWidget {
                         .currentEvent
                         .eventName
                         .toString(),
-                    textStyle: const TextStyle(
+                    textStyle: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                        color: Theme.of(context).textTheme.bodyLarge!.color),
                   ),
                   MyEditabelText(
                     title: "by Unnamed organizer",
-                    textStyle: TextStyle(fontSize: 18, color: Colors.black),
+                    textStyle: TextStyle(
+                        fontSize: 18,
+                        color: Theme.of(context).textTheme.bodyLarge!.color),
                   ),
                   MyEditabelText(
                     title: (context

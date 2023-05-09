@@ -37,8 +37,7 @@ class EmailButton extends StatelessWidget {
           ),
           //style: ButtonStyle(
           //overlayColor: MaterialStateProperty.resolveWith(getColor)),
-          onPressed:onTap
-          ,
+          onPressed: onTap,
           child: Text(
             buttonText,
             style: TextStyle(
