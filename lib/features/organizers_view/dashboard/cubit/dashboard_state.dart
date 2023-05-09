@@ -42,6 +42,8 @@ class RetrievedDashboardData extends DashboardState {
 
 class DashboardLoading extends DashboardState {}
 
+class DownloadingReport extends DashboardState {}
+
 class AttendeeSummaryRetrieved extends DashboardState {
   const AttendeeSummaryRetrieved(this.attendeeSummary);
 

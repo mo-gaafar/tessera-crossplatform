@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:equatable/equatable.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/attendee_summary_model.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/dashboard_model.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/dashboard_repository.dart';
+import 'package:open_file/open_file.dart' as file;
 import 'package:tessera/features/organizers_view/dashboard/data/event_sales_model.dart';
 
 part 'dashboard_state.dart';
@@ -22,7 +24,6 @@ class DashboardCubit extends Cubit<DashboardState> {
   Future<void> getDashboardData() async {
     emit(DashboardLoading());
     await getTicketTiers();
-    print(ticketTiers);
     if (ticketTiers != null) {
       DashBoardModel dashboardModel = DashBoardModel(
         salesByTier: [],
@@ -70,6 +71,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<void> getAttendeeSummary() async {
+    emit(DashboardLoading());
     var response = await DashboardRepository.requestAttendeeSummary(eventId);
     response.fold((error) {
       emit(DashboardError(error));
@@ -80,7 +82,19 @@ class DashboardCubit extends Cubit<DashboardState> {
   }
 
   Future<void> downloadAttendeeSummary() async {
-    await DashboardRepository.downloadAttendeeSummary(eventId);
+    String dir =
+        '${(await DownloadsPathProvider.downloadsDirectory)!.path}/attendee_summary.csv';
+
+    emit(DownloadingReport());
+    var response =
+        await DashboardRepository.downloadAttendeeSummary(eventId, dir);
+
+    if (response == 'success') {
+      emit(DashboardInitial());
+      file.OpenFile.open(dir);
+    } else {
+      emit(DashboardError(response));
+    }
   }
 
   Future<void> getTicketTiers() async {

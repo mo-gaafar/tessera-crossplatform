@@ -175,13 +175,14 @@ class Dashboard extends StatelessWidget {
             GridView.count(
               crossAxisCount: 2,
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
               children: [
                 GestureDetector(
                   onTap: () async {
-                    await context.read<DashboardCubit>().getAttendeeSummary();
                     _panelController.open();
+                    await context.read<DashboardCubit>().getAttendeeSummary();
                   },
                   child: DashboardItem(
                     padding: 15,
@@ -200,7 +201,7 @@ class Dashboard extends StatelessWidget {
                           FluentIcons.people_team_24_regular,
                           size: 60,
                         )),
-                        Text('Click to view and download your attendees list.',
+                        Text('View and download your attendees list.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Theme.of(context)
@@ -270,7 +271,7 @@ class Dashboard extends StatelessWidget {
           ),
           panel: Container(
             clipBehavior: Clip.hardEdge,
-            height: 100,
+            // height: 100,
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               borderRadius: const BorderRadius.only(
@@ -281,33 +282,35 @@ class Dashboard extends StatelessWidget {
             child: BlocBuilder<DashboardCubit, DashboardState>(
               buildWhen: (previous, current) =>
                   current is DashboardPreviewEvent ||
-                  current is AttendeeSummaryRetrieved,
+                  current is AttendeeSummaryRetrieved ||
+                  current is DashboardLoading,
               builder: (context, state) {
                 if (state is DashboardPreviewEvent && eventModel != null) {
                   return EventPage(eventData: eventModel!);
                 }
-                if (state is AttendeeSummaryRetrieved) {
-                  return Material(
-                    color: Colors.transparent,
-                    child: ListView(
-                      padding: const EdgeInsets.only(left: 10, top: 20),
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Attendee Summary',
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold)),
-                            IconButton(
-                                onPressed: () async {
-                                  await context
-                                      .read<DashboardCubit>()
-                                      .downloadAttendeeSummary();
-                                },
-                                icon: const Icon(
-                                    FluentIcons.arrow_download_24_regular)),
-                          ],
-                        ),
+
+                return Material(
+                  color: Colors.transparent,
+                  child: ListView(
+                    padding: const EdgeInsets.only(left: 10, top: 20),
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Attendee Summary',
+                              style: TextStyle(
+                                  fontSize: 24, fontWeight: FontWeight.bold)),
+                          IconButton(
+                              onPressed: () async {
+                                await context
+                                    .read<DashboardCubit>()
+                                    .downloadAttendeeSummary();
+                              },
+                              icon: const Icon(
+                                  FluentIcons.arrow_download_24_regular)),
+                        ],
+                      ),
+                      if (state is AttendeeSummaryRetrieved)
                         ListView.builder(
                           padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
                           shrinkWrap: true,
@@ -345,12 +348,19 @@ class Dashboard extends StatelessWidget {
                               ),
                             );
                           },
+                        )
+                      else if (state is DashboardLoading)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  );
-                }
-                return Container();
+                    ],
+                  ),
+                );
               },
             ),
           ),

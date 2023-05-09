@@ -6,8 +6,10 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tessera/core/services/networking/networking.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/attendee_summary_model.dart';
+import 'package:open_file/open_file.dart' as file;
 
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class DashboardRepository {
   static Future<Either<String, Map>> requestTicketsSold(
@@ -68,17 +70,18 @@ class DashboardRepository {
     }
   }
 
-  static Future<void> downloadAttendeeSummary(String id) async {
-    // try {
-    var dio = Dio();
-    await dio.download(
-        'https://www.tessera.social/api/dashboard/report/attendees-list/$id',
-        (await DownloadsPathProvider.downloadsDirectory)!.path +
-            '/attendee_summary.csv');
-    print((await DownloadsPathProvider.downloadsDirectory)!.path);
-    // } catch (e) {
-    //   print(e.toString());
-    // }
+  static Future<String> downloadAttendeeSummary(String id, String dir) async {
+    try {
+      var dio = Dio();
+
+      var response = await dio.download(
+          'https://www.tessera.social/api/dashboard/report/attendees-list/$id',
+          dir);
+
+      return 'success';
+    } catch (e) {
+      return e.toString();
+    }
   }
 
   static Future<Either<String, List<String>>> requestTicketTiers(
