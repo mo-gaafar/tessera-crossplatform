@@ -16,7 +16,7 @@ class EventRepository {
   /// Sends the booking basic information to the database.
   ///
   /// Returns [true] if the booking is done successfully.
-  static Future bookingTicketInfo(var data,String id) async {
+  static Future bookingTicketInfo(var data, String id) async {
     //id='643aa02d4d2e42199562be5f';
     /*data={
     "contactInformation":{
@@ -45,9 +45,12 @@ class EventRepository {
         jsonEncode(data));
     return responseBody;
   }
-  static Future promocodeAvailable(String data,String id) async {
+
+  static Future promocodeAvailable(String data, String id) async {
+    print(
+        'https://www.tessera.social/api/attendee/ticket/$id/promocode/retrieve?code=$data');
     final responseBody = await NetworkService.getGetApiResponse(
-        'https://www.tessera.social/api/attendee/ticket/$id/$data/retrieve');
+        'https://www.tessera.social/api/attendee/ticket/$id/promocode/retrieve?code=$data');
     return responseBody;
   }
 }

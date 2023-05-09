@@ -77,7 +77,7 @@ dynamic returnResponse(http.Response response) {
     case 400:
       throw BadRequestException(response.body.toString());
     case 404:
-      throw jsonDecode(response.body);
+      return jsonDecode(response.body);
     case 500:
       throw BadRequestException(response.body.toString());
     default:

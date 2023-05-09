@@ -58,7 +58,7 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
-  late int disc = 1;
+  late double disc = 1.0;
   late EventModel _eventData;
   late String id;
   final formKey = GlobalKey<FormState>();
@@ -192,6 +192,7 @@ class _EventPageState extends State<EventPage> {
                               return null;
                             } else {
                               promo = value;
+                              print(promo);
                             }
                           },
                         ),
@@ -206,14 +207,30 @@ class _EventPageState extends State<EventPage> {
                             TextButton(
                               child: const Text("CheckOut"),
                               onPressed: () async {
-                                //var response = await context
-                                  //  .read<EventBookCubit>()
-                                  //  .promocodeValidity(promo, id);
-                                //if (response['success'] == true) {
-                                 // disc = response['discout'];
-                                //}
-
+                            
                                 if (formKey.currentState!.validate()) {
+                                    if (promo != '') {
+                                    print('da5al promocode');
+                                    var response = await context
+                                        .read<EventBookCubit>()
+                                        .promocodeValidity(promo, id);
+                                    print(response);
+                                    if (response['success'] == true) {
+                                      disc = response['discout'] as double;
+                                    }
+                                    else{
+                                      ScaffoldMessenger.of(context)
+                                        .showSnackBar( SnackBar(
+                                      duration: Duration(seconds: 2),
+                                      content: Text(response['message'].toString()),
+                                      shape: StadiumBorder(),
+                                      behavior: SnackBarBehavior.floating,
+                                    ));
+
+                                    }
+                                  } else {
+                                    print('mafesh promocode');
+                                  }
                                   for (int k = 0;
                                       k < ticketsOfEvent.length;
                                       k++) {
@@ -243,6 +260,11 @@ class _EventPageState extends State<EventPage> {
                                         k++) {
                                       if (ticketsOfEvent[k]['ticketsNumber'] >
                                           0) {
+                                            print((double.parse(teirsSplitting(
+                                                            ticketsOfEvent[k][
+                                                                'nameAndPrice'])[
+                                                        1]) *
+                                                    disc));
                                         tiersToCheck.add(TicketTierSelected(
                                                 tierName: teirsSplitting(
                                                     ticketsOfEvent[k]
@@ -250,11 +272,11 @@ class _EventPageState extends State<EventPage> {
                                                 quantity: ticketsOfEvent[k][
                                                     'ticketsNumber'], //price should be sent as int
                                                 //teirsSplitting(ticketsOfEvent[k]['nameAndPrice'])[1].toInt()
-                                                price: int.parse(teirsSplitting(
+                                                price: (double.parse(teirsSplitting(
                                                             ticketsOfEvent[k][
                                                                 'nameAndPrice'])[
                                                         1]) *
-                                                    disc)
+                                                    disc).toInt())
                                             .toMap());
                                       }
                                     }
@@ -269,7 +291,6 @@ class _EventPageState extends State<EventPage> {
                                       true,
                                       tiersToCheck,
                                       _eventData,
-                                      
                                       id,
                                       promo
                                     ];
