@@ -31,8 +31,6 @@ class Dashboard extends StatelessWidget {
           dashboardItems = [
             GestureDetector(
               onTap: () async {
-                eventModel =
-                    await context.read<EventBookCubit>().getEventData(eventId);
                 context.read<DashboardCubit>().previewEvent();
                 _panelController.open();
               },
@@ -40,7 +38,20 @@ class Dashboard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Help Me Event', style: TextStyle(fontSize: 30)),
+                    FutureBuilder<EventModel>(
+                        future: context.read<EventBookCubit>().getEventData(
+                            eventId), // a previously-obtained Future<String> or null
+                        builder: (BuildContext context,
+                            AsyncSnapshot<EventModel> snapshot) {
+                          eventModel = snapshot.data;
+                          return Text(
+                            eventModel != null
+                                ? eventModel!.filteredEvents[0]['basicInfo']
+                                    ['eventName']
+                                : '',
+                            style: TextStyle(fontSize: 30),
+                          );
+                        }),
                     Text('Click to preview your event page.',
                         style: TextStyle(
                             fontSize: 14,

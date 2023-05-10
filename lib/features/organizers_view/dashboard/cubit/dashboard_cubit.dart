@@ -3,11 +3,13 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:equatable/equatable.dart';
+import 'package:tessera/features/attendees_view/events/data/ticketing_data.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/attendee_summary_model.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/dashboard_model.dart';
 import 'package:tessera/features/organizers_view/dashboard/data/dashboard_repository.dart';
 import 'package:open_file/open_file.dart' as file;
 import 'package:tessera/features/organizers_view/dashboard/data/event_sales_model.dart';
+import 'package:tessera/features/organizers_view/ticketing/data/tier_data.dart';
 
 part 'dashboard_state.dart';
 
@@ -15,7 +17,7 @@ class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit() : super(DashboardInitial());
 
   String eventId = '';
-  List<String>? ticketTiers;
+  List<TierModel>? ticketTiers;
 
   void previewEvent() {
     emit(DashboardPreviewEvent());
@@ -34,10 +36,14 @@ class DashboardCubit extends Cubit<DashboardState> {
       dashboardModel.totalTicketsSold = await getTicketsSold('true', '');
 
       for (var tier in ticketTiers!) {
-        dashboardModel.salesByTier!
-            .add({'tier': tier, 'amount': await getEventSales('false', tier)});
+        dashboardModel.salesByTier!.add({
+          'tier': tier.tierName,
+          'amount': tier.price == 'Free'
+              ? '0'
+              : await getEventSales('false', tier.tierName)
+        });
         dashboardModel.ticketTiersSold!
-            .add(await getTicketsSold('false', tier));
+            .add(await getTicketsSold('false', tier.tierName));
       }
 
       emit(RetrievedDashboardData(dashboardModel));
