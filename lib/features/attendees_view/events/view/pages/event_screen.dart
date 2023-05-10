@@ -415,10 +415,13 @@ class _EventPageState extends State<EventPage> {
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30)),
                       image: DecorationImage(
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         image: NetworkImage((_eventData.filteredEvents[0]
-                            ['basicInfo']['eventImage']==null)?'https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg':_eventData.filteredEvents[0]
-                            ['basicInfo']['eventImage']), //EVENT IMAGE
+                                    ['basicInfo']['eventImage'] ==
+                                null)
+                            ? 'https://erth.realestate/dist/new_tenant/images/default-image.jpg'
+                            : _eventData.filteredEvents[0]['basicInfo']
+                                ['eventImage']), //EVENT IMAGE
                       ),
                     ),
                   ),
@@ -575,15 +578,6 @@ class _EventPageState extends State<EventPage> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w100),
                                 ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Click here to get to your event live ',
-                                      style: TextStyle(
-                                          fontFamily: 'NeuePlak',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w100),
-                                    ))
                               ] else ...[
                                 const Text(
                                   'Offline',
@@ -643,25 +637,25 @@ class _EventPageState extends State<EventPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                        if (_eventData.filteredEvents[0]['ticketTiers'].any((map) => map['price'] == 'Free')
-                          ) ...[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'this event has a Free tier !',
-                                style: TextStyle(
-                                    fontFamily: 'NeuePlak',
-                                    color: AppColors.lightBackground,
-                                    fontSize: 20),
-                              ),
+                      if (_eventData.filteredEvents[0]['ticketTiers']
+                          .any((map) => map['price'] == 'Free')) ...[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'this event has a Free tier !',
+                              style: TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: AppColors.lightBackground,
+                                  fontSize: 20),
                             ),
                           ),
-                        ],
+                        ),
+                      ],
                       ExpandablePanel(
                         header: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -674,7 +668,9 @@ class _EventPageState extends State<EventPage> {
                                   fontWeight: FontWeight.w100),
                             ),
                             Text(
-                              ( _eventData.filteredEvents[0]['summary']==null)?'notfound':_eventData.filteredEvents[0]['summary'],
+                              (_eventData.filteredEvents[0]['summary'] == null)
+                                  ? 'notfound'
+                                  : _eventData.filteredEvents[0]['summary'],
                               softWrap: true,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -691,7 +687,10 @@ class _EventPageState extends State<EventPage> {
                           children: [
                             //seemore text
                             Text(
-                              ( _eventData.filteredEvents[0]['description']==null)?'notfound':_eventData.filteredEvents[0]['description'],
+                              (_eventData.filteredEvents[0]['description'] ==
+                                      null)
+                                  ? 'notfound'
+                                  : _eventData.filteredEvents[0]['description'],
                               style: const TextStyle(
                                   fontFamily: 'NeuePlak', fontSize: 20),
                             ),
