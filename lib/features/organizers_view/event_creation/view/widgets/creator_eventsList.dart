@@ -82,18 +82,6 @@ class _CreatorEventListState extends State<CreatorEventList> {
                       child: Text('Refresh'))
                 ],
               );
-            } else if (snapshot.data == 'Max Capacity equal 0?!!') {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Something wrong in max capacity'),
-                  ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
-                      child: Text('Refresh'))
-                ],
-              );
             } else if (snapshot.data == 'No Events') {
               return NoEvenTemplate(
                   'you don\'t have any ${widget.filterType} events');
@@ -124,30 +112,28 @@ class _CreatorEventListState extends State<CreatorEventList> {
                             context.read<DashboardCubit>().eventId =
                                 widget.filteredEvents[index]['eventId'];
                             Navigator.pushNamed(context, '/dashboard');
-                          }
-                          else
-                          {
-                                var resp = await context
-                            .read<EventTicketsCubit>()
-                            .getTicketsData(widget.filteredEvents[index]['eventId']);
-                        if (resp['success'] == true) {
-                           Navigator.pushNamed(
-                              context,
-                              '/ticketspage',
-                              arguments: resp['ticketTiers'] as List, //GIVING THE PRICE AS Int
-                            );
-                          
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            duration: Duration(seconds: 3),
-                            // ignore: prefer_interpolation_to_compose_strings
-                            content: Text(resp['message'] as String),
-                            shape: StadiumBorder(),
-                            behavior: SnackBarBehavior.floating,
-                          ));
-                        }
-
-
+                          } else {
+                            var resp = await context
+                                .read<EventTicketsCubit>()
+                                .getTicketsData(
+                                    widget.filteredEvents[index]['eventId']);
+                            if (resp['success'] == true) {
+                              Navigator.pushNamed(
+                                context,
+                                '/ticketspage',
+                                arguments: resp['ticketTiers']
+                                    as List, //GIVING THE PRICE AS Int
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                duration: Duration(seconds: 3),
+                                // ignore: prefer_interpolation_to_compose_strings
+                                content: Text(resp['message'] as String),
+                                shape: StadiumBorder(),
+                                behavior: SnackBarBehavior.floating,
+                              ));
+                            }
                           }
                         },
                         trailing: Text("£${widget.gross[index].toString()}"),

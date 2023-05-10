@@ -277,13 +277,19 @@ class NewEventReceipt extends StatelessWidget {
                                 .currentEvent
                                 .basicInfoToJson(),
                             context.read<AuthCubit>().currentUser.accessToken!);
-                    await CreatorRepository.updateEventImage(
-                        context
+                    if (context
                             .read<CreateEventCubit>()
                             .currentEvent
-                            .eventImage,
-                        context.read<CreateEventCubit>().currentEvent.eventID,
-                        context.read<AuthCubit>().currentUser.accessToken);
+                            .eventImage !=
+                        null) {
+                      await CreatorRepository.updateEventImage(
+                          context
+                              .read<CreateEventCubit>()
+                              .currentEvent
+                              .eventImage,
+                          context.read<CreateEventCubit>().currentEvent.eventID,
+                          context.read<AuthCubit>().currentUser.accessToken);
+                    }
                     context.read<CreateEventCubit>().displayError(
                         errormessage: response['message'].toString());
                     if (response['success']) {
