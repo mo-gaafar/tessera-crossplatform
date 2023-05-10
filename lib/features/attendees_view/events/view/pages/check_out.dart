@@ -118,7 +118,7 @@ class CheckOut extends StatelessWidget {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               duration: Duration(seconds: 2),
-                              content: Text('Successfully booked'),
+                              content: Text('Successfully booked, check your Email for the ticket'),
                               shape: StadiumBorder(),
                               behavior: SnackBarBehavior.floating,
                             ));
@@ -156,11 +156,11 @@ class CheckOut extends StatelessWidget {
                     Column(
                       children: [
                         Container(
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                            color: AppColors.primary,
                             border:
                                 Border.all(color: AppColors.primary, width: 2),
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
                             children: [
@@ -185,11 +185,7 @@ class CheckOut extends StatelessWidget {
                                     style: TextStyle(
                                         fontFamily: 'NeuePlak', fontSize: 30),
                                   ),
-                                  const Divider(
-                                    color: AppColors.primary,
-                                    height: 5,
-                                    thickness: 1.5,
-                                  )
+                                  
                                 ],
                               ),
                             ],
@@ -212,6 +208,7 @@ class CheckOut extends StatelessWidget {
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
+                            
                               border: OutlineInputBorder(),
                               hintText: 'Enter your first name',
                               helperText: 'Required'),

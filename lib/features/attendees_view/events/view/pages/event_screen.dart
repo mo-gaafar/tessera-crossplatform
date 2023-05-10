@@ -304,7 +304,7 @@ class _EventPageState extends State<EventPage> {
                                       id,
                                       promo
                                     ];
-                                    Navigator.pushNamed(
+                                    Navigator.pushReplacementNamed(
                                       context,
                                       '/checkOut',
                                       arguments: arg, //GIVING THE PRICE AS Int
@@ -346,6 +346,7 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
+          color: AppColors.lightBackground,
             //INCLUDES THE TICKET AND PRICE
             child: Padding(
           padding: const EdgeInsets.all(8.0),
