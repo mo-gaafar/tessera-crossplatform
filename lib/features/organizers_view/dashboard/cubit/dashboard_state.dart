@@ -1,5 +1,6 @@
 part of 'dashboard_cubit.dart';
 
+/// The state of the dashboard.
 abstract class DashboardState extends Equatable {
   const DashboardState();
 

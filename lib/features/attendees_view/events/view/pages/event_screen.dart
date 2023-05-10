@@ -129,8 +129,8 @@ class _EventPageState extends State<EventPage> {
                                             tier = value.toString();
                                             ticketsOfEvent[indexOfSelectedEvent]
                                                 ['ticketTierSelected'] = true;
-                                            print('this tier not full');
-                                            print(ticketsOfEvent);
+                                            //print('this tier not full');
+                                            //print(ticketsOfEvent);
                                           }
                                         });
                                       }),
@@ -155,10 +155,10 @@ class _EventPageState extends State<EventPage> {
                                                   ['ticketsNumber'] +
                                               1);
                                       // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                      print('selected tier: ' +
-                                          ticketsOfEvent[indexOfSelectedEvent]
-                                                  ['nameAndPrice']
-                                              .toString());
+                                      //print('selected tier: ' +
+                                      //  ticketsOfEvent[indexOfSelectedEvent]
+                                      //   ['nameAndPrice']
+                                      // .toString());
                                     });
                                   },
                                   icon: const Icon(Icons.add)),
@@ -177,10 +177,10 @@ class _EventPageState extends State<EventPage> {
                                                 ['ticketsNumber'] -
                                             1);
                                         // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                        print('selected tier: ' +
-                                            ticketsOfEvent[indexOfSelectedEvent]
-                                                    ['nameAndPrice']
-                                                .toString());
+                                        //   print('selected tier: ' +
+                                        //     ticketsOfEvent[indexOfSelectedEvent]
+                                        //           ['nameAndPrice']
+                                        //      .toString());
                                       }
                                     });
                                   },
@@ -198,12 +198,12 @@ class _EventPageState extends State<EventPage> {
                           ),
                           validator: (value) {
                             // ignore: avoid_print
-                            print('da5al');
+                            //print('da5al');
                             if (value == null || value.isEmpty) {
                               return null;
                             } else {
                               promo = value;
-                              print(promo);
+                              //print(promo);
                             }
                           },
                         ),
@@ -220,11 +220,11 @@ class _EventPageState extends State<EventPage> {
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   if (promo != '') {
-                                    print('da5al promocode');
+                                    //print('da5al promocode');
                                     var response = await context
                                         .read<EventBookCubit>()
                                         .promocodeValidity(promo, id);
-                                    print(response);
+                                    //print(response);
                                     if (response['success'] == true) {
                                       disc = response['discout'] as double;
                                       ScaffoldMessenger.of(context)
@@ -246,7 +246,7 @@ class _EventPageState extends State<EventPage> {
                                       ));
                                     }
                                   } else {
-                                    print('mafesh promocode');
+                                    // print('mafesh promocode');
                                   }
                                   for (int k = 0;
                                       k < ticketsOfEvent.length;
@@ -266,12 +266,12 @@ class _EventPageState extends State<EventPage> {
                                       ));
                                     }
                                   }
-                                  print('tiers to be chosen');
-                                  print(tiersToCheck.length);
+                                  //print('tiers to be chosen');
+                                  //print(tiersToCheck.length);
                                   if (ticketsOfEvent
                                       .any((map) => map.containsValue(true))) {
                                     // ignore: avoid_print
-                                    print('Checked out can happen');
+                                    //print('Checked out can happen');
                                     for (int k = 0;
                                         k < ticketsOfEvent.length;
                                         k++) {
@@ -291,12 +291,12 @@ class _EventPageState extends State<EventPage> {
                                       }
                                     }
                                   }
-                                  print('tiers of event');
-                                  print(ticketsOfEvent.length);
-                                  print('tiers to check out with');
-                                  print(tiersToCheck);
+                                  // print('tiers of event');
+                                  // print(ticketsOfEvent.length);
+                                  // print('tiers to check out with');
+                                  // print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
-                                    print('Check out done');
+                                    // print('Check out done');
                                     List arg = [
                                       true,
                                       tiersToCheck,
@@ -304,15 +304,15 @@ class _EventPageState extends State<EventPage> {
                                       id,
                                       promo
                                     ];
-                                    Navigator.pushNamed(
+                                    Navigator.pushReplacementNamed(
                                       context,
                                       '/checkOut',
                                       arguments: arg, //GIVING THE PRICE AS Int
                                     );
                                   } else {
                                     // ignore: avoid_print
-                                    print(
-                                        'No tier was chosen or no tickets were added');
+                                    //  print(
+                                    //    'No tier was chosen or no tickets were added');
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
                                       duration: Duration(seconds: 2),
@@ -346,6 +346,7 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
+            // color: AppColors.lightBackground,
             //INCLUDES THE TICKET AND PRICE
             child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -390,17 +391,20 @@ class _EventPageState extends State<EventPage> {
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
                 shape: const ContinuousRectangleBorder(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(70),
                         bottomRight: Radius.circular(70))),
-                leading: IconButton(
-                    onPressed: () {
-                      //back to event page
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.close)),
+                leading: widget.isPreview == false
+                    ? IconButton(
+                        onPressed: () {
+                          //back to event page
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.close))
+                    : null,
                 centerTitle: true,
                 pinned: true,
                 snap: false,
@@ -415,9 +419,13 @@ class _EventPageState extends State<EventPage> {
                           bottomLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30)),
                       image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(_eventData.filteredEvents[0]
-                            ['basicInfo']['eventImage']), //EVENT IMAGE
+                        fit: BoxFit.cover,
+                        image: NetworkImage((_eventData.filteredEvents[0]
+                                    ['basicInfo']['eventImage'] ==
+                                null)
+                            ? 'https://erth.realestate/dist/new_tenant/images/default-image.jpg'
+                            : _eventData.filteredEvents[0]['basicInfo']
+                                ['eventImage']), //EVENT IMAGE
                       ),
                     ),
                   ),
@@ -574,15 +582,6 @@ class _EventPageState extends State<EventPage> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w100),
                                 ),
-                                TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      'Click here to get to your event live ',
-                                      style: TextStyle(
-                                          fontFamily: 'NeuePlak',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w100),
-                                    ))
                               ] else ...[
                                 const Text(
                                   'Offline',
@@ -642,32 +641,25 @@ class _EventPageState extends State<EventPage> {
                       const SizedBox(
                         height: 10,
                       ),
-
-                      for (int n = 0;
-                          n <
-                              _eventData
-                                  .filteredEvents[0]['ticketTiers'].length;
-                          n++)
-                        if (_eventData.filteredEvents[0]['ticketTiers'][n]
-                                ['price'] ==
-                            'Free') ...[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.8),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'this event has a Free tier !',
-                                style: TextStyle(
-                                    fontFamily: 'NeuePlak',
-                                    color: AppColors.lightBackground,
-                                    fontSize: 20),
-                              ),
+                      if (_eventData.filteredEvents[0]['ticketTiers']
+                          .any((map) => map['price'] == 'Free')) ...[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'this event has a Free tier !',
+                              style: TextStyle(
+                                  fontFamily: 'NeuePlak',
+                                  color: AppColors.lightBackground,
+                                  fontSize: 20),
                             ),
                           ),
-                        ],
+                        ),
+                      ],
                       ExpandablePanel(
                         header: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -680,7 +672,9 @@ class _EventPageState extends State<EventPage> {
                                   fontWeight: FontWeight.w100),
                             ),
                             Text(
-                              _eventData.filteredEvents[0]['summary'],
+                              (_eventData.filteredEvents[0]['summary'] == null)
+                                  ? 'notfound'
+                                  : _eventData.filteredEvents[0]['summary'],
                               softWrap: true,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -697,7 +691,10 @@ class _EventPageState extends State<EventPage> {
                           children: [
                             //seemore text
                             Text(
-                              _eventData.filteredEvents[0]['description'],
+                              (_eventData.filteredEvents[0]['description'] ==
+                                      null)
+                                  ? 'notfound'
+                                  : _eventData.filteredEvents[0]['description'],
                               style: const TextStyle(
                                   fontFamily: 'NeuePlak', fontSize: 20),
                             ),

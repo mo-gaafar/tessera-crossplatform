@@ -6,6 +6,7 @@ import 'package:tessera/features/organizers_view/event_creation/cubit/createEven
 import 'package:tessera/features/organizers_view/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/features/organizers_view/event_creation/data/organiser_model.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/no_event_template.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 
 class CreatorEventList extends StatefulWidget {
   OrganiserModel organiserModel;
@@ -34,7 +35,13 @@ class _CreatorEventListState extends State<CreatorEventList> {
       } else {
         for (int i = 0; i < widget.filteredEvents.length; i++) {
           if (response['maxCapacity'][i] == 0) {
-            return 'Max Capacity equal 0?!!';
+            if (widget.filterType == 'draft') {
+              widget.eventSoldTicketsPercentage.add(0.0);
+              widget.eventSoldTicketsPercentageToString.add(
+                  '${response['eventsoldtickets'][i]}/${response['maxCapacity'][i]}');
+            } else {
+              return 'Max Capacity equal 0?!!';
+            }
           } else {
             widget.eventSoldTicketsPercentage.add(
                 response['eventsoldtickets'][i] / response['maxCapacity'][i]);
@@ -55,46 +62,35 @@ class _CreatorEventListState extends State<CreatorEventList> {
       onRefresh: () async {
         setState(() {});
       },
-      child: Center(
-        child: FutureBuilder(
-          future: jsonBodyToCreatorEventList(context
-              .select((AuthCubit auth) => auth.currentUser.accessToken!)),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasData) {
-              if (snapshot.data == 'Network Error') {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Network Error'),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: Text('Refresh'))
-                  ],
-                );
-              } else if (snapshot.data == 'Max Capacity equal 0?!!') {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Something wrong in max capacity'),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: Text('Refresh'))
-                  ],
-                );
-              } else if (snapshot.data == 'No Events') {
-                return NoEvenTemplate(
-                    'you don\'t have any ${widget.filterType} events');
-              } else {
-                return Container(
-                  width: double.maxFinite,
-                  padding: const EdgeInsets.all(10),
+      child: FutureBuilder(
+        future: jsonBodyToCreatorEventList(
+            context.select((AuthCubit auth) => auth.currentUser.accessToken!)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: const CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            if (snapshot.data == 'Network Error') {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Network Error'),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: Text('Refresh'))
+                ],
+              );
+            } else if (snapshot.data == 'No Events') {
+              return NoEvenTemplate(
+                  'you don\'t have any ${widget.filterType} events');
+            } else {
+              return Container(
+                width: double.maxFinite,
+                padding: const EdgeInsets.all(10),
+                child: Align(
+                  alignment: Alignment.topCenter,
                   child: ListView.builder(
                     itemCount: widget.filteredEvents.length,
                     shrinkWrap: true,
@@ -111,24 +107,47 @@ class _CreatorEventListState extends State<CreatorEventList> {
                         subtitle: Text(
                             '${widget.filteredEvents[index]["basicInfo"]['startDateTime'].toString()} \n ${widget.eventSoldTicketsPercentageToString[index]}'),
                         isThreeLine: true,
-                        onTap: () {
-                          print(widget.filteredEvents[index]);
-                          context.read<DashboardCubit>().eventId =
-                              widget.filteredEvents[index]['eventId']; //! check
-                          Navigator.pushNamed(context, '/dashboard');
+                        onTap: () async {
+                          if (widget.filterType != 'draft') {
+                            context.read<DashboardCubit>().eventId =
+                                widget.filteredEvents[index]['eventId'];
+                            Navigator.pushNamed(context, '/dashboard');
+        
+                          } else {
+                            var resp = await context
+                                .read<EventTicketsCubit>()
+                                .getTicketsData(
+                                    widget.filteredEvents[index]['eventId']);
+                            if (resp['success'] == true) {
+                             Navigator.pushNamed(
+                              context,
+                              '/ticketspage',
+                              arguments: [resp['ticketTiers'] as List,widget.filteredEvents[index]['eventId']], //GIVING THE PRICE AS Int
+                            );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                duration: Duration(seconds: 3),
+                                // ignore: prefer_interpolation_to_compose_strings
+                                content: Text(resp['message'] as String),
+                                shape: StadiumBorder(),
+                                behavior: SnackBarBehavior.floating,
+                              ));
+                            }
+                          }
                         },
                         trailing: Text("£${widget.gross[index].toString()}"),
                       );
                     },
                   ),
-                );
-              }
-            } else {
-              return Text(
-                  'Error!'); //flutter gives me that the body will continue with null error so i added this
+                ),
+              );
             }
-          },
-        ),
+          } else {
+            return Text(
+                'Error!'); //flutter gives me that the body will continue with null error so i added this
+          }
+        },
       ),
     );
   }

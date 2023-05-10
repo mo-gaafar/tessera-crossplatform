@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+/// Model for the attendee summary data.
 class AttendeeSummaryModel {
   final String name;
   final String orderDate;
@@ -15,6 +16,7 @@ class AttendeeSummaryModel {
     required this.ticketPrice,
   });
 
+  /// Creates a [AttendeeSummaryModel] from given user data.
   AttendeeSummaryModel copyWith({
     String? name,
     String? orderDate,
@@ -31,6 +33,7 @@ class AttendeeSummaryModel {
     );
   }
 
+  /// Returns a [Map] representation of the [AttendeeSummaryModel].
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
@@ -41,6 +44,7 @@ class AttendeeSummaryModel {
     };
   }
 
+  /// Creates a [AttendeeSummaryModel] from a [Map].
   factory AttendeeSummaryModel.fromMap(Map<String, dynamic> map) {
     return AttendeeSummaryModel(
       name: map['Attendee Name'] as String,
@@ -51,8 +55,10 @@ class AttendeeSummaryModel {
     );
   }
 
+  /// Encodes the [AttendeeSummaryModel] to JSON.
   String toJson() => json.encode(toMap());
 
+  /// Decodes the [AttendeeSummaryModel] from JSON.
   factory AttendeeSummaryModel.fromJson(String source) =>
       AttendeeSummaryModel.fromMap(json.decode(source) as Map<String, dynamic>);
 

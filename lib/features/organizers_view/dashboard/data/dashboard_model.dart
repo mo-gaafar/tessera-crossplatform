@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+/// Model for the dashboard data.
 class DashBoardModel {
   String? totalSales;
   List? salesByTier;
@@ -27,6 +28,7 @@ class DashBoardModel {
     );
   }
 
+  /// Returns a [Map] representation of the [DashBoardModel].
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'totalSales': totalSales,
@@ -36,6 +38,7 @@ class DashBoardModel {
     };
   }
 
+  /// Creates a [DashBoardModel] from a [Map].
   factory DashBoardModel.fromMap(Map<String, dynamic> map) {
     return DashBoardModel(
       totalSales:
@@ -52,8 +55,10 @@ class DashBoardModel {
     );
   }
 
+  /// Encodes the [DashBoardModel] to JSON.
   String toJson() => json.encode(toMap());
 
+  /// Decodes the [DashBoardModel] from JSON.
   factory DashBoardModel.fromJson(String source) =>
       DashBoardModel.fromMap(json.decode(source) as Map<String, dynamic>);
 

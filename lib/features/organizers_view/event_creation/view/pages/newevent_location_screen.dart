@@ -73,6 +73,17 @@ class _NewEventLocationState extends State<NewEventLocation> {
                               .read<CreateEventCubit>()
                               .currentEvent
                               .eventStatus = value;
+                          if (selectedValue == 'Online Event') {
+                            context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .isOnline = true;
+                          } else {
+                            context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .isOnline = false;
+                          }
                           if (selectedValue == 'Venue') {
                             visabilty = true;
                           } else {
