@@ -291,7 +291,10 @@ class NewEventReceipt extends StatelessWidget {
                           response['event_Id'];
                       print("EVENT ID:");
                       print(response['event_Id']);
-                      Navigator.pushNamed(context, '/neweventtickets');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/neweventtickets',
+                          ModalRoute.withName('/creatorlanding'));
                     }
                   } else {
                     context.read<CreateEventCubit>().displayError(
