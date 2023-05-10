@@ -30,48 +30,10 @@ class NewEventReceipt extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.secondary,
           foregroundColor: AppColors.textOnLight,
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.visibility),
-              tooltip: 'Show',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('This is a visibilty icon snackbar')));
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.done,
-                color: Colors.grey,
-              ),
-              tooltip: 'Show',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('This is a done icon snackbar')));
-                print(context.read<CreateEventCubit>().currentEvent);
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.publish_outlined),
-              tooltip: 'Show',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('This is a publish icon snackbar')));
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              tooltip: 'Show',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('This is a more icon snackbar')));
-              },
-            ),
-          ],
         ),
-        body: Column(
+        body: ListView(
           children: [
             //MyImagePicker(),
             ReceiptSection(
@@ -286,6 +248,9 @@ class NewEventReceipt extends StatelessWidget {
             ),
             ReceiptSection(
               sectionChild: TextField(
+                decoration: InputDecoration(
+                  hintText: "Enter a brief summary",
+                ),
                 onChanged: (value) {
                   context.read<CreateEventCubit>().currentEvent.eventSummary =
                       value;
@@ -293,44 +258,60 @@ class NewEventReceipt extends StatelessWidget {
               ),
               sectionIcon: const Icon(Icons.short_text_rounded),
             ),
-            Spacer(),
-            EmailButton(
-              buttonText: 'Create event and continue to ticketing',
-              colourBackground: AppColors.buttonColor,
-              colourText: AppColors.lightBackground,
-              onTap: () async {
-                if (context
-                        .read<CreateEventCubit>()
-                        .currentEvent
-                        .eventCategory !=
-                    null) {
-                  print(context.read<AuthCubit>().currentUser.accessToken!);
-                  final response =
-                      await CreatorRepository.postCreatedEventBasicInfo(
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: EmailButton(
+                buttonText: 'Create event and continue to ticketing',
+                colourBackground: AppColors.secondary,
+                colourText: AppColors.lightBackground,
+                onTap: () async {
+                  if (context
+                          .read<CreateEventCubit>()
+                          .currentEvent
+                          .eventCategory !=
+                      null) {
+                    print(context.read<AuthCubit>().currentUser.accessToken!);
+                    final response =
+                        await CreatorRepository.postCreatedEventBasicInfo(
+                            context
+                                .read<CreateEventCubit>()
+                                .currentEvent
+                                .basicInfoToJson(),
+                            context.read<AuthCubit>().currentUser.accessToken!);
+                    if (context
+                            .read<CreateEventCubit>()
+                            .currentEvent
+                            .eventImage !=
+                        null) {
+                      await CreatorRepository.updateEventImage(
                           context
                               .read<CreateEventCubit>()
                               .currentEvent
-                              .basicInfoToJson(),
-                          context.read<AuthCubit>().currentUser.accessToken!);
-                  context.read<CreateEventCubit>().displayError(
-                      errormessage: response['message'].toString());
-                  if (response['success']) {
-                    context.read<CreateEventCubit>().currentEvent.eventID =
-                        response['event_Id'];
-                    id =  response['event_Id'];
+                              .eventImage,
+                          context.read<CreateEventCubit>().currentEvent.eventID,
+                          context.read<AuthCubit>().currentUser.accessToken);
+                    }
+                    context.read<CreateEventCubit>().displayError(
+                        errormessage: response['message'].toString());
+                    if (response['success']) {
+                      context.read<CreateEventCubit>().currentEvent.eventID =
+                          response['event_Id'];
+                          id =  response['event_Id'];
                     print("EVENT ID:");
                     print(response['event_Id']);
-                    Navigator.pushNamed(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
                       '/neweventtickets',
-                      arguments: id as String, //GIVING THE PRICE AS Int
+                      arguments: id as String, ModalRoute.withName('/creatorlanding')
                     );
+            
+                    }
+                  } else {
+                    context.read<CreateEventCubit>().displayError(
+                        errormessage: 'Please add an event category.');
                   }
-                } else {
-                  context.read<CreateEventCubit>().displayError(
-                      errormessage: 'Please add an event category.');
-                }
-              },
+                },
+              ),
             )
           ],
         ),

@@ -156,9 +156,9 @@ class _EventPageState extends State<EventPage> {
                                               1);
                                       // ignore: avoid_print, prefer_interpolation_to_compose_strings
                                       //print('selected tier: ' +
-                                        //  ticketsOfEvent[indexOfSelectedEvent]
-                                               //   ['nameAndPrice']
-                                             // .toString());
+                                      //  ticketsOfEvent[indexOfSelectedEvent]
+                                      //   ['nameAndPrice']
+                                      // .toString());
                                     });
                                   },
                                   icon: const Icon(Icons.add)),
@@ -177,10 +177,10 @@ class _EventPageState extends State<EventPage> {
                                                 ['ticketsNumber'] -
                                             1);
                                         // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                     //   print('selected tier: ' +
-                                       //     ticketsOfEvent[indexOfSelectedEvent]
-                                         //           ['nameAndPrice']
-                                          //      .toString());
+                                        //   print('selected tier: ' +
+                                        //     ticketsOfEvent[indexOfSelectedEvent]
+                                        //           ['nameAndPrice']
+                                        //      .toString());
                                       }
                                     });
                                   },
@@ -246,7 +246,7 @@ class _EventPageState extends State<EventPage> {
                                       ));
                                     }
                                   } else {
-                                   // print('mafesh promocode');
+                                    // print('mafesh promocode');
                                   }
                                   for (int k = 0;
                                       k < ticketsOfEvent.length;
@@ -291,12 +291,12 @@ class _EventPageState extends State<EventPage> {
                                       }
                                     }
                                   }
-                                 // print('tiers of event');
-                                 // print(ticketsOfEvent.length);
-                                 // print('tiers to check out with');
-                                 // print(tiersToCheck);
+                                  // print('tiers of event');
+                                  // print(ticketsOfEvent.length);
+                                  // print('tiers to check out with');
+                                  // print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
-                                   // print('Check out done');
+                                    // print('Check out done');
                                     List arg = [
                                       true,
                                       tiersToCheck,
@@ -311,7 +311,7 @@ class _EventPageState extends State<EventPage> {
                                     );
                                   } else {
                                     // ignore: avoid_print
-                                  //  print(
+                                    //  print(
                                     //    'No tier was chosen or no tickets were added');
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
@@ -346,7 +346,7 @@ class _EventPageState extends State<EventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
-          color: AppColors.lightBackground,
+            // color: AppColors.lightBackground,
             //INCLUDES THE TICKET AND PRICE
             child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -391,17 +391,20 @@ class _EventPageState extends State<EventPage> {
           body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
+                automaticallyImplyLeading: false,
                 backgroundColor: Colors.transparent,
                 shape: const ContinuousRectangleBorder(
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(70),
                         bottomRight: Radius.circular(70))),
-                leading: IconButton(
-                    onPressed: () {
-                      //back to event page
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.close)),
+                leading: widget.isPreview == false
+                    ? IconButton(
+                        onPressed: () {
+                          //back to event page
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.close))
+                    : null,
                 centerTitle: true,
                 pinned: true,
                 snap: false,
