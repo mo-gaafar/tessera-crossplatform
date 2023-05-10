@@ -72,6 +72,7 @@ dependencies:
   image_picker: ^0.8.7+4
   uuid: ^3.0.7
   expandable: ^5.0.1
+  mockito: ^5.4.0
 
   # flutter_launcher_icons: ^0.13.0
 
