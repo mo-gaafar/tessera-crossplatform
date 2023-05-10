@@ -78,6 +78,17 @@ class _EditTicketsState extends State<EditTickets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () async {
+              var resp = await context
+                  .read<EventTicketsCubit>()
+                  .getTicketsData(widget.id);
+              Navigator.pushReplacementNamed(context, '/ticketspage', arguments: [
+                resp['ticketTiers'] as List,
+                widget.id as String
+              ]);
+            },
+            icon: const Icon(Icons.chevron_left)),
         centerTitle: false,
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -128,7 +139,7 @@ class _EditTicketsState extends State<EditTickets> {
                         .read<EventTicketsCubit>()
                         .getTicketsData(widget.id);
                     if (resp['success'] == true) {
-                      Navigator.pushNamed(
+                      Navigator.pushReplacementNamed(
                         context,
                         '/ticketspage',
                         arguments: [resp['ticketTiers']

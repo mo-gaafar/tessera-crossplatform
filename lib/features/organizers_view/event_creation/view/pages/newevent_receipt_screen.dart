@@ -301,10 +301,10 @@ class NewEventReceipt extends StatelessWidget {
                           id =  response['event_Id'];
                     print("EVENT ID:");
                     print(response['event_Id']);
-                    Navigator.pushNamedAndRemoveUntil(
+                    Navigator.pushReplacementNamed(
                       context,
                       '/neweventtickets',
-                      arguments: id as String, ModalRoute.withName('/creatorlanding')
+                      arguments: id as String
                     );
             
                     }

@@ -224,19 +224,18 @@ class _PublishPageState extends State<PublishPage> {
           textAlign: TextAlign.left,
           style: TextStyle(fontFamily: 'NeuePlak', fontSize: 25),
         ),
+        automaticallyImplyLeading: false,
         leading: IconButton(
-            onPressed: () {
-              //back to creater first page
-              Navigator.pop(context);
+            onPressed: () async {
+              var resp = await context
+                  .read<EventTicketsCubit>()
+                  .getTicketsData(widget.id);
+              Navigator.pushReplacementNamed(context, '/ticketspage', arguments: [
+                resp['ticketTiers'] as List,
+                widget.id as String
+              ]);
             },
             icon: const Icon(Icons.chevron_left)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                //to home page
-              },
-              icon: const Icon(Icons.done)),
-        ],
         elevation: 3,
       ),
       body: SafeArea(

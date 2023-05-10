@@ -46,7 +46,7 @@ class NewEventDescription extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/neweventsetdate');
+          Navigator.pushReplacementNamed(context, '/neweventsetdate');
         },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.arrow_forward_ios),

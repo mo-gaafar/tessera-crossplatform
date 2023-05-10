@@ -18,23 +18,14 @@ class TicketDefault extends StatelessWidget {
           textAlign: TextAlign.left,
           style: TextStyle(
               fontFamily: 'NeuePlak',
-              color: AppColors.textOnLight,
               fontSize: 25),
         ),
         leading: IconButton(
             onPressed: () {
               //back to creater first page
-              Navigator.pop(context);
+              Navigator.pushNamed(context, '/creatorlanding');
             },
             icon: const Icon(Icons.chevron_left)),
-        actions: [
-          IconButton(
-              onPressed: () {
-                //save
-                //but nothing to save in default
-              },
-              icon: const Icon(Icons.done)),
-        ],
         elevation: 3,
         backgroundColor: AppColors.lightBackground,
       ),
@@ -82,7 +73,7 @@ class TicketDefault extends StatelessWidget {
         onPressed: () {
           // Add your onPressed code here!
           context.read<EventTicketsCubit>().eventPricingdefault();
-          Navigator.pushNamed(
+          Navigator.pushReplacementNamed(
                               context,
                               '/addtickets',
                               arguments: id as String, //GIVING THE PRICE AS Int
