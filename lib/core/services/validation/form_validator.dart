@@ -4,7 +4,7 @@ class FormValidator {
     //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~_-?]).{8,}$';
     RegExp lowerCaseRegExp = RegExp(r'[a-z]');
     RegExp upperCaseRegExp = RegExp(r'[A-Z]');
-    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~]');
+    RegExp specialCharRegExp = RegExp(r'[!@#\$&*~"_]');
     RegExp numberRegExp = RegExp(r'[0-9]');
     if (password.trim().isEmpty) {
       return 'Password is required.';
@@ -134,8 +134,6 @@ class FormValidator {
 
     if (specialCharRegExp.hasMatch(name) == true) {
       return 'No special character is allowed.';
-    } else if (numberRegExp.hasMatch(name) == true) {
-      return 'No numbers is allowed.';
     } else {
       return null;
     }

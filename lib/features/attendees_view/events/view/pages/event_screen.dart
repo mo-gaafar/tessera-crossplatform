@@ -416,7 +416,8 @@ class _EventPageState extends State<EventPage> {
                           bottomRight: Radius.circular(30)),
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(_eventData.filteredEvents[0]
+                        image: NetworkImage((_eventData.filteredEvents[0]
+                            ['basicInfo']['eventImage']==null)?'https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg':_eventData.filteredEvents[0]
                             ['basicInfo']['eventImage']), //EVENT IMAGE
                       ),
                     ),
@@ -642,15 +643,8 @@ class _EventPageState extends State<EventPage> {
                       const SizedBox(
                         height: 10,
                       ),
-
-                      for (int n = 0;
-                          n <
-                              _eventData
-                                  .filteredEvents[0]['ticketTiers'].length;
-                          n++)
-                        if (_eventData.filteredEvents[0]['ticketTiers'][n]
-                                ['price'] ==
-                            'Free') ...[
+                        if (_eventData.filteredEvents[0]['ticketTiers'].any((map) => map['price'] == 'Free')
+                          ) ...[
                           Container(
                             decoration: BoxDecoration(
                               color: AppColors.primary.withOpacity(0.8),
@@ -680,7 +674,7 @@ class _EventPageState extends State<EventPage> {
                                   fontWeight: FontWeight.w100),
                             ),
                             Text(
-                              _eventData.filteredEvents[0]['summary'],
+                              ( _eventData.filteredEvents[0]['summary']==null)?'notfound':_eventData.filteredEvents[0]['summary'],
                               softWrap: true,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -697,7 +691,7 @@ class _EventPageState extends State<EventPage> {
                           children: [
                             //seemore text
                             Text(
-                              _eventData.filteredEvents[0]['description'],
+                              ( _eventData.filteredEvents[0]['description']==null)?'notfound':_eventData.filteredEvents[0]['description'],
                               style: const TextStyle(
                                   fontFamily: 'NeuePlak', fontSize: 20),
                             ),
