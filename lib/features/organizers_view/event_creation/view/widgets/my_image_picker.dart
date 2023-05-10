@@ -16,8 +16,8 @@ class _MyImagePickerState extends State<MyImagePicker> {
   ImagePicker picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         image != null
             ? Image.file(
@@ -27,10 +27,9 @@ class _MyImagePickerState extends State<MyImagePicker> {
               )
             : const Icon(
                 Icons.disabled_by_default_outlined,
-                size: 100,
+                // size: 100,
               ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GestureDetector(
               child: const Icon(

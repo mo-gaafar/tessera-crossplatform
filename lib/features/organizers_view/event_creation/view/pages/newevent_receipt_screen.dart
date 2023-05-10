@@ -279,6 +279,19 @@ class NewEventReceipt extends StatelessWidget {
                 ],
               ),
             ),
+            ReceiptSection(
+              sectionChild: MyImagePicker(),
+              sectionIcon: const Icon(Icons.image_outlined),
+            ),
+            ReceiptSection(
+              sectionChild: TextField(
+                onChanged: (value) {
+                  context.read<CreateEventCubit>().currentEvent.eventSummary =
+                      value;
+                },
+              ),
+              sectionIcon: const Icon(Icons.short_text_rounded),
+            ),
             Spacer(),
             EmailButton(
               buttonText: 'Create event and continue to ticketing',
