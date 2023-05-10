@@ -55,80 +55,78 @@ class _CreatorEventListState extends State<CreatorEventList> {
       onRefresh: () async {
         setState(() {});
       },
-      child: Center(
-        child: FutureBuilder(
-          future: jsonBodyToCreatorEventList(context
-              .select((AuthCubit auth) => auth.currentUser.accessToken!)),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            }
-            if (snapshot.hasData) {
-              if (snapshot.data == 'Network Error') {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Network Error'),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: Text('Refresh'))
-                  ],
-                );
-              } else if (snapshot.data == 'Max Capacity equal 0?!!') {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Something wrong in max capacity'),
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {});
-                        },
-                        child: Text('Refresh'))
-                  ],
-                );
-              } else if (snapshot.data == 'No Events') {
-                return NoEvenTemplate(
-                    'you don\'t have any ${widget.filterType} events');
-              } else {
-                return Container(
-                  width: double.maxFinite,
-                  padding: const EdgeInsets.all(10),
-                  child: ListView.builder(
-                    itemCount: widget.filteredEvents.length,
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, index) {
-                      return ListTile(
-                        leading: CircularProgressIndicator(
-                          value: (widget.eventSoldTicketsPercentage[index]),
-                          backgroundColor: Colors.grey,
-                          color: Colors.green,
-                        ), //value in percentage
-                        title: Text(widget.filteredEvents[index]["basicInfo"]
-                                ['eventName']
-                            .toString()),
-                        subtitle: Text(
-                            '${widget.filteredEvents[index]["basicInfo"]['startDateTime'].toString()} \n ${widget.eventSoldTicketsPercentageToString[index]}'),
-                        isThreeLine: true,
-                        onTap: () {
-                          print(widget.filteredEvents[index]);
-                          context.read<DashboardCubit>().eventId =
-                              widget.filteredEvents[index]['eventId']; //! check
-                          Navigator.pushNamed(context, '/dashboard');
-                        },
-                        trailing: Text("£${widget.gross[index].toString()}"),
-                      );
-                    },
-                  ),
-                );
-              }
+      child: FutureBuilder(
+        future: jsonBodyToCreatorEventList(
+            context.select((AuthCubit auth) => auth.currentUser.accessToken!)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: const CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            if (snapshot.data == 'Network Error') {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Network Error'),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: Text('Refresh'))
+                ],
+              );
+            } else if (snapshot.data == 'Max Capacity equal 0?!!') {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Something wrong in max capacity'),
+                  ElevatedButton(
+                      onPressed: () {
+                        setState(() {});
+                      },
+                      child: Text('Refresh'))
+                ],
+              );
+            } else if (snapshot.data == 'No Events') {
+              return NoEvenTemplate(
+                  'you don\'t have any ${widget.filterType} events');
             } else {
-              return Text(
-                  'Error!'); //flutter gives me that the body will continue with null error so i added this
+              return Container(
+                width: double.maxFinite,
+                padding: const EdgeInsets.all(10),
+                child: ListView.builder(
+                  itemCount: widget.filteredEvents.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, index) {
+                    return ListTile(
+                      leading: CircularProgressIndicator(
+                        value: (widget.eventSoldTicketsPercentage[index]),
+                        backgroundColor: Colors.grey,
+                        color: Colors.green,
+                      ), //value in percentage
+                      title: Text(widget.filteredEvents[index]["basicInfo"]
+                              ['eventName']
+                          .toString()),
+                      subtitle: Text(
+                          '${widget.filteredEvents[index]["basicInfo"]['startDateTime'].toString()} \n ${widget.eventSoldTicketsPercentageToString[index]}'),
+                      isThreeLine: true,
+                      onTap: () {
+                        print(widget.filteredEvents[index]);
+                        context.read<DashboardCubit>().eventId =
+                            widget.filteredEvents[index]['eventId']; //! check
+                        Navigator.pushNamed(context, '/dashboard');
+                      },
+                      trailing: Text("£${widget.gross[index].toString()}"),
+                    );
+                  },
+                ),
+              );
             }
-          },
-        ),
+          } else {
+            return Text(
+                'Error!'); //flutter gives me that the body will continue with null error so i added this
+          }
+        },
       ),
     );
   }
