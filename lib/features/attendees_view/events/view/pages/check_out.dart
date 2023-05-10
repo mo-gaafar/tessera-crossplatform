@@ -107,14 +107,14 @@ class CheckOut extends StatelessWidget {
                             ticketTierSelected: ticketTier);
                       }
                       // ignore: avoid_print
-                      print(jsonEncode(book.toMap()));
+                      //print(jsonEncode(book.toMap()));
                       String output = await context
                               .read<EventBookCubit>()
                               .postBookingData(book.toMap(), id);
                           if (output == 'Booked successfully') {
                             Navigator.pushReplacementNamed(
                                 context, '/landingPage');
-                            print('done');
+                            //print('done');
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               duration: Duration(seconds: 2),

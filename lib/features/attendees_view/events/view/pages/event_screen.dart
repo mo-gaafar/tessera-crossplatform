@@ -129,8 +129,8 @@ class _EventPageState extends State<EventPage> {
                                             tier = value.toString();
                                             ticketsOfEvent[indexOfSelectedEvent]
                                                 ['ticketTierSelected'] = true;
-                                            print('this tier not full');
-                                            print(ticketsOfEvent);
+                                            //print('this tier not full');
+                                            //print(ticketsOfEvent);
                                           }
                                         });
                                       }),
@@ -155,10 +155,10 @@ class _EventPageState extends State<EventPage> {
                                                   ['ticketsNumber'] +
                                               1);
                                       // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                      print('selected tier: ' +
-                                          ticketsOfEvent[indexOfSelectedEvent]
-                                                  ['nameAndPrice']
-                                              .toString());
+                                      //print('selected tier: ' +
+                                        //  ticketsOfEvent[indexOfSelectedEvent]
+                                               //   ['nameAndPrice']
+                                             // .toString());
                                     });
                                   },
                                   icon: const Icon(Icons.add)),
@@ -177,10 +177,10 @@ class _EventPageState extends State<EventPage> {
                                                 ['ticketsNumber'] -
                                             1);
                                         // ignore: avoid_print, prefer_interpolation_to_compose_strings
-                                        print('selected tier: ' +
-                                            ticketsOfEvent[indexOfSelectedEvent]
-                                                    ['nameAndPrice']
-                                                .toString());
+                                     //   print('selected tier: ' +
+                                       //     ticketsOfEvent[indexOfSelectedEvent]
+                                         //           ['nameAndPrice']
+                                          //      .toString());
                                       }
                                     });
                                   },
@@ -198,12 +198,12 @@ class _EventPageState extends State<EventPage> {
                           ),
                           validator: (value) {
                             // ignore: avoid_print
-                            print('da5al');
+                            //print('da5al');
                             if (value == null || value.isEmpty) {
                               return null;
                             } else {
                               promo = value;
-                              print(promo);
+                              //print(promo);
                             }
                           },
                         ),
@@ -220,11 +220,11 @@ class _EventPageState extends State<EventPage> {
                               onPressed: () async {
                                 if (formKey.currentState!.validate()) {
                                   if (promo != '') {
-                                    print('da5al promocode');
+                                    //print('da5al promocode');
                                     var response = await context
                                         .read<EventBookCubit>()
                                         .promocodeValidity(promo, id);
-                                    print(response);
+                                    //print(response);
                                     if (response['success'] == true) {
                                       disc = response['discout'] as double;
                                       ScaffoldMessenger.of(context)
@@ -246,7 +246,7 @@ class _EventPageState extends State<EventPage> {
                                       ));
                                     }
                                   } else {
-                                    print('mafesh promocode');
+                                   // print('mafesh promocode');
                                   }
                                   for (int k = 0;
                                       k < ticketsOfEvent.length;
@@ -266,12 +266,12 @@ class _EventPageState extends State<EventPage> {
                                       ));
                                     }
                                   }
-                                  print('tiers to be chosen');
-                                  print(tiersToCheck.length);
+                                  //print('tiers to be chosen');
+                                  //print(tiersToCheck.length);
                                   if (ticketsOfEvent
                                       .any((map) => map.containsValue(true))) {
                                     // ignore: avoid_print
-                                    print('Checked out can happen');
+                                    //print('Checked out can happen');
                                     for (int k = 0;
                                         k < ticketsOfEvent.length;
                                         k++) {
@@ -291,12 +291,12 @@ class _EventPageState extends State<EventPage> {
                                       }
                                     }
                                   }
-                                  print('tiers of event');
-                                  print(ticketsOfEvent.length);
-                                  print('tiers to check out with');
-                                  print(tiersToCheck);
+                                 // print('tiers of event');
+                                 // print(ticketsOfEvent.length);
+                                 // print('tiers to check out with');
+                                 // print(tiersToCheck);
                                   if (tiersToCheck.isNotEmpty) {
-                                    print('Check out done');
+                                   // print('Check out done');
                                     List arg = [
                                       true,
                                       tiersToCheck,
@@ -311,8 +311,8 @@ class _EventPageState extends State<EventPage> {
                                     );
                                   } else {
                                     // ignore: avoid_print
-                                    print(
-                                        'No tier was chosen or no tickets were added');
+                                  //  print(
+                                    //    'No tier was chosen or no tickets were added');
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(const SnackBar(
                                       duration: Duration(seconds: 2),
