@@ -17,7 +17,6 @@ import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit
 import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
 import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 
-
 void main() {
   DartPluginRegistrant.ensureInitialized();
   runApp(MyApp());
@@ -102,7 +101,7 @@ class MyApp extends StatelessWidget {
             ],
             child: MaterialApp(
               scaffoldMessengerKey: snackbarKey,
-              title: 'Flutter Demo',
+              title: 'Tessera',
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               onGenerateRoute: _appRouter.onGenerateRoute,
