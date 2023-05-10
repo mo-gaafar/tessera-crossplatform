@@ -27,10 +27,10 @@ class _AtendeeManagementHomePageState extends State<AtendeeManagementHomePage> {
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(
-              Icons.menu_outlined,
+              Icons.arrow_back,
             ),
             onPressed: () {
-              //Navigator.pop(context);
+              Navigator.pop(context);
             },
           ),
           actions: [

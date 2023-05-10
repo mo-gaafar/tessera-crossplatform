@@ -112,18 +112,18 @@ class _CreatorEventListState extends State<CreatorEventList> {
                             context.read<DashboardCubit>().eventId =
                                 widget.filteredEvents[index]['eventId'];
                             Navigator.pushNamed(context, '/dashboard');
+        
                           } else {
                             var resp = await context
                                 .read<EventTicketsCubit>()
                                 .getTicketsData(
                                     widget.filteredEvents[index]['eventId']);
                             if (resp['success'] == true) {
-                              Navigator.pushNamed(
-                                context,
-                                '/ticketspage',
-                                arguments: resp['ticketTiers']
-                                    as List, //GIVING THE PRICE AS Int
-                              );
+                             Navigator.pushNamed(
+                              context,
+                              '/ticketspage',
+                              arguments: [resp['ticketTiers'] as List,widget.filteredEvents[index]['eventId']], //GIVING THE PRICE AS Int
+                            );
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(

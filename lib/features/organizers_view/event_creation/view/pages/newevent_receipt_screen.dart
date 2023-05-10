@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/attendees_view/events/view/widgets/email_button.dart';
 import 'dart:math' as math;
@@ -24,6 +25,7 @@ class NewEventReceipt extends StatelessWidget {
   String? LList = 'To be announced';
   List<String> ticketList = <String>['Display options', 'Reserved seating'];
   List<String> privacyList = <String>['Public event', 'Private event'];
+  late String id;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -264,6 +266,7 @@ class NewEventReceipt extends StatelessWidget {
                 colourBackground: AppColors.secondary,
                 colourText: AppColors.lightBackground,
                 onTap: () async {
+                  
                   if (context
                           .read<CreateEventCubit>()
                           .currentEvent
@@ -295,12 +298,15 @@ class NewEventReceipt extends StatelessWidget {
                     if (response['success']) {
                       context.read<CreateEventCubit>().currentEvent.eventID =
                           response['event_Id'];
-                      print("EVENT ID:");
-                      print(response['event_Id']);
-                      Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/neweventtickets',
-                          ModalRoute.withName('/creatorlanding'));
+                          id =  response['event_Id'];
+                    print("EVENT ID:");
+                    print(response['event_Id']);
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/neweventtickets',
+                      arguments: id as String, ModalRoute.withName('/creatorlanding')
+                    );
+            
                     }
                   } else {
                     context.read<CreateEventCubit>().displayError(

@@ -14,11 +14,9 @@ import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_state.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
-import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_store_cubit.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/publish_cubit.dart';
-
 import 'features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
-import 'features/organizers_view/ticketing/cubit/tickets_store_cubit.dart';
+
 
 void main() {
   DartPluginRegistrant.ensureInitialized();
@@ -46,9 +44,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => EventTicketsCubit(),
-        ),
-        BlocProvider(
-          create: (context) => MyCubit(),
         ),
         BlocProvider(create: (context) => PromocodeCubit()),
         BlocProvider(

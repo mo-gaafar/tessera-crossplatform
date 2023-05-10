@@ -131,21 +131,24 @@ class AppRouter {
         );
 
       case '/neweventtickets':
+      final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => const TicketDefault(),
+          builder: (_) =>  TicketDefault(id: args),
         );
       case '/addtickets':
+      final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => AddTickets(),
+          builder: (_) => AddTickets(id: args,),
         );
       case '/ticketspage':
       final args = settings.arguments as List;
         return MaterialPageRoute(
-          builder: (_) => TicketPage(lisofteirs: args),
+          builder: (_) => TicketPage(lisofteirs: args[0], id: args[1],),
         );
       case '/publishPage':
+      final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => const PublishPage(),
+          builder: (_) =>  PublishPage(id: args,),
         );
 
       case '/numpadscreen':

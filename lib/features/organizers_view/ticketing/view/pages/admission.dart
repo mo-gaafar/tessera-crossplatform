@@ -4,8 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/edit_tickets.dart';
 import '../../cubit/event_tickets_cubit.dart';
-import '../../cubit/tickets_store.dart';
-import '../../cubit/tickets_store_cubit.dart';
+
 import '../widgets/card.dart';
 
 String scheduling(Map data) {
@@ -20,8 +19,9 @@ String scheduling(Map data) {
 }
 
 class Admission extends StatelessWidget {
-  const Admission({super.key, required this.ticketTiersList});
+  const Admission({super.key, required this.ticketTiersList,required this.id});
   final List ticketTiersList;
+  final String id;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +29,11 @@ class Admission extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               //to  publishing
-              Navigator.pushNamed(context, '/publishPage');
+              Navigator.pushNamed(
+                              context,
+                              '/publishPage',
+                              arguments: id as String, //GIVING THE PRICE AS Int
+                            );
             },
             child: Text(
               'Next',
@@ -69,7 +73,7 @@ class Admission extends StatelessWidget {
                                         datetimestart: ticketTiersList[i]
                                             ['startSelling'],
                                         datetimeend: ticketTiersList[i]
-                                            ['endSelling'])),
+                                            ['endSelling'], id: id,)),
                               );
                             }),
                     ],
@@ -82,7 +86,11 @@ class Admission extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   context.read<EventTicketsCubit>().eventPricingdefault();
-                  Navigator.pushNamed(context, '/addtickets');
+                  Navigator.pushNamed(
+                              context,
+                              '/addtickets',
+                              arguments: id as String, //GIVING THE PRICE AS Int
+                            );
                 },
                 child: Text(
                   'Add Tickets',

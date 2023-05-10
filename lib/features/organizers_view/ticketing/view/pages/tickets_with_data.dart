@@ -4,8 +4,9 @@ import 'package:tessera/features/organizers_view/ticketing/view/pages/admission.
 import 'package:tessera/features/organizers_view/ticketing/view/pages/promocode.dart';
 
 class TicketPage extends StatelessWidget {
-  const TicketPage({super.key, required this.lisofteirs});
+  const TicketPage({super.key, required this.lisofteirs,required this.id});
   final List lisofteirs;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +43,9 @@ class TicketPage extends StatelessWidget {
             child: TabBarView(
               children: [
                 Admission(
-                  ticketTiersList: lisofteirs,
+                  ticketTiersList: lisofteirs, id: id,
                 ),
-                PromoCode()
+                PromoCode(id: id,)
               ],
             ),
           ),
