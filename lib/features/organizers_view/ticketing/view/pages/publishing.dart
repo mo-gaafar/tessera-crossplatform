@@ -25,14 +25,14 @@ String changetoIso(String time, String date) {
 }
 
 class PublishPage extends StatefulWidget {
-  const PublishPage({super.key});
+  const PublishPage({super.key,required this.id});
+  final String id;
 
   @override
   State<PublishPage> createState() => _PublishPageState();
 }
 
 class _PublishPageState extends State<PublishPage> {
-  late String id;
   late String privacy = ''; //event is public or private
   late String publicly = ''; //will ever be public later
   late String Schedule = ''; //publish now or later
@@ -67,7 +67,7 @@ class _PublishPageState extends State<PublishPage> {
       bottomNavigationBar: BottomAppBar(
         child: TextButton(
           onPressed: () async {
-            id = context.read<CreateEventCubit>().currentEvent.eventID!;
+            //id = context.read<CreateEventCubit>().currentEvent.eventID!;
             //to  publishing
             if (Schedule == '') {
               publishNow = false;
@@ -85,7 +85,7 @@ class _PublishPageState extends State<PublishPage> {
 
             if (chosen == true && privacy == 'Public') {
               List data = await context.read<PublishCubit>().publish(
-                  id,
+                  widget.id,
                   PublishModel(
                           alwaysPrivate: alwaysPrivate,
                           link: link,
@@ -103,14 +103,14 @@ class _PublishPageState extends State<PublishPage> {
                 shape: StadiumBorder(),
                 behavior: SnackBarBehavior.floating,
               ));
-              context.read<DashboardCubit>().eventId = id;
+              context.read<DashboardCubit>().eventId = widget.id;
               Navigator.pushNamed(context, '/dashboard');
             } else if (chosen == true &&
                 privacy == 'Private' &&
                 publicly == 'Yes') {
               if (dropdownValue == 'Anyone with the Link') {
                 List data = await context.read<PublishCubit>().publish(
-                    id,
+                    widget.id,
                     PublishModel(
                             alwaysPrivate: alwaysPrivate,
                             link: link,
@@ -128,13 +128,13 @@ class _PublishPageState extends State<PublishPage> {
                   shape: StadiumBorder(),
                   behavior: SnackBarBehavior.floating,
                 ));
-                context.read<DashboardCubit>().eventId = id;
+                context.read<DashboardCubit>().eventId = widget.id;
 
                 Navigator.pushNamed(context, '/dashboard');
               } else {
                 if (formKey.currentState!.validate()) {
                   List data = await context.read<PublishCubit>().publish(
-                      id,
+                      widget.id,
                       PublishModel(
                               alwaysPrivate: alwaysPrivate,
                               link: link,
@@ -153,7 +153,7 @@ class _PublishPageState extends State<PublishPage> {
                     shape: StadiumBorder(),
                     behavior: SnackBarBehavior.floating,
                   ));
-                  context.read<DashboardCubit>().eventId = id;
+                  context.read<DashboardCubit>().eventId = widget.id;
 
                   Navigator.pushNamed(context, '/dashboard');
                 }
@@ -163,7 +163,7 @@ class _PublishPageState extends State<PublishPage> {
                 publicly == 'No') {
               if (dropdownValue == 'Anyone with the Link') {
                 List data = await context.read<PublishCubit>().publish(
-                    id,
+                    widget.id,
                     PublishModel(
                             alwaysPrivate: alwaysPrivate,
                             link: link,
@@ -179,13 +179,13 @@ class _PublishPageState extends State<PublishPage> {
                   shape: StadiumBorder(),
                   behavior: SnackBarBehavior.floating,
                 ));
-                context.read<DashboardCubit>().eventId = id;
+                context.read<DashboardCubit>().eventId = widget.id;
 
                 Navigator.pushNamed(context, '/dashboard');
               } else {
                 if (formKey.currentState!.validate()) {
                   List data = await context.read<PublishCubit>().publish(
-                      id,
+                      widget.id,
                       PublishModel(
                               alwaysPrivate: alwaysPrivate,
                               link: link,
@@ -202,7 +202,7 @@ class _PublishPageState extends State<PublishPage> {
                     shape: StadiumBorder(),
                     behavior: SnackBarBehavior.floating,
                   ));
-                  context.read<DashboardCubit>().eventId = id;
+                  context.read<DashboardCubit>().eventId = widget.id;
 
                   Navigator.pushNamed(context, '/dashboard');
                 }

@@ -37,7 +37,7 @@ class EditTickets extends StatefulWidget {
     required this.quantity,
     required this.price,
     required this.datetimestart,
-    required this.datetimeend,
+    required this.datetimeend, required this.id,
   }) : super(key: key);
 
   final String ticketName;
@@ -45,13 +45,14 @@ class EditTickets extends StatefulWidget {
   final String price;
   final String datetimestart; //from the already edited
   final String datetimeend;
+  final String  id;
 
   @override
   State<EditTickets> createState() => _EditTicketsState();
 }
 
 class _EditTicketsState extends State<EditTickets> {
-  late String id;
+  
   final formKey = GlobalKey<FormState>();
   TextEditingController dateinputStart = TextEditingController();
   TextEditingController timeinputStart = TextEditingController();
@@ -93,7 +94,7 @@ class _EditTicketsState extends State<EditTickets> {
         actions: [
           IconButton(
               onPressed: () async {
-                id = context.read<CreateEventCubit>().currentEvent.eventID!;
+               // id = context.read<CreateEventCubit>().currentEvent.eventID!;
                 if (formKey.currentState!.validate()) {
                   String message = await context
                       .read<EventTicketsCubit>()
@@ -113,7 +114,7 @@ class _EditTicketsState extends State<EditTickets> {
                                             dateinputEnd.text))
                                     .toMap()
                               ]).toMap(),
-                          id,
+                          widget.id,
                           context.read<AuthCubit>().currentUser.accessToken!);
                   if (message == 'successfully edited') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -125,14 +126,13 @@ class _EditTicketsState extends State<EditTickets> {
                     ));
                     var resp = await context
                         .read<EventTicketsCubit>()
-                        .getTicketsData(id);
+                        .getTicketsData(widget.id);
                     if (resp['success'] == true) {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => TicketPage(
-                                  lisofteirs: resp['ticketTiers'] as List,
-                                )),
+                        '/ticketspage',
+                        arguments: [resp['ticketTiers']
+                            as List, widget.id as String]
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

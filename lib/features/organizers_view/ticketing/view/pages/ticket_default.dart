@@ -6,7 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //First Page in ticketing
 class TicketDefault extends StatelessWidget {
-  const TicketDefault({super.key});
+  const TicketDefault({super.key, required this.id});
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,11 @@ class TicketDefault extends StatelessWidget {
         onPressed: () {
           // Add your onPressed code here!
           context.read<EventTicketsCubit>().eventPricingdefault();
-          Navigator.pushNamed(context, '/addtickets');
+          Navigator.pushNamed(
+                              context,
+                              '/addtickets',
+                              arguments: id as String, //GIVING THE PRICE AS Int
+                            );
         },
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),

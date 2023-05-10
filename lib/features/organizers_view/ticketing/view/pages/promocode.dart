@@ -15,14 +15,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PromoCode extends StatefulWidget {
-  const PromoCode({super.key});
+  const PromoCode({super.key,required this.id});
+  final String id;
 
   @override
   State<PromoCode> createState() => _PromoCodeState();
 }
 
 class _PromoCodeState extends State<PromoCode> {
-  late String id;
   final formKey = GlobalKey<FormState>();
   String dropdownValue = 'Add Promo code';
   late String code;
@@ -51,14 +51,14 @@ class _PromoCodeState extends State<PromoCode> {
             onPressed: () async {
               //to  publishing
               //Navigator.pushNamed(context, '/publishPage');
-              id=context.read<CreateEventCubit>().currentEvent.eventID!;
+              //id=context.read<CreateEventCubit>().currentEvent.eventID!;
               if (dropdownValue == 'Add Promo code') {
                 print('da5al add promo');
                 if (formKey.currentState!.validate()) {
                   String message = await context
                       .read<PromocodeCubit>()
                       .addPromocode(
-                          id,
+                          widget.id,
                           PromocodeModel(
                                   code: code,
                                   discount: int.parse(discount),
@@ -69,7 +69,7 @@ class _PromoCodeState extends State<PromoCode> {
                     print('tmam add promo');
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),
-                      content: Text('go to admissiom'),
+                      content: Text('succussfully added promocode, to admissiom'),
                       shape: StadiumBorder(),
                       behavior: SnackBarBehavior.floating,
                     ));
@@ -88,7 +88,7 @@ class _PromoCodeState extends State<PromoCode> {
                 if (output != null) {
                   String message = await context
                       .read<PromocodeCubit>()
-                      .importPromocode(id, output);
+                      .importPromocode(widget.id, output);
                   if (message == 'succussfully impored') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: Duration(seconds: 3),

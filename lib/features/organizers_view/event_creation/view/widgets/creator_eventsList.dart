@@ -134,7 +134,7 @@ class _CreatorEventListState extends State<CreatorEventList> {
                            Navigator.pushNamed(
                               context,
                               '/ticketspage',
-                              arguments: resp['ticketTiers'] as List, //GIVING THE PRICE AS Int
+                              arguments: [resp['ticketTiers'] as List,widget.filteredEvents[index]['eventId']], //GIVING THE PRICE AS Int
                             );
                           
                         } else {

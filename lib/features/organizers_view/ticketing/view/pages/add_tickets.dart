@@ -22,7 +22,8 @@ String changetoIso(String time, String date) {
 }
 
 class AddTickets extends StatefulWidget {
-  AddTickets({super.key});
+  AddTickets({super.key,required this.id});
+  final String id;
 
   @override
   State<AddTickets> createState() => _AddTicketsState();
@@ -38,7 +39,6 @@ class _AddTicketsState extends State<AddTickets> {
   TextEditingController dateinputEnd = TextEditingController();
   TextEditingController timeinputEnd = TextEditingController();
   FormValidator formValidator = FormValidator();
-  late String id;
 
   @override
   void initState() {
@@ -70,7 +70,9 @@ class _AddTicketsState extends State<AddTickets> {
           IconButton(
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  id = context.read<CreateEventCubit>().currentEvent.eventID!;
+                  print('ID');
+                  print(widget.id);
+                  //id = context.read<CreateEventCubit>().currentEvent.eventID!;
                   print('trying to add');
                   String message = await context
                       .read<EventTicketsCubit>()
@@ -84,7 +86,7 @@ class _AddTicketsState extends State<AddTickets> {
                                   endSelling: changetoIso(
                                       timeinputEnd.text, dateinputEnd.text))
                               .toMap(),
-                          id,
+                          widget.id,
                           context.read<AuthCubit>().currentUser.accessToken!);
                   if (message == 'successfully added') {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -96,13 +98,14 @@ class _AddTicketsState extends State<AddTickets> {
                     ));
                     var resp = await context
                         .read<EventTicketsCubit>()
-                        .getTicketsData(id);
+                        .getTicketsData(widget.id);
                     if (resp['success'] == true) {
                       Navigator.pushNamed(
-                              context,
-                              '/ticketspage',
-                              arguments: resp['ticketTiers'] as List, //GIVING THE PRICE AS Int
-                            );
+                        context,
+                        '/ticketspage',
+                        arguments: [resp['ticketTiers']
+                            as List, widget.id as String]
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: Duration(seconds: 3),
