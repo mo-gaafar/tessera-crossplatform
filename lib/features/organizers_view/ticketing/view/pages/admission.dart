@@ -4,8 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/organizers_view/ticketing/view/pages/edit_tickets.dart';
 import '../../cubit/event_tickets_cubit.dart';
-import '../../cubit/tickets_store.dart';
-import '../../cubit/tickets_store_cubit.dart';
+
 import '../widgets/card.dart';
 
 String scheduling(Map data) {

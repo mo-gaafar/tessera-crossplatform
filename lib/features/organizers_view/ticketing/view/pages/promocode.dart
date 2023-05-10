@@ -9,7 +9,7 @@ import 'package:tessera/core/services/validation/form_validator.dart';
 import 'package:tessera/features/organizers_view/ticketing/cubit/promocode_cubit.dart';
 import 'package:tessera/features/organizers_view/event_creation/cubit/createEvent_cubit.dart';
 import '../../cubit/event_tickets_cubit.dart';
-import '../../cubit/promocode_store_cubit.dart';
+
 import '../../data/promocode_data.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';

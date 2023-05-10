@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tessera/constants/app_colors.dart';
 import 'package:tessera/features/attendees_view/events/view/widgets/email_button.dart';
 import 'dart:math' as math;
@@ -265,6 +266,7 @@ class NewEventReceipt extends StatelessWidget {
                 colourBackground: AppColors.secondary,
                 colourText: AppColors.lightBackground,
                 onTap: () async {
+                  
                   if (context
                           .read<CreateEventCubit>()
                           .currentEvent

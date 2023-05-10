@@ -12,7 +12,7 @@ import 'package:tessera/features/organizers_view/ticketing/view/pages/tickets_wi
 import 'package:tessera/features/authentication/cubit/auth_cubit.dart';
 import '../../../../../core/services/validation/form_validator.dart';
 import '../../cubit/event_tickets_cubit.dart';
-import '../../cubit/tickets_store_cubit.dart';
+
 import '../../data/tier_data.dart';
 
 List changeFromIso(String datetimestart) {
