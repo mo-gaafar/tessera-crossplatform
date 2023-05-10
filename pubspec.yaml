@@ -53,16 +53,32 @@ dependencies:
   dartz: ^0.10.1
   intl: ^0.18.0
   geolocator: ^9.0.2
-  geocoding: ^2.1.0
   font_awesome_flutter: ^10.4.0
   circular_countdown_timer: ^0.2.3
+  shrink_sidemenu: ^2.0.0+2-null-safety
+  csv: ^5.0.2
+  file_picker: ^5.2.11
+  step_progress_indicator: ^1.0.2
+  flutter_staggered_animations: ^1.1.1
+  sliding_up_panel: ^2.0.0+1
+  fluentui_system_icons: ^1.1.200
+  dio: ^5.1.1
+  path_provider: ^2.0.14
+  downloads_path_provider_28: ^0.1.2
+  url_launcher: ^6.1.10
+  open_file: ^3.3.1
+  timezone: ^0.9.2
+  numpad: ^0.0.2
+  image_picker: ^0.8.7+4
+  uuid: ^3.0.7
+  expandable: ^5.0.1
 
-
+  # flutter_launcher_icons: ^0.13.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  # flutter_launcher_icons: ^0.9.2
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -72,6 +88,17 @@ dev_dependencies:
   bloc_test: ^9.1.1
   mocktail: ^0.3.0
 
+flutter_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/AppIconMed.png"
+
+
+# flutter_icons:
+#   android: true
+#   ios: true
+#   image_path: "assets/images/AppIconMed.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -104,14 +131,14 @@ flutter:
   fonts:
     - family: NeuePlak
       fonts:
-        - asset: assets/fonts/NeuePlak-Black.ttf
-        - asset: assets/fonts/NeuePlak-Bold.ttf
-        - asset: assets/fonts/NeuePlak-ExtraBlack.ttf
-        - asset: assets/fonts/NeuePlak-Light.ttf
-        - asset: assets/fonts/NeuePlak-Regular.ttf
         - asset: assets/fonts/NeuePlak-SemiBold.ttf
+        - asset: assets/fonts/NeuePlak-Regular.ttf
         - asset: assets/fonts/NeuePlak-Thin.ttf
         - asset: assets/fonts/NeuePlak-UltraLight.ttf
+        - asset: assets/fonts/NeuePlak-Light.ttf
+        - asset: assets/fonts/NeuePlak-Bold.ttf
+        - asset: assets/fonts/NeuePlak-Black.ttf
+        - asset: assets/fonts/NeuePlak-ExtraBlack.ttf
 
     - family: NeuePlak-Extended
       fonts:

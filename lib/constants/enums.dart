@@ -22,3 +22,13 @@ enum EventState {
   available,
   error,
 }
+
+enum LandingPageSection {
+  eventsNearYou,
+  eventsYoullLove,
+}
+
+enum UserType {
+  attendee,
+  organizer,
+}

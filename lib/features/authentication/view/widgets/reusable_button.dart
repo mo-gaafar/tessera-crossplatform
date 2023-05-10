@@ -42,17 +42,17 @@ class ContinueButton extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage: AssetImage(image),
-              radius: 10,
-              backgroundColor: Colors.white,
+              radius: 15,
+              backgroundColor: Colors.transparent,
             ),
             const SizedBox(
               width: 10,
             ),
             Text(
               buttonText,
-              style: const TextStyle(
+              style: TextStyle(
                   fontFamily: 'NeuePlak',
-                  color: AppColors.secondaryTextOnLight,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 17),
             )
           ],

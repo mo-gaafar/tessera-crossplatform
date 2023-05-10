@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/order_completed.dart';
 
 //screens
 import 'package:tessera/features/authentication/view/pages/login_signup_screen.dart';
@@ -9,10 +10,33 @@ import 'package:tessera/features/authentication/view/pages/type_new_password_scr
 import 'package:tessera/features/authentication/view/pages/signup_screen.dart';
 import 'package:tessera/features/authentication/view/pages/update_password_screen.dart';
 import 'package:tessera/features/authentication/view/pages/verification_screen.dart';
-import 'package:tessera/features/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/attendees_view/events_filter/cubit/events_filter_cubit.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_addAtendeeDetails_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_atendeeAddedSuccesfully_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_homepage_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/pages/atendeeManagement_processing_screen.dart';
+import 'package:tessera/features/organizers_view/atendee_management/view/widgets/my_customized_numpad.dart';
+import 'package:tessera/features/organizers_view/dashboard/cubit/dashboard_cubit.dart';
+import 'package:tessera/features/organizers_view/dashboard/view/pages/dashboard.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/creator_landingPage_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_description_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_location_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_receipt_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_setdate_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Pages/newevent_title_screen.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/pages/newevent_additionalDetails_screen.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/ticket_default.dart';
+import 'package:tessera/features/organizers_view/ticketing/view/pages/add_tickets.dart';
 import 'package:tessera/features/splash%20screen/view/pages/splash_screen.dart';
 
-import 'package:tessera/features/landing_page/view/pages/landing_page.dart';
+import 'package:tessera/features/attendees_view/landing_page/view/pages/landing_page.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/make_sure.dart';
+import 'package:tessera/features/attendees_view/events/data/event_data.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/event_screen.dart';
+import 'package:tessera/features/attendees_view/events/view/pages/check_out.dart';
+
+import '../../features/organizers_view/ticketing/view/pages/publishing.dart';
+import '../../features/organizers_view/ticketing/view/pages/tickets_with_data.dart';
 
 /// Acts as the main router for the app. Contains all possible routes.
 
@@ -51,12 +75,105 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => const VerificationScreen(),
         );
-      case '/third':
+      case '/landingPage':
         return MaterialPageRoute(
           builder: (_) => BlocProvider<EventsFilterCubit>(
             create: (context) => EventsFilterCubit(),
-            child: LandingPage(),
+            child: const LandingPage(),
           ),
+        );
+      case '/eventPage':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => EventPage(eventData: args[0], iD: args[1]));
+      case '/checkOut':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => CheckOut(
+                  charge: args[0],
+                  ticketTier: args[1],
+                  data: args[2],
+                  id: args[3],
+                  promocode: args[4],
+                ));
+      case '/orderCompleted':
+        return MaterialPageRoute(builder: (context) => const OrderComplete());
+      case '/makeSure':
+        final args = settings.arguments as List;
+        return MaterialPageRoute(
+            builder: (context) => MakeSure(
+                  dataEvent: args[0],
+                  id: args[1],
+                ));
+      case '/creatorlanding':
+        return MaterialPageRoute(
+          builder: (_) => CreatorLandingPage(),
+        );
+      case '/neweventtitle':
+        return MaterialPageRoute(
+          builder: (_) => NewEventtitle(),
+        );
+      case '/neweventdescription':
+        return MaterialPageRoute(
+          builder: (_) => const NewEventDescription(),
+        );
+      case '/neweventsetdate':
+        return MaterialPageRoute(
+          builder: (_) => NewEventSetDate(),
+        );
+      case '/neweventlocation':
+        return MaterialPageRoute(
+          builder: (_) => NewEventLocation(),
+        );
+      case '/neweventreceipt':
+        return MaterialPageRoute(
+          builder: (_) => NewEventReceipt(),
+        );
+
+      case '/neweventtickets':
+        return MaterialPageRoute(
+          builder: (_) => const TicketDefault(),
+        );
+      case '/addtickets':
+        return MaterialPageRoute(
+          builder: (_) => AddTickets(),
+        );
+      /*case '/ticketseditpromo':
+        return MaterialPageRoute(
+          builder: (_) => TicketPage(lisofteirs: [],),
+        );*/
+      case '/publishPage':
+        return MaterialPageRoute(
+          builder: (_) => const PublishPage(),
+        );
+
+      case '/numpadscreen':
+        return MaterialPageRoute(
+          builder: (_) => MyCustomizedNumpad(),
+        );
+      case '/atendeemanagementhomescreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeManagementHomePage(),
+        );
+      case '/atendeemanagementprocessingscreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeManagementProcessingPage(),
+        );
+      case '/atendeeaddedsuccessfullyscreen':
+        return MaterialPageRoute(
+          builder: (_) => const AtendeeAddedSuccessfully(),
+        );
+      case '/addatendeedetails':
+        return MaterialPageRoute(
+          builder: (_) => AddAtendeeDetails(),
+        );
+      case '/additionaleventdetails':
+        return MaterialPageRoute(
+          builder: (_) => AdditionalDetailsPage(),
+        );
+      case '/dashboard':
+        return MaterialPageRoute(
+          builder: (_) => Dashboard(),
         );
       default:
         return MaterialPageRoute(
