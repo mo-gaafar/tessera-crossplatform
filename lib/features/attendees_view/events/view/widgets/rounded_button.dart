@@ -16,7 +16,7 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        debugPrint('tags Clicked');
+        //debugPrint('tags Clicked');
       },
       // ignore: sort_child_properties_last
       child: Text(

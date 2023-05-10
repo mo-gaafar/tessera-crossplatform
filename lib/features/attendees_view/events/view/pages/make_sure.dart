@@ -60,7 +60,7 @@ class MakeSure extends StatelessWidget {
                         colourBackground: AppColors.secondary,
                         colourText: AppColors.lightBackground,
                         onTap: () {
-                          print(dataEvent.toMap());
+                          //print(dataEvent.toMap());
                           Navigator.pushReplacementNamed(
                             context,
                             '/eventPage',
