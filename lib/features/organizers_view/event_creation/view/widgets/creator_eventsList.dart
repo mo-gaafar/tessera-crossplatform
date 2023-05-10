@@ -34,7 +34,13 @@ class _CreatorEventListState extends State<CreatorEventList> {
       } else {
         for (int i = 0; i < widget.filteredEvents.length; i++) {
           if (response['maxCapacity'][i] == 0) {
-            return 'Max Capacity equal 0?!!';
+            if (widget.filterType == 'draft') {
+              widget.eventSoldTicketsPercentage.add(0.0);
+              widget.eventSoldTicketsPercentageToString.add(
+                  '${response['eventsoldtickets'][i]}/${response['maxCapacity'][i]}');
+            } else {
+              return 'Max Capacity equal 0?!!';
+            }
           } else {
             widget.eventSoldTicketsPercentage.add(
                 response['eventsoldtickets'][i] / response['maxCapacity'][i]);

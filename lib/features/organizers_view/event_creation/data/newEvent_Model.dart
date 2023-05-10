@@ -27,6 +27,7 @@ class NewEventModel {
   String? eventSummary;
   File? eventImage;
   bool? isPublic;
+  bool? isOnline=false;
   String? tickets;
   // missing isVerified, ticketTiers, location, start/end selling, promocodes
 
@@ -71,7 +72,7 @@ class NewEventModel {
       'summary': eventSummary,
       'description': description,
       'eventStatus': 'live',
-      "isOnline": false,
+      "isOnline": isOnline,
       "onlineEventUrl": null
     };
   }
