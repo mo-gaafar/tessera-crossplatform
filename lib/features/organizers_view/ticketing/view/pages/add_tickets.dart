@@ -98,13 +98,11 @@ class _AddTicketsState extends State<AddTickets> {
                         .read<EventTicketsCubit>()
                         .getTicketsData(id);
                     if (resp['success'] == true) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TicketPage(
-                                  lisofteirs: resp['ticketTiers'] as List,
-                                )),
-                      );
+                      Navigator.pushNamed(
+                              context,
+                              '/ticketspage',
+                              arguments: resp['ticketTiers'] as List, //GIVING THE PRICE AS Int
+                            );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: Duration(seconds: 3),

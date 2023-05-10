@@ -6,6 +6,7 @@ import 'package:tessera/features/organizers_view/event_creation/cubit/createEven
 import 'package:tessera/features/organizers_view/event_creation/data/creator_reposiory.dart';
 import 'package:tessera/features/organizers_view/event_creation/data/organiser_model.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/no_event_template.dart';
+import 'package:tessera/features/organizers_view/ticketing/cubit/event_tickets_cubit.dart';
 
 class CreatorEventList extends StatefulWidget {
   OrganiserModel organiserModel;
@@ -118,11 +119,35 @@ class _CreatorEventListState extends State<CreatorEventList> {
                         subtitle: Text(
                             '${widget.filteredEvents[index]["basicInfo"]['startDateTime'].toString()} \n ${widget.eventSoldTicketsPercentageToString[index]}'),
                         isThreeLine: true,
-                        onTap: () {
+                        onTap: () async {
                           if (widget.filterType != 'draft') {
                             context.read<DashboardCubit>().eventId =
                                 widget.filteredEvents[index]['eventId'];
                             Navigator.pushNamed(context, '/dashboard');
+                          }
+                          else
+                          {
+                                var resp = await context
+                            .read<EventTicketsCubit>()
+                            .getTicketsData(widget.filteredEvents[index]['eventId']);
+                        if (resp['success'] == true) {
+                           Navigator.pushNamed(
+                              context,
+                              '/ticketspage',
+                              arguments: resp['ticketTiers'] as List, //GIVING THE PRICE AS Int
+                            );
+                          
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            duration: Duration(seconds: 3),
+                            // ignore: prefer_interpolation_to_compose_strings
+                            content: Text(resp['message'] as String),
+                            shape: StadiumBorder(),
+                            behavior: SnackBarBehavior.floating,
+                          ));
+                        }
+
+
                           }
                         },
                         trailing: Text("£${widget.gross[index].toString()}"),
