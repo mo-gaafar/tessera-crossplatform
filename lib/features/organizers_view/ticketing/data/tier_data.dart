@@ -1,20 +1,24 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 /// Model class representing the events's data.
-class TierModel {
+class TierModel extends Equatable {
   final String tierName;
-  final int maxCapacity; //event capacity //int 
+  final int maxCapacity; //event capacity //int
   final String price; //free/price
-  final String startSelling;  
+  final String startSelling;
   final String endSelling;
 
   /// Creates a [TierModel] from given user data.
   ///
   /// Requires [name] , [quantity] , [price] , [startDate] , [endDate] , [startTime] ,[endTime]
   TierModel(
-      {required this.tierName, 
-      required this.maxCapacity,required  this.price, 
-      required this.startSelling,required  this.endSelling});
+      {required this.tierName,
+      required this.maxCapacity,
+      required this.price,
+      required this.startSelling,
+      required this.endSelling});
 
   /// Creates a [EventModel] from a [Map].
   factory TierModel.fromMap(Map<String, dynamic> map) {
@@ -41,5 +45,13 @@ class TierModel {
   /// Decodes the [EventModel] from JSON.
   factory TierModel.fromJson(String source) =>
       TierModel.fromMap(json.decode(source) as Map<String, dynamic>);
-}
 
+  @override
+  List<Object?> get props => [
+        tierName,
+        maxCapacity,
+        price,
+        startSelling,
+        endSelling,
+      ];
+}

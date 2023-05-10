@@ -12,12 +12,12 @@ import 'package:http/http.dart' as http;
 import 'package:tessera/features/organizers_view/ticketing/data/tier_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// The repository handling all api calls related to the dashboard.
 class DashboardRepository {
+  /// Requests the sold tickets data from the api.
   static Future<Either<String, Map>> requestTicketsSold(
       String id, String all, String tierName) async {
     try {
-      print(
-          'https://www.tessera.social/api/dashboard/eventsoldtickets/events/$id?allTiers=$all&tierName=$tierName');
       var response = await NetworkService.getGetApiResponse(
           'https://www.tessera.social/api/dashboard/eventsoldtickets/events/$id?allTiers=$all&tierName=$tierName');
 
@@ -36,6 +36,7 @@ class DashboardRepository {
     }
   }
 
+  /// Requests the sales data from the api.
   static Future<Either<String, int>> requestEventSales(
       String id, String all, String tierName) async {
     try {
@@ -52,6 +53,7 @@ class DashboardRepository {
     }
   }
 
+  /// Returns a summary of attendees of the event.
   static Future<Either<String, List<AttendeeSummaryModel>>>
       requestAttendeeSummary(String id) async {
     try {
@@ -73,6 +75,7 @@ class DashboardRepository {
     }
   }
 
+  /// Dowloads the attendee summary of the event.
   static Future<String> downloadAttendeeSummary(String id, String dir) async {
     try {
       var dio = Dio();
@@ -87,6 +90,7 @@ class DashboardRepository {
     }
   }
 
+  /// Returns ticket tiers for the event.
   static Future<Either<String, List<TierModel>>> requestTicketTiers(
       String id) async {
     try {
