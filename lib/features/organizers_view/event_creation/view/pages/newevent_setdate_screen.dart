@@ -97,7 +97,7 @@ class NewEventSetDate extends StatelessWidget {
                 .read<CreateEventCubit>()
                 .displayError(errormessage: 'Please Add all dates and times.');
           } else {
-            Navigator.pushNamed(context, '/neweventlocation');
+            Navigator.pushReplacementNamed(context, '/neweventlocation');
           }
         },
         backgroundColor: Colors.orange,

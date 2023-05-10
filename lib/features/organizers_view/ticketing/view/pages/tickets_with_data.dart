@@ -4,7 +4,7 @@ import 'package:tessera/features/organizers_view/ticketing/view/pages/admission.
 import 'package:tessera/features/organizers_view/ticketing/view/pages/promocode.dart';
 
 class TicketPage extends StatelessWidget {
-  const TicketPage({super.key, required this.lisofteirs,required this.id});
+  const TicketPage({super.key, required this.lisofteirs, required this.id});
   final List lisofteirs;
   final String id;
 
@@ -16,6 +16,11 @@ class TicketPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: false,
           automaticallyImplyLeading: false,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context,'/creatorlanding');
+              },
+              icon: const Icon(Icons.chevron_left)),
           bottom: const TabBar(
             labelColor: AppColors.primary, //<-- selected text color
             unselectedLabelColor: AppColors.secondary, //<-- Unselected text
@@ -43,9 +48,12 @@ class TicketPage extends StatelessWidget {
             child: TabBarView(
               children: [
                 Admission(
-                  ticketTiersList: lisofteirs, id: id,
+                  ticketTiersList: lisofteirs,
+                  id: id,
                 ),
-                PromoCode(id: id,)
+                PromoCode(
+                  id: id,
+                )
               ],
             ),
           ),

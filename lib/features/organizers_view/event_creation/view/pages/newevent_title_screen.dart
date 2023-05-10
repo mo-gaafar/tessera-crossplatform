@@ -35,7 +35,7 @@ class NewEventtitle extends StatelessWidget {
           if (tempEventTitle != '') {
             context.read<CreateEventCubit>().currentEvent.eventName =
                 tempEventTitle;
-            Navigator.pushNamed(context, '/neweventdescription');
+            Navigator.pushReplacementNamed(context, '/neweventdescription');
           } else {
             context
                 .read<CreateEventCubit>()

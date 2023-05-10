@@ -188,7 +188,7 @@ class _NewEventLocationState extends State<NewEventLocation> {
                                             .currentEvent
                                             .eventLocationName =
                                         predictions[index]["description"];
-                                    Navigator.pushNamed(
+                                    Navigator.pushReplacementNamed(
                                         context, '/neweventreceipt');
                                   },
                                 );

@@ -22,7 +22,7 @@ String changetoIso(String time, String date) {
 }
 
 class AddTickets extends StatefulWidget {
-  AddTickets({super.key,required this.id});
+  AddTickets({super.key, required this.id});
   final String id;
 
   @override
@@ -53,10 +53,16 @@ class _AddTicketsState extends State<AddTickets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: IconButton(
-            onPressed: () {
-              //back to ticketing default
-              Navigator.pop(context);
+            onPressed: () async {
+              var resp = await context
+                  .read<EventTicketsCubit>()
+                  .getTicketsData(widget.id);
+              Navigator.pushReplacementNamed(context, '/ticketspage', arguments: [
+                resp['ticketTiers'] as List,
+                widget.id as String
+              ]);
             },
             icon: const Icon(Icons.chevron_left)),
         elevation: 0,
@@ -100,12 +106,10 @@ class _AddTicketsState extends State<AddTickets> {
                         .read<EventTicketsCubit>()
                         .getTicketsData(widget.id);
                     if (resp['success'] == true) {
-                      Navigator.pushNamed(
-                        context,
-                        '/ticketspage',
-                        arguments: [resp['ticketTiers']
-                            as List, widget.id as String]
-                      );
+                      Navigator.pushReplacementNamed(context, '/ticketspage', arguments: [
+                        resp['ticketTiers'] as List,
+                        widget.id as String
+                      ]);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: Duration(seconds: 3),
