@@ -181,9 +181,10 @@ class EventsFilterCubit extends Cubit<EventsFilterState> {
           date: DateTime.parse(
                   filteredEvents[index]['basicInfo']['startDateTime'])
               .toLocal(),
-          location: filteredEvents[index]['basicInfo']['location']
-                  ['venueName'] ??
-              'Online',
+          location: filteredEvents[index]['basicInfo']['location'] != null
+              ? filteredEvents[index]['basicInfo']['location']['venueName'] ??
+                  'Online'
+              : 'Online',
           image: Image.network(
               filteredEvents[index]['basicInfo']['eventImage'] ??
                   'assets/images/placeholder.jpg',
