@@ -5,7 +5,7 @@ import 'package:tessera/features/organizers_view/event_creation/cubit/createEven
 class PopupMenu extends StatelessWidget {
   String selectEvent = '';
   late List<Icon> selectEventIcons;
-  late List<Widget> selectEventText;
+  late List<String> selectEventText;
   PopupMenu({required this.selectEvent}) {
     if (selectEvent == 'Type') {
       selectEventIcons = const [
@@ -31,26 +31,26 @@ class PopupMenu extends StatelessWidget {
         Icon(Icons.dynamic_feed_outlined),
       ];
       selectEventText = const [
-        Text('Confrence'),
-        Text('Seminar or Talk'),
-        Text('Tradeshow, Consumer Show or Expo'),
-        Text('Convection'),
-        Text('Fesitval or Fair'),
-        Text('Concert or Performance'),
-        Text('Screening'),
-        Text('Dinner or Gala'),
-        Text('Class, Training, or Workshop'),
-        Text('Meeting or Networking Event'),
-        Text('Party or Social Gathering'),
-        Text('Rally'),
-        Text('Tournament'),
-        Text('Game or Competiotion'),
-        Text('Race or Endurance Event'),
-        Text('Tour'),
-        Text('Attraction'),
-        Text('Camp, Trip, or Retreat'),
-        Text('Appearance or Signing'),
-        Text('Other'),
+        'Confrence',
+        'Seminar or Talk',
+        'Tradeshow, Consumer Show or Expo',
+        'Convection',
+        'Fesitval or Fair',
+        'Concert or Performance',
+        'Screening',
+        'Dinner or Gala',
+        'Class, Training, or Workshop',
+        'Meeting or Networking Event',
+        'Party or Social Gathering',
+        'Rally',
+        'Tournament',
+        'Game or Competiotion',
+        'Race or Endurance Event',
+        'Tour',
+        'Attraction',
+        'Camp, Trip, or Retreat',
+        'Appearance or Signing',
+        'Other',
       ];
     } else if (selectEvent == 'Category') {
       selectEventIcons = const [
@@ -76,26 +76,26 @@ class PopupMenu extends StatelessWidget {
         Icon(Icons.category_outlined),
       ];
       selectEventText = const [
-        Text('Music'),
-        Text('Business & Professional'),
-        Text('Food & Drink'),
-        Text('Community & Culture'),
-        Text('Performing & Visual Arts'),
-        Text('Film, Media & Entertainment'),
-        Text('Sports & Fitness'),
-        Text('Health & Wellness'),
-        Text('Boat & Air'),
-        Text('Charity & Causes'),
-        Text('Family & Education'),
-        Text('Fashion & Beauty'),
-        Text('Government & Politics'),
-        Text('Hobbies & Special Interest'),
-        Text('Home & Lifestyle'),
-        Text('School Activities'),
-        Text('Science & Technology'),
-        Text('Seasonal & Holiday'),
-        Text('Travel & Outdoor'),
-        Text('Other'),
+        'Music',
+        'Business & Professional',
+        'Food & Drink',
+        'Community & Culture',
+        'Performing & Visual Arts',
+        'Film, Media & Entertainment',
+        'Sports & Fitness',
+        'Health & Wellness',
+        'Boat & Air',
+        'Charity & Causes',
+        'Family & Education',
+        'Fashion & Beauty',
+        'Government & Politics',
+        'Hobbies & Special Interest',
+        'Home & Lifestyle',
+        'School Activities',
+        'Science & Technology',
+        'Seasonal & Holiday',
+        'Travel & Outdoor',
+        'Other',
       ];
     }
   }
@@ -116,15 +116,10 @@ class PopupMenu extends StatelessWidget {
         itemBuilder: (BuildContext context, index) {
           return ListTile(
             leading: selectEventIcons[index],
-            title: selectEventText[index],
+            title: Text(selectEventText[index]),
             onTap: () {
               if (selectEvent == 'Category') {
-                String tempSelectedEventText =
-                    selectEventText[index].toString().replaceAll('Text(', "");
-                tempSelectedEventText =
-                    tempSelectedEventText.replaceAll(')', "");
-                tempSelectedEventText =
-                    tempSelectedEventText.replaceAll('"', "");
+                String tempSelectedEventText = selectEventText[index];
                 // context.read<CreateEventCubit>().currentEvent.eventCategory =
                 //     tempSelectedEventText;
                 context
