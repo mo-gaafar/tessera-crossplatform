@@ -14,6 +14,7 @@ import 'package:tessera/features/organizers_view/event_creation/view/Widgets/my_
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/my_image_picker.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/popup_menu.dart';
 import 'package:tessera/features/organizers_view/event_creation/view/Widgets/receipt_section.dart';
+import 'package:tessera/features/organizers_view/event_creation/view/Widgets/choose_fromPopup.dart';
 
 class NewEventReceipt extends StatelessWidget {
   NewEventReceipt({super.key});
@@ -167,45 +168,7 @@ class NewEventReceipt extends StatelessWidget {
             ),
             ReceiptSection(
               sectionIcon: const Icon(Icons.sell_outlined),
-              sectionChild: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Event category'),
-                  GestureDetector(
-                    child: BlocBuilder<CreateEventCubit, CreateEventState>(
-                      builder: (context, state) {
-                        if (state is CreateEventBasicInfo) {
-                          if (state.eventCategory != null) {
-                            return Text(
-                              state.eventCategory!,
-                              style: TextStyle(color: Colors.grey),
-                            );
-                          } else {
-                            return Text(
-                              'Select a Category',
-                              style: TextStyle(color: Colors.grey),
-                            );
-                          }
-                        } else {
-                          return Text(
-                            'Select a Category',
-                            style: TextStyle(color: Colors.grey),
-                          );
-                        }
-                      },
-                    ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('Select Event Category'),
-                          content: PopupMenu(selectEvent: 'Category'),
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+              sectionChild: ChooseFromPopup(),
             ),
             // ReceiptSection(
             //   sectionIcon: Transform.rotate(
